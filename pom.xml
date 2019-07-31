@@ -11,7 +11,7 @@
     <name>urthehero</name>
 
     <modules>
-        <module>user</module>
+        <module>person</module>
         <module>back</module>
     </modules>
 
