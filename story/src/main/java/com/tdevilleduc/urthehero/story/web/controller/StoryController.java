@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class StoryController {
 
@@ -16,6 +18,11 @@ public class StoryController {
     private PageDao pageDao;
     @Autowired
     private StoryDao storyDao;
+
+    @GetMapping(value = "/Stories")
+    public List<Story> getStories() {
+        return storyDao.findAll();
+    }
 
     @GetMapping(value = "/Story/{storyId}")
     public Story getStoryById(@PathVariable int storyId) {
