@@ -1,5 +1,7 @@
 package com.tdevilleduc.urthehero.story.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class Page {
         this.id = id;
     }
 
+    @JsonIgnore
     public Story getStory() {
         return story;
     }

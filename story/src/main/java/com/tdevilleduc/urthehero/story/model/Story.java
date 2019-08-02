@@ -1,5 +1,7 @@
 package com.tdevilleduc.urthehero.story.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -63,4 +65,8 @@ public class Story {
         this.firstPageId = firstPageId;
     }
 
+    @JsonIgnore
+    public List<Page> getPages() {
+        return pages;
+    }
 }
