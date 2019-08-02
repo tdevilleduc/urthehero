@@ -6,6 +6,8 @@ import com.tdevilleduc.urthehero.story.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.story.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.story.model.Page;
 import com.tdevilleduc.urthehero.story.model.Story;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Api( description = "API Page pour les interactions avec les pages" )
 @RestController
 public class PageController {
 
@@ -21,6 +24,7 @@ public class PageController {
     @Autowired
     private StoryDao storyDao;
 
+    @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/Page/{pageId}")
     public Page getPageById(@PathVariable int pageId) {
 
@@ -39,6 +43,7 @@ public class PageController {
         return page;
     }
 
+    @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
     @GetMapping(value = "/Pages/{storyId}")
     public List<Page> getPagesByStoryId(@PathVariable int storyId) {
 
