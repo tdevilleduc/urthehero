@@ -1,8 +1,10 @@
 package com.tdevilleduc.urthehero.story.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 public class Story {
@@ -14,14 +16,19 @@ public class Story {
     private Integer authorId;
     private Integer firstPageId;
 
+    @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
+    private List<Page> pages;
+
     public Story() {
     }
 
-    public Story(Integer id, String title, Integer authorId, Integer firstPageId) {
+    public Story(Integer id, String title, Integer authorId, Integer firstPageId, Page... pages) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
         this.firstPageId = firstPageId;
+        this.pages = Stream.of(pages).collect(Collectors.toList());
+        this.pages.forEach(x -> x.setStory(this));
     }
 
     public Integer getId() {
@@ -55,4 +62,5 @@ public class Story {
     public void setFirstPageId(Integer firstPageId) {
         this.firstPageId = firstPageId;
     }
+
 }

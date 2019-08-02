@@ -28,45 +28,13 @@ public class PageController {
             throw new PageNotFoundException("La page avec l'id " + pageId + " n'existe pas");
         }
 
-        Integer storyId = page.getStoryId();
+        Story story = page.getStory();
 
-        if (storyId == null) {
+        if (story == null) {
             throw new PageNotFoundException("La page avec l'id " + pageId + " n'est pas associée à une histoire");
         }
 
-        Story story = storyDao.findById(storyId.intValue());
-
-        if (story == null) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
-        }
-
         return page;
     }
 
-
-    @GetMapping(value = "/FirstPage/{storyId}")
-    public Page getFirstPageByStoryId(@PathVariable int storyId) {
-        Story story = storyDao.findById(storyId);
-
-        if (story == null) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
-        }
-
-        Integer firstPageId = story.getFirstPageId();
-
-        if (firstPageId == null) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'a pas de page");
-        }
-
-        Page page = pageDao.findById(firstPageId.intValue());
-
-        if (page == null) {
-            throw new PageNotFoundException("La page avec l'id " + storyId + " n'existe pas");
-        }
-        if (page.getStoryId() != storyId) {
-            throw new PageNotFoundException("La page avec l'id " + page.getId() + " ne fait pas partie de l'histoire " + storyId);
-        }
-
-        return page;
-    }
 }

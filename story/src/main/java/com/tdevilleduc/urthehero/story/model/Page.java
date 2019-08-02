@@ -1,9 +1,6 @@
 package com.tdevilleduc.urthehero.story.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -12,19 +9,21 @@ public class Page {
     @Id
     @GeneratedValue
     private Integer id;
-    private Integer storyId;
+
+    @ManyToOne
+    @JoinColumn
+    private Story story;
 
     @Column(columnDefinition = "TEXT")
     private String text;
     private String image;
-    //private List<Next> listNext;
 
     public Page() {
     }
 
-    public Page(Integer id, Integer storyId, String text) {
+    public Page(Integer id, Story story, String text) {
         this.id = id;
-        this.storyId = storyId;
+        this.story = story;
         this.text = text;
     }
 
@@ -36,14 +35,13 @@ public class Page {
         this.id = id;
     }
 
-    public Integer getStoryId() {
-        return storyId;
+    public Story getStory() {
+        return story;
     }
 
-    public void setStoryId(Integer storyId) {
-        this.storyId = storyId;
+    public void setStory(Story story) {
+        this.story = story;
     }
-
 
     public String getText() {
         return text;
