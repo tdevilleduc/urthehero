@@ -13,6 +13,7 @@
     <modules>
         <module>person</module>
         <module>back</module>
+        <module>story</module>
     </modules>
 
     <properties>

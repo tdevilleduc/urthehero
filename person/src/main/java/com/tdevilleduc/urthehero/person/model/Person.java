@@ -16,7 +16,6 @@ public class Person {
     private int age;
 
     public Person() {
-
     }
 
     public Person(int id, String login, String nom, String prenom, int age) {

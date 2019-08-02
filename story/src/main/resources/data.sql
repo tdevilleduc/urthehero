@@ -1,0 +1,10 @@
+INSERT INTO story VALUES(1, 1, 1, 'Ulysse');
+INSERT INTO story VALUES(2, 2, 4, 'Voyage au bout de la nuit');
+INSERT INTO story VALUES(3, 3, 7, 'Madame Bovary');
+INSERT INTO page VALUES(1, 'image3', 1, 'Ulysse');
+INSERT INTO page VALUES(2, 'image3', 1, 'Dès');
+INSERT INTO page VALUES(3, 'image3', 1, 'Le roman');
+INSERT INTO page VALUES(4, 'image3', 2, 'Voyage au bout de la nuit');
+INSERT INTO page VALUES(5, 'image3', 2, 'Le roman est notamment célèbre');
+INSERT INTO page VALUES(6, 'image3', 2, 'Toutefois');
+INSERT INTO page VALUES(7, 'image3', 3, 'Madame Bovary');
