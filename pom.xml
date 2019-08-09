@@ -11,6 +11,7 @@
     <name>urthehero</name>
 
     <modules>
+        <module>config-server</module>
         <module>person</module>
         <module>back</module>
         <module>story</module>
