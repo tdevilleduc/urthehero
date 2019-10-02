@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api( description = "API users pour les interactions avec les utilisateurs" )
+@Api( value = "API users pour les interactions avec les utilisateurs" )
 @RestController
 public class PersonController {
 

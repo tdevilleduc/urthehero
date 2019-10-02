@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api( description = "API Page pour les interactions avec les pages" )
+@Api( value = "API Page pour les interactions avec les pages" )
 @RestController
 public class PageController {
 

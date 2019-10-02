@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api( description = "API Story pour les interactions avec les histoires" )
+@Api( value = "API Story pour les interactions avec les histoires" )
 @RestController
 public class StoryController {
 
