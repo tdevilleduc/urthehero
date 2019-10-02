@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.tdevilleduc.urthehero</groupId>
-			<artifactId>lib-model</artifactId>
+			<artifactId>model</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
