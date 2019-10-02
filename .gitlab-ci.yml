@@ -12,6 +12,7 @@ cache:
 build_job:
   stage: build
   script:
+    - chmod +x mvnw
     - ./mvnw compile
       -Dhttps.protocols=TLSv1.2
       -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
