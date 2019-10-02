@@ -2,7 +2,7 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
-import com.tdevilleduc.urthehero.back.model.Person;
+import com.tdevilleduc.urthehero.model.Person;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

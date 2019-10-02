@@ -5,19 +5,24 @@
 	<parent>
 		<groupId>com.tdevilleduc.urthehero</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.tdevilleduc.urthehero</groupId>
 	<artifactId>back</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>back</name>
-	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.tdevilleduc.urthehero</groupId>
+			<artifactId>lib-model</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-neo4j</artifactId>
