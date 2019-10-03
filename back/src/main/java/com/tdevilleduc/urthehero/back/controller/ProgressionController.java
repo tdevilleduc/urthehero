@@ -60,7 +60,7 @@ public class ProgressionController {
 
     @ApiOperation( value = "Met à jour la progression d'une personne sur une histoire avec une page définie" )
     @PostMapping(value="Person/{personId}/Story/{storyId}/Page/{pageId}")
-    public Progression play(@PathVariable int personId, @PathVariable int storyId, @PathVariable int newPageId) {
+    public Progression postProgressionAction(@PathVariable int personId, @PathVariable int storyId, @PathVariable int newPageId) {
         Person person = personDao.findById(personId);
 
         if (person == null) {
