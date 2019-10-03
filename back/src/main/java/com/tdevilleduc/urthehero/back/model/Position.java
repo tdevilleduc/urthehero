@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.model;
+package com.tdevilleduc.urthehero.back.model;
 
 public enum Position {
 

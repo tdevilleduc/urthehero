@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.model;
+package com.tdevilleduc.urthehero.back.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

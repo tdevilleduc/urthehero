@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.model;
+package com.tdevilleduc.urthehero.back.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

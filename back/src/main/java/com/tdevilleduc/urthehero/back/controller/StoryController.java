@@ -3,7 +3,7 @@ package com.tdevilleduc.urthehero.back.controller;
 import com.tdevilleduc.urthehero.back.dao.PageDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
-import com.tdevilleduc.urthehero.model.Story;
+import com.tdevilleduc.urthehero.back.model.Story;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

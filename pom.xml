@@ -11,7 +11,6 @@
     <name>urthehero</name>
 
     <modules>
-        <module>model</module>
         <module>back</module>
     </modules>
 
