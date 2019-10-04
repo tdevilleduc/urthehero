@@ -11,3 +11,9 @@ INSERT INTO page VALUES(4, 'image3', 'Voyage au bout de la nuit est le premier r
 INSERT INTO page VALUES(5, 'image3', 'Le roman est notamment célèbre', 2);
 INSERT INTO page VALUES(6, 'image3', 'Toutefois', 2);
 INSERT INTO page VALUES(7, 'image3', 'Madame Bovary', 3);
+INSERT INTO progression VALUES(1, 1, 1, 2);
+INSERT INTO progression VALUES(2, 1, 2, 4);
+INSERT INTO progression VALUES(3, 2, 1, 1);
+INSERT INTO progression VALUES(4, 2, 3, 7);
+INSERT INTO progression VALUES(5, 3, 2, 6);
+INSERT INTO progression VALUES(6, 3, 3, 7);
