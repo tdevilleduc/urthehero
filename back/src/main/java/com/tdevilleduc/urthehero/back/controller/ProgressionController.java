@@ -7,9 +7,8 @@ import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
-import com.tdevilleduc.urthehero.back.model.Story;
-import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.impl.ProgressionService;
+import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,9 @@ import java.util.List;
 public class ProgressionController {
 
     @Autowired
-    private IProgressionService progressionService;
+    private ProgressionService progressionService;
+    @Autowired
+    private StoryService storyService;
 
     @Autowired
     private PersonDao personDao;
@@ -51,9 +52,8 @@ public class ProgressionController {
             throw new PersonNotFoundException("L'utilisateur avec l'id "+ personId +" n'existe pas");
         }
 
-        Story story = storyDao.findById(storyId);
-        if (story == null) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
+        if (storyService.notExists(storyId)) {
+            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
         }
 
         return progressionDao.findByPersonIdAndStoryId(personId, storyId);

@@ -13,13 +13,18 @@ import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ProgressionService implements IProgressionService {
+
+    @Autowired
+    private StoryService storyService;
 
     @Autowired
     private StoryDao storyDao;
@@ -34,9 +39,8 @@ public class ProgressionService implements IProgressionService {
     public Progression doProgressionAction(Integer personId, Integer storyId, Integer pageId) {
 
         // controle des parametres
-        Optional<Story> story = storyDao.findById(storyId);
-        if (story.isEmpty()) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
+        if (storyService.notExists(storyId)) {
+            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
         }
 
         Optional<Person> person = personDao.findById(personId);
@@ -65,6 +69,5 @@ public class ProgressionService implements IProgressionService {
 
         return progressionDao.save(progression);
     }
-
 
 }

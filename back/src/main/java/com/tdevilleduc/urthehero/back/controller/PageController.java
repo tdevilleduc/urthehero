@@ -48,7 +48,6 @@ public class PageController {
     public List<Page> getPagesByStoryId(@PathVariable int storyId) {
 
         Story story = storyDao.findById(storyId);
-
         if (story == null) {
             throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
         }
