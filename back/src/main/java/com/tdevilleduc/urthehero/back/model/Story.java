@@ -16,6 +16,8 @@ public class Story {
     private String title;
     private Integer authorId;
     private Integer firstPageId;
+    @Transient
+    private Integer currentPageId;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
     private List<Page> pages;
@@ -62,6 +64,14 @@ public class Story {
 
     public void setFirstPageId(Integer firstPageId) {
         this.firstPageId = firstPageId;
+    }
+
+    public Integer getCurrentPageId() {
+        return currentPageId;
+    }
+
+    public void setCurrentPageId(Integer currentPageId) {
+        this.currentPageId = currentPageId;
     }
 
     @JsonIgnore
