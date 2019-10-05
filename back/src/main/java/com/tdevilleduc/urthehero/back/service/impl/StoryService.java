@@ -3,6 +3,7 @@ package com.tdevilleduc.urthehero.back.service.impl;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class StoryService {
+public class StoryService implements IStoryService {
 
     @Autowired
     private StoryDao storyDao;

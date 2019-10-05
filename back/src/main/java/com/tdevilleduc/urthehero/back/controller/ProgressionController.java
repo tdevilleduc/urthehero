@@ -7,6 +7,7 @@ import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
+import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.impl.ProgressionService;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
@@ -23,7 +24,7 @@ import java.util.Optional;
 public class ProgressionController {
 
     @Autowired
-    private ProgressionService progressionService;
+    private IProgressionService progressionService;
     @Autowired
     private StoryService storyService;
 

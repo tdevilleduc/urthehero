@@ -7,6 +7,7 @@ import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,7 @@ public class StoryController {
     private ProgressionDao progressionDao;
 
     @Autowired
-    private StoryService storyService;
+    private IStoryService storyService;
 
     @ApiOperation( value = "Récupère la liste des histoires" )
     @GetMapping(value = "/all")
