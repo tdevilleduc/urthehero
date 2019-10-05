@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api( value = "API users pour les interactions avec les utilisateurs" )
+@Api(value = "Person", tags = { "Person Controller" } )
 @RestController
 @RequestMapping("/Person")
 public class PersonController {

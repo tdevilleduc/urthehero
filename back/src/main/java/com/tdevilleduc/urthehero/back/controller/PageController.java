@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-@Api( value = "API Page pour les interactions avec les pages" )
+@Api(value = "Page", tags = { "Page Controller" } )
 @RestController
 @RequestMapping("/Page")
 public class PageController {

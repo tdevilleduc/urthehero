@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Api( value = "API Story pour les interactions avec les histoires" )
+@Api(value = "Story", tags = { "Story Controller" } )
 @RestController
 @RequestMapping("/Story")
 public class StoryController {

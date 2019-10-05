@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@Api( value = "API users pour les interactions avec l'avancement des histoires" )
+@Api(value = "Progression", tags = { "Progression Controller" } )
 @RestController
 @RequestMapping("/Progression")
 public class ProgressionController {
