@@ -4,6 +4,7 @@ import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
+import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Api( value = "API users pour les interactions avec l'avancement des histoires" )
 @RestController
@@ -56,7 +58,12 @@ public class ProgressionController {
             throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
         }
 
-        return progressionDao.findByPersonIdAndStoryId(personId, storyId);
+        Optional<Progression> progression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
+        if (progression.isEmpty()) {
+            throw new ProgressionNotFoundException("Aucune progression avec le personId " + personId + " et le storyId " + storyId);
+        }
+
+        return progression.get();
     }
 
     @ApiOperation( value = "Met à jour la progression d'une personne sur une histoire avec une page définie" )

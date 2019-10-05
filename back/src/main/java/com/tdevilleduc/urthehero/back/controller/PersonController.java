@@ -31,7 +31,6 @@ public class PersonController {
     @GetMapping(value="/{id}")
     public Person getPersonById(@PathVariable int id) {
         Person person = personDao.findById(id);
-
         if (person == null) {
             throw new PersonNotFoundException("L'utilisateur avec l'id "+id+" n'existe pas");
         }

@@ -31,41 +31,41 @@ public class PageController {
     @GetMapping(value = "/{pageId}")
     public Page getPageById(@PathVariable int pageId) {
 
-        Page page = pageDao.findById(pageId);
-        if (page == null) {
+        Optional<Page> page = pageDao.findById(pageId);
+        if (page.isEmpty()) {
             throw new PageNotFoundException("La page avec l'id " + pageId + " n'existe pas");
         }
 
-        Story story = page.getStory();
+        Story story = page.get().getStory();
         if (story == null) {
             throw new PageNotFoundException("La page avec l'id " + pageId + " n'est pas associée à une histoire");
         }
 
-        return page;
+        return page.get();
     }
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
     @GetMapping(value = "/all/Story/{storyId}")
     public List<Page> getAllPagesByStoryId(@PathVariable int storyId) {
 
-        Story story = storyDao.findById(storyId);
-        if (story == null) {
+        Optional<Story> story = storyDao.findById(storyId);
+        if (story.isEmpty()) {
             throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
         }
 
-        return story.getPages();
+        return story.get().getPages();
     }
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
     @GetMapping(value = "/Story/{storyId}")
     public Page getFirstPageByStoryId(@PathVariable int storyId) {
 
-        Story story = storyDao.findById(storyId);
-        if (story == null) {
+        Optional<Story> story = storyDao.findById(storyId);
+        if (story.isEmpty()) {
             throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
         }
 
-        Integer pageId = story.getFirstPageId();
+        Integer pageId = story.get().getFirstPageId();
 
         Optional<Page> page = pageDao.findById(pageId);
         if (page.isEmpty()) {

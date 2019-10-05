@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StoryDao extends JpaRepository<Story, Integer> {
 
-    Story findById(int id);
 }

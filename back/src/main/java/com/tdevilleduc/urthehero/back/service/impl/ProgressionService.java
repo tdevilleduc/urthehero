@@ -59,10 +59,12 @@ public class ProgressionService implements IProgressionService {
         }
 
         // recuperation de la progression
-        Progression progression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
-        if (progression == null) {
+        Optional<Progression> optionalProgression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
+        if (optionalProgression.isEmpty()) {
             throw new ProgressionNotFoundException("Aucune progression avec le personId " + personId + " et le storyId " + storyId);
         }
+
+        Progression progression = optionalProgression.get();
 
         // modification de la progression
         progression.setActualPageId(pageId);
