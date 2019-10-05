@@ -41,9 +41,7 @@ public class PageControllerTest {
 
     @Test
     public void test_getPageById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -56,9 +54,7 @@ public class PageControllerTest {
 
     @Test
     public void test_getFirstPageByStoryId() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/Story/2")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/Story/2"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
