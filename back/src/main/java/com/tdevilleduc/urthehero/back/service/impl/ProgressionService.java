@@ -3,7 +3,6 @@ package com.tdevilleduc.urthehero.back.service.impl;
 import com.tdevilleduc.urthehero.back.dao.PageDao;
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
-import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
@@ -26,8 +25,6 @@ public class ProgressionService implements IProgressionService {
     @Autowired
     private StoryService storyService;
 
-    @Autowired
-    private StoryDao storyDao;
     @Autowired
     private PersonDao personDao;
     @Autowired

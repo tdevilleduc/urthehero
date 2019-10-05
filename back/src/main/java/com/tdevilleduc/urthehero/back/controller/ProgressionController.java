@@ -2,7 +2,6 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
-import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
@@ -30,8 +29,6 @@ public class ProgressionController {
 
     @Autowired
     private PersonDao personDao;
-    @Autowired
-    private StoryDao storyDao;
     @Autowired
     private ProgressionDao progressionDao;
 

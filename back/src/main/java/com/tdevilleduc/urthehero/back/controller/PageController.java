@@ -1,11 +1,10 @@
 package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.dao.PageDao;
-import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
-import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,9 @@ public class PageController {
 
     @Autowired
     private PageDao pageDao;
+
     @Autowired
-    private StoryDao storyDao;
+    private StoryService storyService;
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/{pageId}")
@@ -47,29 +47,20 @@ public class PageController {
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
     @GetMapping(value = "/all/Story/{storyId}")
     public List<Page> getAllPagesByStoryId(@PathVariable int storyId) {
-
-        Optional<Story> story = storyDao.findById(storyId);
-        if (story.isEmpty()) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
-        }
-
-        return story.get().getPages();
+        Story story = storyService.findById(storyId);
+        return story.getPages();
     }
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
     @GetMapping(value = "/Story/{storyId}")
     public Page getFirstPageByStoryId(@PathVariable int storyId) {
 
-        Optional<Story> story = storyDao.findById(storyId);
-        if (story.isEmpty()) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
-        }
+        Story story = storyService.findById(storyId);
+        Integer firstPageId = story.getFirstPageId();
 
-        Integer pageId = story.get().getFirstPageId();
-
-        Optional<Page> page = pageDao.findById(pageId);
+        Optional<Page> page = pageDao.findById(firstPageId);
         if (page.isEmpty()) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'existe pas");
+            throw new PageNotFoundException("La page avec l'id " + firstPageId + " n'existe pas");
         }
 
         return page.get();

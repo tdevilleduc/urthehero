@@ -1,11 +1,13 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
+import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -26,5 +28,18 @@ public class StoryService {
 
     public boolean notExists(Integer storyId) {
         return ! exists(storyId);
+    }
+
+    public Story findById(Integer storyId) {
+        Optional<Story> story = storyDao.findById(storyId);
+        if (story.isEmpty()) {
+            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
+        }
+
+        return story.get();
+    }
+
+    public List<Story> findAll() {
+        return storyDao.findAll();
     }
 }
