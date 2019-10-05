@@ -27,8 +27,6 @@ public class PersonControllerTest {
 
     private static String uriController = "/Person";
 
-    final String BASE_URL = "http://localhost:8083/";
-
     private MockMvc mockMvc;
 
     @Autowired
@@ -36,7 +34,7 @@ public class PersonControllerTest {
 
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
