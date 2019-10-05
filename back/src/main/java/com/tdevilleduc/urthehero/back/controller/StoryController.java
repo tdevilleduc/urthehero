@@ -9,12 +9,14 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Api( value = "API Story pour les interactions avec les histoires" )
 @RestController
+@RequestMapping("/Story")
 public class StoryController {
 
     @Autowired
@@ -23,13 +25,13 @@ public class StoryController {
     private StoryDao storyDao;
 
     @ApiOperation( value = "Récupère la liste des histoires" )
-    @GetMapping(value = "/Stories")
-    public List<Story> getStories() {
+    @GetMapping(value = "/all")
+    public List<Story> getAllStories() {
         return storyDao.findAll();
     }
 
     @ApiOperation( value = "Récupère une histoire à partir de son identifiant" )
-    @GetMapping(value = "/Story/{storyId}")
+    @GetMapping(value = "/{storyId}")
     public Story getStoryById(@PathVariable int storyId) {
         Story story = storyDao.findById(storyId);
 

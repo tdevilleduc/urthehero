@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
 @Api( value = "API Page pour les interactions avec les pages" )
 @RestController
 @RequestMapping("/Page")
@@ -30,7 +28,7 @@ public class PageController {
     private StoryDao storyDao;
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
-    @GetMapping(value = "/{pageId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/{pageId}")
     public Page getPageById(@PathVariable int pageId) {
 
         Page page = pageDao.findById(pageId);
@@ -47,7 +45,7 @@ public class PageController {
     }
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
-    @GetMapping(value = "/all/Story/{storyId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/all/Story/{storyId}")
     public List<Page> getAllPagesByStoryId(@PathVariable int storyId) {
 
         Story story = storyDao.findById(storyId);
@@ -59,7 +57,7 @@ public class PageController {
     }
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
-    @GetMapping(value = "/Story/{storyId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/Story/{storyId}")
     public Page getFirstPageByStoryId(@PathVariable int storyId) {
 
         Story story = storyDao.findById(storyId);
