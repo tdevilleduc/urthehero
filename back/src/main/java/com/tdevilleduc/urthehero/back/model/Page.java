@@ -72,4 +72,15 @@ public class Page {
     public void setNextPageList(List<NextPage> nextPageList) {
         this.nextPageList = nextPageList;
     }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+                "id=" + id +
+                ", story=" + story +
+                ", text='" + text + '\'' +
+                ", image='" + image + '\'' +
+                ", nextPageList=" + nextPageList +
+                '}';
+    }
 }

@@ -78,4 +78,32 @@ public class Story {
     public List<Page> getPages() {
         return pages;
     }
+
+    @Override
+    public String toString() {
+        return "Story{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", authorId=" + authorId +
+                ", firstPageId=" + firstPageId +
+                ", currentPageId=" + currentPageId +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Story story = (Story) o;
+        return Objects.equals(id, story.id) &&
+                title.equals(story.title) &&
+                authorId.equals(story.authorId) &&
+                firstPageId.equals(story.firstPageId) &&
+                Objects.equals(currentPageId, story.currentPageId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, authorId, firstPageId, currentPageId);
+    }
 }

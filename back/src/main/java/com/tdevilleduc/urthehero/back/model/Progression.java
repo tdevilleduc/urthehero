@@ -56,5 +56,13 @@ public class Progression {
         this.actualPageId = actualPageId;
     }
 
-
+    @Override
+    public String toString() {
+        return "Progression{" +
+                "id=" + id +
+                ", storyId=" + storyId +
+                ", personId=" + personId +
+                ", actualPageId=" + actualPageId +
+                '}';
+    }
 }
