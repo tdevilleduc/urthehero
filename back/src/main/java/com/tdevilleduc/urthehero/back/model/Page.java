@@ -3,6 +3,7 @@ package com.tdevilleduc.urthehero.back.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Page {
@@ -18,6 +19,9 @@ public class Page {
     @Column(columnDefinition = "TEXT")
     private String text;
     private String image;
+
+    @Transient
+    private List<NextPage> nextPageList;
 
     public Page() {
     }
@@ -59,5 +63,13 @@ public class Page {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<NextPage> getNextPageList() {
+        return nextPageList;
+    }
+
+    public void setNextPageList(List<NextPage> nextPageList) {
+        this.nextPageList = nextPageList;
     }
 }
