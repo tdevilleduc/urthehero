@@ -1,13 +1,18 @@
 package com.tdevilleduc.urthehero.back.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Story {
 
     @Id
@@ -20,62 +25,7 @@ public class Story {
     private Integer currentPageId;
 
     @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Page> pages;
 
-    public Story() {
-    }
-
-    public Story(Integer id, String title, Integer authorId, Integer firstPageId, Page... pages) {
-        this.id = id;
-        this.title = title;
-        this.authorId = authorId;
-        this.firstPageId = firstPageId;
-        this.pages = Stream.of(pages).collect(Collectors.toList());
-        this.pages.forEach(x -> x.setStory(this));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Integer authorId) {
-        this.authorId = authorId;
-    }
-
-    public Integer getFirstPageId() {
-        return firstPageId;
-    }
-
-    public void setFirstPageId(Integer firstPageId) {
-        this.firstPageId = firstPageId;
-    }
-
-    public Integer getCurrentPageId() {
-        return currentPageId;
-    }
-
-    public void setCurrentPageId(Integer currentPageId) {
-        this.currentPageId = currentPageId;
-    }
-
-    @JsonIgnore
-    public List<Page> getPages() {
-        return pages;
-    }
 }
