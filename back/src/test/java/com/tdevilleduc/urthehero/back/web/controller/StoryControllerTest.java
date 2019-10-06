@@ -42,7 +42,6 @@ public class StoryControllerTest {
     @Test
     public void test_getStoryById() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
@@ -57,7 +56,6 @@ public class StoryControllerTest {
     @Test
     public void test_getAllStories() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
@@ -68,7 +66,6 @@ public class StoryControllerTest {
     @Test
     public void test_getStoryByStoryIdAndPersonId() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2/Person/1"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))

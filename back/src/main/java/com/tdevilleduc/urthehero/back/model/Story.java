@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 public class Story {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private Integer authorId;
@@ -25,13 +26,10 @@ public class Story {
     public Story() {
     }
 
-    public Story(Integer id, String title, Integer authorId, Integer firstPageId, Page... pages) {
-        this.id = id;
+    public Story(String title, Integer authorId, Integer firstPageId) {
         this.title = title;
         this.authorId = authorId;
         this.firstPageId = firstPageId;
-        this.pages = Stream.of(pages).collect(Collectors.toList());
-        this.pages.forEach(x -> x.setStory(this));
     }
 
     public Integer getId() {

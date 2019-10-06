@@ -41,7 +41,6 @@ public class PersonControllerTest {
     @Test
     public void testGetAllPersons() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
@@ -51,7 +50,6 @@ public class PersonControllerTest {
     @Test
     public void testGetPersonById() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))

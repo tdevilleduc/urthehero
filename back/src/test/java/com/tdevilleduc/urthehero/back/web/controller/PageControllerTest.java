@@ -41,21 +41,20 @@ public class PageControllerTest {
 
     @Test
     public void test_getPageById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andDo(MockMvcResultHandlers.print())
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/1"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.text", Matchers.is("Dès")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.text", Matchers.is("Ulysse")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.image", Matchers.is("image3")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nextPageList", hasSize(3)))
         ;
     }
 
     @Test
     public void test_getFirstPageByStoryId() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/Story/2"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
@@ -68,11 +67,10 @@ public class PageControllerTest {
     @Test
     public void test_getAllPagesByStoryId() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/Story/1"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(4)))
         ;
     }
 
