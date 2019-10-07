@@ -28,4 +28,7 @@ public class Page {
     private String text;
     private String image;
 
+    @Transient
+    private List<NextPage> nextPageList;
+
 }
