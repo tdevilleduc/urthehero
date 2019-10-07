@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface NextPageDao extends JpaRepository<NextPage, Integer> {
 
-    public List<NextPage> findByPageId(Integer pageId);
+    List<NextPage> findByPageId(Integer pageId);
 }

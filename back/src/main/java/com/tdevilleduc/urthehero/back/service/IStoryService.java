@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IStoryService {
 
-    public boolean exists(Integer storyId);
-    public boolean notExists(Integer storyId);
-    public Story findById(Integer storyId);
-    public List<Story> findAll();
+    boolean exists(Integer storyId);
+    boolean notExists(Integer storyId);
+    Story findById(Integer storyId);
+    List<Story> findAll();
 }

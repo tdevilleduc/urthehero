@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface INextPageService {
 
-    public List<NextPage> findByPageId(Integer pageId);
+    List<NextPage> findByPageId(Integer pageId);
 
 }

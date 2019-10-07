@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.model;
 
-import com.tdevilleduc.urthehero.back.model.Story;
 import org.junit.Assert;
 import org.junit.Test;
 
