@@ -16,7 +16,7 @@ import java.util.List;
 public class Story {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private Integer authorId;

@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.back.web.controller;
+package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -41,7 +40,6 @@ public class PersonControllerTest {
     @Test
     public void testGetAllPersons() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
@@ -51,7 +49,6 @@ public class PersonControllerTest {
     @Test
     public void testGetPersonById() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))

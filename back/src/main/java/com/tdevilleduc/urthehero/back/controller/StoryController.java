@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.PageDao;
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
@@ -8,7 +7,6 @@ import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
-import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +25,6 @@ import java.util.Optional;
 @RequestMapping("/Story")
 public class StoryController {
 
-    @Autowired
-    private PageDao pageDao;
     @Autowired
     private PersonDao personDao;
     @Autowired
