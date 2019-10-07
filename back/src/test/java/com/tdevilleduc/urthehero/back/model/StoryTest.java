@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.back.dao;
+package com.tdevilleduc.urthehero.back.model;
 
 import com.tdevilleduc.urthehero.back.model.Story;
 import org.junit.Assert;
