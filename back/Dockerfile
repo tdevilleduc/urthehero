@@ -18,4 +18,4 @@ RUN touch /app.jar
 
 EXPOSE ${EXPOSED_PORT}
 
-ENTRYPOINT ["java", "-XX:MaxRAMFraction=2", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
