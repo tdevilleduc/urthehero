@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.back.web.controller;
+package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
@@ -23,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class PageControllerTest {
+public class StoryControllerTest {
 
-    private static String uriController = "/Page";
+    private static String uriController = "/Story";
 
     private MockMvc mockMvc;
 
@@ -40,37 +40,40 @@ public class PageControllerTest {
     }
 
     @Test
-    public void test_getPageById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/1"))
+    public void test_getStoryById() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.text", Matchers.is("Ulysse")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.image", Matchers.is("image3")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.nextPageList", hasSize(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Voyage au bout de la nuit")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.authorId", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstPageId", Matchers.is(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageId", Matchers.isEmptyOrNullString()))
         ;
     }
 
     @Test
-    public void test_getFirstPageByStoryId() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/Story/2"))
+    public void test_getAllStories() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.text", Matchers.is("Voyage au bout de la nuit est le premier roman de Céline, publié en 1932. Ce livre manqua de deux voix le prix Goncourt mais obtient le prix Renaudot1. Il est traduit en 37 langues2.")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.image", Matchers.is("image3")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
         ;
     }
 
     @Test
-    public void test_getAllPagesByStoryId() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/Story/1"))
+    public void test_getStoryByStoryIdAndPersonId() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2/Person/1"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Voyage au bout de la nuit")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.authorId", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstPageId", Matchers.is(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageId", Matchers.is(3)))
         ;
     }
 

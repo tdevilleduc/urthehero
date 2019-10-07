@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.back.web.controller;
+package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
