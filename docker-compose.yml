@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  back:
+    image: registry.gitlab.com/tdevilleduc/urthehero/urthehero/back:latest
+    container_name: urthehero-back
+    entrypoint: ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
+    ports:
+      - 8083:8083
