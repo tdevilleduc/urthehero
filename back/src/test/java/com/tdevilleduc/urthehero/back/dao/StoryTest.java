@@ -26,6 +26,7 @@ public class StoryTest {
         secondStory.setId(storyId);
         secondStory.setTitle(storyTitle);
         secondStory.setAuthorId(storyAuthorId);
+        secondStory.setFirstPageId(storyFirstPageId);
         secondStory.setPages(Collections.EMPTY_LIST);
 
         Assert.assertEquals(secondStory.toString(), story.toString());
