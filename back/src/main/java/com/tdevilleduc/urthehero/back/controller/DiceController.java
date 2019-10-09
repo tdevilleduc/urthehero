@@ -35,10 +35,11 @@ public class DiceController {
         return diceService.roll(dice);
     }
 
-    @ApiOperation( value = "Effectue un lancer de dés" )
+    @ApiOperation( value = "Effectue un lancer de dés avec plusieurs dés en même temps" )
     @PostMapping(value = "/roll/{dice}/{count}")
     public List<DiceValue> roll(@PathVariable Dice dice, @PathVariable Integer count) {
         Assert.assertNotNull(dice);
+        Assert.assertNotNull(count);
         List<DiceValue> diceValues = new ArrayList<>();
         for (int i = 1; i < count; i++) {
             diceValues.add(diceService.roll(dice));
