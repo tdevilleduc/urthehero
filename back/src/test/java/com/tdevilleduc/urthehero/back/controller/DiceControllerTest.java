@@ -65,6 +65,10 @@ public class DiceControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(numberOfRolls)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].value", Matchers.isA(Integer.class)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].value", Matchers.greaterThan(Integer.valueOf(0))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].value", Matchers.lessThanOrEqualTo(Integer.valueOf(20))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].dice", Matchers.is(diceString)))
         ;
     }
 }
