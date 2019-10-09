@@ -3,10 +3,12 @@ package com.tdevilleduc.urthehero.back.controller;
 import com.tdevilleduc.urthehero.back.model.Dice;
 import com.tdevilleduc.urthehero.back.model.DiceValue;
 import com.tdevilleduc.urthehero.back.model.Page;
+import com.tdevilleduc.urthehero.back.service.IDiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.junit.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +21,14 @@ import java.util.Random;
 @RequestMapping("/Dice")
 public class DiceController {
 
-    @ApiOperation( value = "Effectue un lancé de dés" )
+    @Autowired
+    private IDiceService diceService;
+
+    @ApiOperation( value = "Effectue un lancer de dés" )
     @PostMapping(value = "/roll/{dice}")
     public DiceValue roll(@PathVariable Dice dice) {
         Assert.assertNotNull(dice);
-        return new DiceValue(generatingRandomIntegerBounded(dice.getValue()), dice);
+        return diceService.roll(dice);
     }
 
-    private Integer generatingRandomIntegerBounded(Integer rightLimit) {
-        return new RandomDataGenerator().nextInt(1, rightLimit);
-    }
 }
