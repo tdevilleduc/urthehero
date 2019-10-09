@@ -1,27 +1,31 @@
 package com.tdevilleduc.urthehero.back.service;
 
-import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Position;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.impl.PageService;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = BackApplication.class)
 public class PageServiceTest {
 
-    @Autowired
     private PageService pageService;
+
+    @Before
+    public void onSetupClass() {
+        pageService = new PageService();
+    }
+
+    @After
+    public void onTeardownClass() {
+        pageService = null;
+    }
 
     @Test
     public void test_findByPageId_thenCorrect() {
