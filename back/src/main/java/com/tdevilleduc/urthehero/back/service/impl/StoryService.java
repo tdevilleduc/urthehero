@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -44,6 +45,9 @@ public class StoryService implements IStoryService {
     }
 
     public List<Story> findAll() {
-        return storyDao.findAll();
+        return storyDao.findAll().stream().map(story -> {
+            story.setNumberOfPages(story.getPages().size());
+            return story;
+        }).collect(Collectors.toList());
     }
 }
