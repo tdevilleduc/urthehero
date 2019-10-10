@@ -2,16 +2,15 @@ package com.tdevilleduc.urthehero.back.service;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.model.Story;
-import com.tdevilleduc.urthehero.back.service.impl.PageService;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 public class StoryServiceTest {
 
@@ -22,14 +21,14 @@ public class StoryServiceTest {
     public void test_exists_thenCorrect() {
         Integer storyId = 1;
         boolean exists = storyService.exists(storyId);
-        Assert.assertTrue(exists);
+        Assertions.assertTrue(exists);
     }
 
     @Test
     public void test_notExists_thenCorrect() {
         Integer storyId = 41;
         boolean notExists = storyService.notExists(storyId);
-        Assert.assertTrue(notExists);
+        Assertions.assertTrue(notExists);
     }
 
     @Test
@@ -37,14 +36,14 @@ public class StoryServiceTest {
         Integer storyId = 1;
         Story story = storyService.findById(storyId);
 
-        Assert.assertNotNull(story);
-        Assert.assertEquals(Integer.valueOf(1), story.getId());
-        Assert.assertEquals("Ulysse", story.getTitle());
-        Assert.assertEquals(Integer.valueOf(1), story.getAuthorId());
-        Assert.assertEquals(Integer.valueOf(1), story.getFirstPageId());
-        Assert.assertEquals(Integer.valueOf(4), story.getNumberOfPages());
-        Assert.assertEquals(Integer.valueOf(3), story.getNumberOfReaders());
-        Assert.assertEquals(4, story.getPages().size());
+        Assertions.assertNotNull(story);
+        Assertions.assertEquals(Integer.valueOf(1), story.getId());
+        Assertions.assertEquals("Ulysse", story.getTitle());
+        Assertions.assertEquals(Integer.valueOf(1), story.getAuthorId());
+        Assertions.assertEquals(Integer.valueOf(1), story.getFirstPageId());
+        Assertions.assertEquals(Integer.valueOf(4), story.getNumberOfPages());
+        Assertions.assertEquals(Integer.valueOf(3), story.getNumberOfReaders());
+        Assertions.assertEquals(4, story.getPages().size());
     }
 
 }

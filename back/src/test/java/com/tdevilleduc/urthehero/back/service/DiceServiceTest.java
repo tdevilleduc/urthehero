@@ -3,19 +3,21 @@ package com.tdevilleduc.urthehero.back.service;
 import com.tdevilleduc.urthehero.back.model.Dice;
 import com.tdevilleduc.urthehero.back.model.DiceValue;
 import com.tdevilleduc.urthehero.back.service.impl.DiceService;
-import com.tdevilleduc.urthehero.back.service.impl.NextPageService;
-import org.junit.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DiceServiceTest {
 
     private DiceService diceService;
 
-    @Before
+    @BeforeEach
     public void onSetupClass() {
         diceService = new DiceService();
     }
 
-    @After
+    @AfterEach
     public void onTeardownClass() {
         diceService = null;
     }
@@ -37,10 +39,10 @@ public class DiceServiceTest {
 
     private void assertRollDice(Dice dice) {
         DiceValue diceValue = diceService.roll(dice);
-        Assert.assertNotNull(diceValue);
-        Assert.assertEquals(dice, diceValue.getDice());
-        Assert.assertTrue(diceValue.getValue() <= dice.getValue());
-        Assert.assertTrue(diceValue.getValue() > 0);
+        Assertions.assertNotNull(diceValue);
+        Assertions.assertEquals(dice, diceValue.getDice());
+        Assertions.assertTrue(diceValue.getValue() <= dice.getValue());
+        Assertions.assertTrue(diceValue.getValue() > 0);
     }
 
 }

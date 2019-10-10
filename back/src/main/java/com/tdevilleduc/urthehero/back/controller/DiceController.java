@@ -5,7 +5,7 @@ import com.tdevilleduc.urthehero.back.model.DiceValue;
 import com.tdevilleduc.urthehero.back.service.IDiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,15 +26,15 @@ public class DiceController {
     @ApiOperation( value = "Effectue un lancer de dés" )
     @GetMapping(value = "/roll/{dice}")
     public DiceValue roll(@PathVariable Dice dice) {
-        Assert.assertNotNull(dice);
+        Assertions.assertNotNull(dice);
         return diceService.roll(dice);
     }
 
     @ApiOperation( value = "Effectue un lancer de dés avec plusieurs dés en même temps" )
     @GetMapping(value = "/roll/{dice}/{count}")
     public List<DiceValue> roll(@PathVariable Dice dice, @PathVariable Integer count) {
-        Assert.assertNotNull(dice);
-        Assert.assertNotNull(count);
+        Assertions.assertNotNull(dice);
+        Assertions.assertNotNull(count);
         List<DiceValue> diceValues = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             diceValues.add(diceService.roll(dice));
