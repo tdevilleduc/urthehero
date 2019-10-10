@@ -43,7 +43,8 @@ public class PersonControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+        ;
     }
 
     @Test
@@ -54,8 +55,8 @@ public class PersonControllerTest {
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.login", Matchers.is("mgianesini")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.nom", Matchers.is("Marion")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.prenom", Matchers.is("Gianesini")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age", Matchers.is(31)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.displayName", Matchers.is("Marion Gianesini")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is("marion@gmail.com")))
+        ;
     }
 }
