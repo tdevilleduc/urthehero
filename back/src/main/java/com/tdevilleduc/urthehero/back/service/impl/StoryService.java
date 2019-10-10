@@ -32,12 +32,15 @@ public class StoryService implements IStoryService {
     }
 
     public Story findById(Integer storyId) {
-        Optional<Story> story = storyDao.findById(storyId);
-        if (story.isEmpty()) {
+        Optional<Story> optionalStory = storyDao.findById(storyId);
+        if (optionalStory.isEmpty()) {
             throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
         }
 
-        return story.get();
+        Story story = optionalStory.get();
+        story.setNumberOfPages(story.getPages().size());
+
+        return story;
     }
 
     public List<Story> findAll() {

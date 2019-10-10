@@ -13,12 +13,12 @@ public class StoryTest {
         String storyTitle = "test de titre";
         Integer storyAuthorId = 23;
         Integer storyFirstPageId = 98;
-        Story story = new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId, null, Collections.EMPTY_LIST);
+        Story story = new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId);
 
         Assert.assertEquals(story.getTitle(), storyTitle);
         Assert.assertEquals(story.getAuthorId(), storyAuthorId);
         Assert.assertEquals(story.getFirstPageId(), storyFirstPageId);
-        Assert.assertNull(story.getCurrentPageId());
+        Assert.assertEquals(Integer.valueOf(0), story.getCurrentPageId());
         Assert.assertTrue(story.getPages().isEmpty());
 
         Story secondStory = new Story();
