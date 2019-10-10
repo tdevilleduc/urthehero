@@ -30,6 +30,8 @@ public class Story {
     private Integer currentPageId = 0;
     @Transient
     private Integer numberOfPages = 0;
+    @Transient
+    private Integer numberOfReaders = 0;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore

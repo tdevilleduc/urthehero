@@ -43,6 +43,7 @@ public class StoryServiceTest {
         Assert.assertEquals(Integer.valueOf(1), story.getAuthorId());
         Assert.assertEquals(Integer.valueOf(1), story.getFirstPageId());
         Assert.assertEquals(Integer.valueOf(4), story.getNumberOfPages());
+        Assert.assertEquals(Integer.valueOf(3), story.getNumberOfReaders());
         Assert.assertEquals(4, story.getPages().size());
     }
 

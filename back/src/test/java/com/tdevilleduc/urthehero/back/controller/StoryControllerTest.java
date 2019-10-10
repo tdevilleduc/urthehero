@@ -49,6 +49,8 @@ public class StoryControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authorId", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstPageId", Matchers.is(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageId", Matchers.is(0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfPages", Matchers.is(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfReaders", Matchers.is(2)))
         ;
     }
 
@@ -73,6 +75,8 @@ public class StoryControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authorId", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstPageId", Matchers.is(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.currentPageId", Matchers.is(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfPages", Matchers.is(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfReaders", Matchers.is(2)))
         ;
     }
 

@@ -1,7 +1,9 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
+import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
+import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,8 @@ public class StoryService implements IStoryService {
 
     @Autowired
     private StoryDao storyDao;
+    @Autowired
+    private ProgressionDao progressionDao;
 
     public boolean exists(Integer storyId) {
         Optional<Story> story = storyDao.findById(storyId);
@@ -41,12 +45,21 @@ public class StoryService implements IStoryService {
         Story story = optionalStory.get();
         story.setNumberOfPages(story.getPages().size());
 
+        // TODO improve: faire une requete SQL pour obtenir seulement le nombre
+        List<Progression> progressionList = progressionDao.findByStoryId(storyId);
+        story.setNumberOfReaders(progressionList.size());
+
         return story;
     }
 
     public List<Story> findAll() {
         return storyDao.findAll().stream().map(story -> {
             story.setNumberOfPages(story.getPages().size());
+            return story;
+        }).map(story -> {
+            // TODO improve: faire une requete SQL pour obtenir seulement le nombre
+            List<Progression> progressionList = progressionDao.findByStoryId(story.getId());
+            story.setNumberOfReaders(progressionList.size());
             return story;
         }).collect(Collectors.toList());
     }
