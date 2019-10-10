@@ -29,6 +29,7 @@
         <h2.version>1.4.199</h2.version>
         <swagger.version>2.9.2</swagger.version>
         <jackson.version>2.10.0</jackson.version>
+        <junit.version></junit.version>
 
         <docker.plugin.version>1.2.0</docker.plugin.version>
         <docker.image.prefix>urthehero</docker.image.prefix>
@@ -42,11 +43,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
         </dependency>
     </dependencies>
 
