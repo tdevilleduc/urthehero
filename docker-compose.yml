@@ -1,15 +1,25 @@
 version: '3.7'
 
 services:
+
+  mysql:
+    container_name: urthehero-mysql
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: tdevilleduc
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    restart: always
+
   back:
+    container_name: urthehero-back
+    restart: always
     build:
       context: ./back
       dockerfile: Dockerfile
-    image: urthehero-back
     ports:
-      - 8083:8083
-    networks:
-      - network1
- 
-networks:
-  network1:
+      - "8083:8083"
+    depends_on:
+      - mysql
