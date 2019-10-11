@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -22,9 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class PageControllerTest {
+public class DiceControllerTest {
 
-    private static String uriController = "/Page";
+
+    private static String uriController = "/Dice";
 
     private MockMvc mockMvc;
 
@@ -39,38 +41,32 @@ public class PageControllerTest {
     }
 
     @Test
-    public void test_getPageById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/1"))
+    public void test_rollOne_thenSuccess() throws Exception {
+        String diceString = "DE_20";
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.text", Matchers.is("Ulysse")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.image", Matchers.is("image3")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.nextPageList", hasSize(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.value", Matchers.isA(Integer.class)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.value", Matchers.greaterThan(Integer.valueOf(0))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.value", Matchers.lessThanOrEqualTo(Integer.valueOf(20))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.dice", Matchers.is(diceString)))
         ;
     }
 
     @Test
-    public void test_getFirstPageByStoryId() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/Story/2"))
+    public void test_rollMulti_thenSuccess() throws Exception {
+        String diceString = "DE_20";
+        Integer numberOfRolls = 4;
+        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString + "/" + numberOfRolls))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.text", Matchers.is("Voyage au bout de la nuit est le premier roman de Céline, publié en 1932. Ce livre manqua de deux voix le prix Goncourt mais obtient le prix Renaudot1. Il est traduit en 37 langues2.")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.image", Matchers.is("image3")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(numberOfRolls)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].value", Matchers.isA(Integer.class)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].value", Matchers.greaterThan(Integer.valueOf(0))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].value", Matchers.lessThanOrEqualTo(Integer.valueOf(20))))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].dice", Matchers.is(diceString)))
         ;
     }
-
-    @Test
-    public void test_getAllPagesByStoryId() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/Story/1"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(4)))
-        ;
-    }
-
 }

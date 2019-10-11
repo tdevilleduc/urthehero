@@ -1,7 +1,7 @@
--- personId, age, login, nom, prenom
-INSERT INTO person VALUES(1, 34, 'tdevilleduc', 'Thomas', 'Deville-Duc');
-INSERT INTO person VALUES(2, 31, 'mgianesini', 'Marion', 'Gianesini');
-INSERT INTO person VALUES(3, 27, 'ndanet', 'Nicolas', 'Danet');
+-- personId, displayName, login, email
+INSERT INTO person VALUES(1, 'Thomas Deville-Duc', 'thomas@gmail.com', 'tdevilleduc', 'password');
+INSERT INTO person VALUES(2, 'Marion Gianesini', 'marion@gmail.com', 'mgianesini', 'password');
+INSERT INTO person VALUES(3, 'Nicolas Danet', 'nicolas@gmail.com', 'ndanet', 'password');
 -- storyId, authorId, firstPageId, title
 INSERT INTO story VALUES(1, 1, 1, 'Ulysse');
 INSERT INTO story VALUES(2, 2, 4, 'Voyage au bout de la nuit');

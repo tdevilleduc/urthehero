@@ -1,14 +1,15 @@
 package com.tdevilleduc.urthehero.back.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -16,11 +17,17 @@ import javax.persistence.Id;
 public class Person {
 
     @Id
+    @NonNull
     @GeneratedValue
     private int id;
+    @NonNull
     private String login;
-    private String nom;
-    private String prenom;
-    private int age;
+    @NonNull
+    private String displayName;
+    @NonNull
+    private String email;
+
+    @JsonIgnore
+    private String password;
 
 }

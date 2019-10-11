@@ -1,11 +1,8 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.PersonDao;
-import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
-import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
-import com.tdevilleduc.urthehero.back.model.Person;
-import com.tdevilleduc.urthehero.back.model.Progression;
+import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Api(value = "Story", tags = { "Story Controller" } )
@@ -26,12 +22,9 @@ import java.util.Optional;
 public class StoryController {
 
     @Autowired
-    private PersonDao personDao;
-    @Autowired
-    private ProgressionDao progressionDao;
-
-    @Autowired
     private IStoryService storyService;
+    @Autowired
+    private IPersonService personService;
 
     @ApiOperation( value = "Récupère la liste des histoires" )
     @GetMapping(value = "/all")
@@ -45,25 +38,11 @@ public class StoryController {
         return storyService.findById(storyId);
     }
 
-
-    @ApiOperation( value = "Récupère une histoire à partir de son identifiant storyId, avec la progression de la personne personId" )
-    @GetMapping(value = "/{storyId}/Person/{personId}")
-    public Story getStoryByStoryIdAndPersonId(@PathVariable int storyId, @PathVariable Integer personId) {
-        Story story = storyService.findById(storyId);
-
-        Optional<Person> person = personDao.findById(personId);
-        if (person.isEmpty()) {
-            throw new PersonNotFoundException("L'utilisateur avec l'id "+ personId +" n'existe pas");
+    @GetMapping(value = "/all/Person/{personId}")
+    public List<Story> getStoryByPersonId(@PathVariable Integer personId) {
+        if (personService.notExists(personId)) {
+            throw new StoryNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
         }
-
-        Optional<Progression> progression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
-        if (progression.isPresent()) {
-            story.setCurrentPageId(progression.get().getActualPageId());
-        } else {
-            story.setCurrentPageId(story.getFirstPageId());
-        }
-
-        return story;
+        return storyService.findByPersonId(personId);
     }
-
 }

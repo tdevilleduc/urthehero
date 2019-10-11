@@ -1,7 +1,7 @@
 package com.tdevilleduc.urthehero.back.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
@@ -13,13 +13,13 @@ public class StoryTest {
         String storyTitle = "test de titre";
         Integer storyAuthorId = 23;
         Integer storyFirstPageId = 98;
-        Story story = new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId, null, Collections.EMPTY_LIST);
+        Story story = new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId);
 
-        Assert.assertEquals(story.getTitle(), storyTitle);
-        Assert.assertEquals(story.getAuthorId(), storyAuthorId);
-        Assert.assertEquals(story.getFirstPageId(), storyFirstPageId);
-        Assert.assertNull(story.getCurrentPageId());
-        Assert.assertTrue(story.getPages().isEmpty());
+        Assertions.assertEquals(story.getTitle(), storyTitle);
+        Assertions.assertEquals(story.getAuthorId(), storyAuthorId);
+        Assertions.assertEquals(story.getFirstPageId(), storyFirstPageId);
+        Assertions.assertEquals(Integer.valueOf(0), story.getCurrentPageId());
+        Assertions.assertTrue(story.getPages().isEmpty());
 
         Story secondStory = new Story();
         secondStory.setId(storyId);
@@ -28,7 +28,7 @@ public class StoryTest {
         secondStory.setFirstPageId(storyFirstPageId);
         secondStory.setPages(Collections.EMPTY_LIST);
 
-        Assert.assertEquals(secondStory.toString(), story.toString());
-        Assert.assertEquals(secondStory, story);
+        Assertions.assertEquals(secondStory.toString(), story.toString());
+        Assertions.assertEquals(secondStory, story);
     }
 }

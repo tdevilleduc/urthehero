@@ -10,4 +10,5 @@ public interface IStoryService {
     boolean notExists(Integer storyId);
     Story findById(Integer storyId);
     List<Story> findAll();
+    List<Story> findByPersonId(Integer personId);
 }

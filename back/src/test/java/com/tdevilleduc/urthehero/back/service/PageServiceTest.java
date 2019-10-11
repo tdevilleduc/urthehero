@@ -7,16 +7,16 @@ import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Position;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.impl.PageService;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 public class PageServiceTest {
 
@@ -27,50 +27,52 @@ public class PageServiceTest {
     public void test_findByPageId_thenCorrect() {
         Integer pageId = Integer.valueOf(1);
         Page page = pageService.findById(pageId);
-        Assert.assertNotNull(page);
-        Assert.assertEquals(pageId, page.getId());
-        Assert.assertEquals("image3", page.getImage());
-        Assert.assertEquals("Ulysse", page.getText());
+        Assertions.assertNotNull(page);
+        Assertions.assertEquals(pageId, page.getId());
+        Assertions.assertEquals("image3", page.getImage());
+        Assertions.assertEquals("Ulysse", page.getText());
 
         Story story = page.getStory();
-        Assert.assertNotNull(story);
-        Assert.assertEquals(Integer.valueOf(1), story.getId());
+        Assertions.assertNotNull(story);
+        Assertions.assertEquals(Integer.valueOf(1), story.getId());
 
         List<NextPage> nextPageList = page.getNextPageList();
-        Assert.assertNotNull(nextPageList);
-        Assert.assertFalse(nextPageList.isEmpty());
-        Assert.assertEquals(3, nextPageList.size());
+        Assertions.assertNotNull(nextPageList);
+        Assertions.assertFalse(nextPageList.isEmpty());
+        Assertions.assertEquals(3, nextPageList.size());
 
         NextPage nextPage1 = nextPageList.get(0);
-        Assert.assertNotNull(nextPage1);
-        Assert.assertEquals(Integer.valueOf(1), nextPage1.getId());
-        Assert.assertEquals(Integer.valueOf(2), nextPage1.getDestinationPageId());
-        Assert.assertEquals(Integer.valueOf(1), nextPage1.getPageId());
-        Assert.assertEquals("gauche", nextPage1.getText());
-        Assert.assertEquals(Position.LEFT, nextPage1.getPosition());
+        Assertions.assertNotNull(nextPage1);
+        Assertions.assertEquals(Integer.valueOf(1), nextPage1.getId());
+        Assertions.assertEquals(Integer.valueOf(2), nextPage1.getDestinationPageId());
+        Assertions.assertEquals(Integer.valueOf(1), nextPage1.getPageId());
+        Assertions.assertEquals("gauche", nextPage1.getText());
+        Assertions.assertEquals(Position.LEFT, nextPage1.getPosition());
 
         NextPage nextPage2 = nextPageList.get(1);
-        Assert.assertNotNull(nextPage2);
-        Assert.assertEquals(Integer.valueOf(2), nextPage2.getId());
-        Assert.assertEquals(Integer.valueOf(3), nextPage2.getDestinationPageId());
-        Assert.assertEquals(Integer.valueOf(1), nextPage2.getPageId());
-        Assert.assertEquals("droite", nextPage2.getText());
-        Assert.assertEquals(Position.RIGHT, nextPage2.getPosition());
+        Assertions.assertNotNull(nextPage2);
+        Assertions.assertEquals(Integer.valueOf(2), nextPage2.getId());
+        Assertions.assertEquals(Integer.valueOf(3), nextPage2.getDestinationPageId());
+        Assertions.assertEquals(Integer.valueOf(1), nextPage2.getPageId());
+        Assertions.assertEquals("droite", nextPage2.getText());
+        Assertions.assertEquals(Position.RIGHT, nextPage2.getPosition());
 
         NextPage nextPage3 = nextPageList.get(2);
-        Assert.assertNotNull(nextPage3);
-        Assert.assertEquals(Integer.valueOf(3), nextPage3.getId());
-        Assert.assertEquals(Integer.valueOf(8), nextPage3.getDestinationPageId());
-        Assert.assertEquals(Integer.valueOf(1), nextPage3.getPageId());
-        Assert.assertEquals("centre", nextPage3.getText());
-        Assert.assertEquals(Position.CENTER, nextPage3.getPosition());
+        Assertions.assertNotNull(nextPage3);
+        Assertions.assertEquals(Integer.valueOf(3), nextPage3.getId());
+        Assertions.assertEquals(Integer.valueOf(8), nextPage3.getDestinationPageId());
+        Assertions.assertEquals(Integer.valueOf(1), nextPage3.getPageId());
+        Assertions.assertEquals("centre", nextPage3.getText());
+        Assertions.assertEquals(Position.CENTER, nextPage3.getPosition());
 
     }
 
-    @Test(expected = PageNotFoundException.class)
+    @Test
     public void test_findByPageId_thenNotFound() {
         Integer pageId = Integer.valueOf(13);
-        pageService.findById(pageId);
+        Assertions.assertThrows(PageNotFoundException.class, () -> {
+            pageService.findById(pageId);
+        });
     }
 
 }

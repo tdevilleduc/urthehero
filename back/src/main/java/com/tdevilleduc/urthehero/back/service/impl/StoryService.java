@@ -1,7 +1,9 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
+import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
+import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -17,6 +20,8 @@ public class StoryService implements IStoryService {
 
     @Autowired
     private StoryDao storyDao;
+    @Autowired
+    private ProgressionDao progressionDao;
 
     public boolean exists(Integer storyId) {
         Optional<Story> story = storyDao.findById(storyId);
@@ -32,15 +37,53 @@ public class StoryService implements IStoryService {
     }
 
     public Story findById(Integer storyId) {
-        Optional<Story> story = storyDao.findById(storyId);
-        if (story.isEmpty()) {
+        Optional<Story> optionalStory = storyDao.findById(storyId);
+        if (optionalStory.isEmpty()) {
             throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
         }
 
-        return story.get();
+        Story story = optionalStory.get();
+        story = fillStoryWithNumberOfPages(story);
+        story = fillStoryWithNumberOfReaders(story);
+
+        return story;
     }
 
     public List<Story> findAll() {
-        return storyDao.findAll();
+        return storyDao.findAll().stream()
+                .map(this::fillStoryWithNumberOfPages)
+                .map(this::fillStoryWithNumberOfReaders)
+                .collect(Collectors.toList());
+    }
+
+    public List<Story> findByPersonId(Integer personId) {
+        List<Progression> progressionList = progressionDao.findByPersonId(personId);
+        return progressionList.stream()
+                .map(this::getStoryFromProgression)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(this::fillStoryWithNumberOfPages)
+                .map(this::fillStoryWithNumberOfReaders)
+                .collect(Collectors.toList());
+    }
+
+    private Optional<Story> getStoryFromProgression(Progression progression) {
+        Optional<Story> optionalStory = storyDao.findById(progression.getStoryId());
+        optionalStory.ifPresent(story -> {
+            story.setCurrentPageId(progression.getActualPageId());
+        });
+        return optionalStory;
+    }
+
+    private Story fillStoryWithNumberOfReaders(Story story) {
+        // TODO improve: faire une requete SQL pour obtenir seulement le nombre
+        List<Progression> progressionList = progressionDao.findByStoryId(story.getId());
+        story.setNumberOfReaders(progressionList.size());
+        return story;
+    }
+
+    private Story fillStoryWithNumberOfPages(Story story) {
+        story.setNumberOfPages(story.getPages().size());
+        return story;
     }
 }
