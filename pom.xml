@@ -12,6 +12,7 @@
 
     <modules>
         <module>back</module>
+        <module>config-server</module>
     </modules>
 
     <parent>
