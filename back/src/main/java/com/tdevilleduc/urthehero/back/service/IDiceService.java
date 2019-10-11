@@ -10,6 +10,6 @@ public interface IDiceService {
      * @param dice
      * @return
      */
-    public DiceValue roll(Dice dice);
+    DiceValue roll(Dice dice);
 
 }

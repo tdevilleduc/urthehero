@@ -43,24 +43,47 @@ public class StoryService implements IStoryService {
         }
 
         Story story = optionalStory.get();
-        story.setNumberOfPages(story.getPages().size());
-
-        // TODO improve: faire une requete SQL pour obtenir seulement le nombre
-        List<Progression> progressionList = progressionDao.findByStoryId(storyId);
-        story.setNumberOfReaders(progressionList.size());
+        story = fillStoryWithNumberOfPages(story);
+        story = fillStoryWithNumberOfReaders(story);
 
         return story;
     }
 
     public List<Story> findAll() {
-        return storyDao.findAll().stream().map(story -> {
-            story.setNumberOfPages(story.getPages().size());
-            return story;
-        }).map(story -> {
-            // TODO improve: faire une requete SQL pour obtenir seulement le nombre
-            List<Progression> progressionList = progressionDao.findByStoryId(story.getId());
-            story.setNumberOfReaders(progressionList.size());
-            return story;
-        }).collect(Collectors.toList());
+        return storyDao.findAll().stream()
+                .map(this::fillStoryWithNumberOfPages)
+                .map(this::fillStoryWithNumberOfReaders)
+                .collect(Collectors.toList());
+    }
+
+    public List<Story> findByPersonId(Integer personId) {
+        List<Progression> progressionList = progressionDao.findByPersonId(personId);
+        return progressionList.stream()
+                .map(this::getStoryFromProgression)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(this::fillStoryWithNumberOfPages)
+                .map(this::fillStoryWithNumberOfReaders)
+                .collect(Collectors.toList());
+    }
+
+    private Optional<Story> getStoryFromProgression(Progression progression) {
+        Optional<Story> optionalStory = storyDao.findById(progression.getStoryId());
+        optionalStory.ifPresent(story -> {
+            story.setCurrentPageId(progression.getActualPageId());
+        });
+        return optionalStory;
+    }
+
+    private Story fillStoryWithNumberOfReaders(Story story) {
+        // TODO improve: faire une requete SQL pour obtenir seulement le nombre
+        List<Progression> progressionList = progressionDao.findByStoryId(story.getId());
+        story.setNumberOfReaders(progressionList.size());
+        return story;
+    }
+
+    private Story fillStoryWithNumberOfPages(Story story) {
+        story.setNumberOfPages(story.getPages().size());
+        return story;
     }
 }
