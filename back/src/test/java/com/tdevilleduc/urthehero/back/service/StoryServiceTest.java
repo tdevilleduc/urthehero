@@ -41,8 +41,8 @@ public class StoryServiceTest {
         Assertions.assertEquals("Ulysse", story.getTitle());
         Assertions.assertEquals(Integer.valueOf(1), story.getAuthorId());
         Assertions.assertEquals(Integer.valueOf(1), story.getFirstPageId());
-        Assertions.assertEquals(Integer.valueOf(4), story.getNumberOfPages());
-        Assertions.assertEquals(Integer.valueOf(3), story.getNumberOfReaders());
+        Assertions.assertEquals(Long.valueOf(4), story.getNumberOfPages());
+        Assertions.assertEquals(Long.valueOf(3), story.getNumberOfReaders());
         Assertions.assertEquals(4, story.getPages().size());
     }
 
