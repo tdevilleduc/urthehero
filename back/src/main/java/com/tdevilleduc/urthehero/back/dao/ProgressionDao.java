@@ -14,7 +14,9 @@ public interface ProgressionDao extends JpaRepository<Progression, Integer> {
     Optional<Progression> findByPersonIdAndStoryId(Integer personId, Integer storyId);
     List<Progression> findByPersonId(Integer personId);
 
-    // TODO improve: faire une requete SQL pour obtenir seulement le nombre de personnes lisant une histoire
     List<Progression> findByStoryId(Integer storyId);
+
+    Long countByStoryId(Integer storyId);
+
 
 }

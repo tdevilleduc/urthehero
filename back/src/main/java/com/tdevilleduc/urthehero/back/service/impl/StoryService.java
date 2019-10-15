@@ -76,14 +76,13 @@ public class StoryService implements IStoryService {
     }
 
     private Story fillStoryWithNumberOfReaders(Story story) {
-        // TODO improve: faire une requete SQL pour obtenir seulement le nombre
-        List<Progression> progressionList = progressionDao.findByStoryId(story.getId());
-        story.setNumberOfReaders(progressionList.size());
+        Long numberOfReaders = progressionDao.countByStoryId(story.getId());
+        story.setNumberOfReaders(numberOfReaders);
         return story;
     }
 
     private Story fillStoryWithNumberOfPages(Story story) {
-        story.setNumberOfPages(story.getPages().size());
+        story.setNumberOfPages(Long.valueOf(story.getPages().size()));
         return story;
     }
 }

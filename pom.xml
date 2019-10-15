@@ -27,7 +27,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
-        <h2.version>1.4.199</h2.version>
         <swagger.version>2.9.2</swagger.version>
         <jackson.version>2.10.0</jackson.version>
 
@@ -127,6 +126,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -15,7 +15,6 @@ services:
 
   back:
     container_name: urthehero-back
-    restart: always
     build:
       context: ./back
       dockerfile: Dockerfile

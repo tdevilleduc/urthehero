@@ -29,11 +29,11 @@ public class Story {
     @Transient
     private Integer currentPageId = 0;
     @Transient
-    private Integer numberOfPages = 0;
+    private Long numberOfPages = 0L;
     @Transient
-    private Integer numberOfReaders = 0;
+    private Long numberOfReaders = 0L;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
+@OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Page> pages = Collections.EMPTY_LIST;
 
