@@ -17,9 +17,9 @@ import java.util.List;
 public class Person {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NonNull
-    @GeneratedValue
-    private int id;
+    private Integer id;
     @NonNull
     private String login;
     @NonNull

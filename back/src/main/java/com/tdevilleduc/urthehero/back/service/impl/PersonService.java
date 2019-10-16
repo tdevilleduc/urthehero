@@ -1,13 +1,16 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
+import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,4 +32,17 @@ public class PersonService implements IPersonService {
         return ! exists(personId);
     }
 
+    public Person findById(Integer personId) {
+        Optional<Person> optionalPerson = personDao.findById(personId);
+        if (optionalPerson.isEmpty()) {
+            throw new PersonNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
+        }
+
+        return optionalPerson.get();
+    }
+
+    public List<Person> findAll() {
+        return personDao.findAll().stream()
+                .collect(Collectors.toList());
+    }
 }

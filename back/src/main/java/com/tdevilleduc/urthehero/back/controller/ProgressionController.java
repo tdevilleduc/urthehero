@@ -1,13 +1,12 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
-import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
+import com.tdevilleduc.urthehero.back.service.impl.PersonService;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,18 +25,17 @@ public class ProgressionController {
     private IProgressionService progressionService;
     @Autowired
     private StoryService storyService;
-
     @Autowired
-    private PersonDao personDao;
+    private PersonService personService;
+    
     @Autowired
     private ProgressionDao progressionDao;
 
     @ApiOperation( value = "Récupère la liste des histoires en cours d'une personne" )
     @GetMapping(value="/Person/{personId}/all")
     public List<Progression> getAllByPersonId(@PathVariable int personId) {
-        Person person = personDao.findById(personId);
-        if (person == null) {
-            throw new PersonNotFoundException("L'utilisateur avec l'id "+ personId +" n'existe pas");
+        if (personService.notExists(personId)) {
+            throw new PersonNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
         }
 
         return progressionDao.findByPersonId(personId);
@@ -46,9 +44,8 @@ public class ProgressionController {
     @ApiOperation( value = "Récupère la progression d'une personne sur une histoire" )
     @GetMapping(value="Person/{personId}/Story/{storyId}")
     public Progression getOneByPersonIdAndStoryId(@PathVariable int personId, @PathVariable int storyId) {
-        Person person = personDao.findById(personId);
-        if (person == null) {
-            throw new PersonNotFoundException("L'utilisateur avec l'id "+ personId +" n'existe pas");
+        if (personService.notExists(personId)) {
+            throw new PersonNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
         }
 
         if (storyService.notExists(storyId)) {
