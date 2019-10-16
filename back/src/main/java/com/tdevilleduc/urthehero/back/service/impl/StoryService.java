@@ -23,6 +23,11 @@ public class StoryService implements IStoryService {
     @Autowired
     private ProgressionDao progressionDao;
 
+    @Autowired
+    private PersonService personService;
+    @Autowired
+    private PageService pageService;
+
     public boolean exists(Integer storyId) {
         Optional<Story> story = storyDao.findById(storyId);
         if (story.isEmpty()) {
@@ -84,5 +89,14 @@ public class StoryService implements IStoryService {
     private Story fillStoryWithNumberOfPages(Story story) {
         story.setNumberOfPages(Long.valueOf(story.getPages().size()));
         return story;
+    }
+
+    public Story createOrUpdate(Story story) {
+        return storyDao.save(story);
+    }
+
+    public void delete(Integer storyId) {
+        Story story = findById(storyId);
+        storyDao.delete(story);
     }
 }

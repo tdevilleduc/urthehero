@@ -68,13 +68,37 @@ public class StoryController {
         if (pageService.notExists(story.getFirstPageId())) {
             throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
         }
+        if (story.getId() != null && storyService.exists(story.getId())) {
+            throw new StoryInternalErrorException(MessageFormatter.format("L'id {} existe déjà. Elle ne peut être créée", story.getId()).getMessage());
+        }
+        return storyService.createOrUpdate(story);
+    }
 
-        return storyDao.save(story);
+    @PostMapping
+    public Story updateStory(@RequestBody @NotNull Story story) {
+        Assertions.assertNotNull(story.getAuthorId(), () -> {
+            throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
+        });
+        Assertions.assertNotNull(story.getFirstPageId(), () -> {
+            throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
+        });
+        Assertions.assertNotNull(story.getId(), () -> {
+            throw new StoryInternalErrorException("L'identifiant de l'histoire passée en paramètre ne peut pas être null");
+        });
+        if (personService.notExists(story.getAuthorId())) {
+            throw new StoryInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", story.getAuthorId()).getMessage());
+        }
+        if (pageService.notExists(story.getFirstPageId())) {
+            throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
+        }
+        if (storyService.notExists(story.getId())) {
+            throw new StoryInternalErrorException(MessageFormatter.format("L'id {} n'existe pas", story.getId()).getMessage());
+        }
+        return storyService.createOrUpdate(story);
     }
 
     @DeleteMapping(value = "/{storyId}")
     public void deleteStory(@PathVariable @NotNull Integer storyId) {
-        Story story = storyService.findById(storyId);
-        storyDao.delete(story);
+        storyService.delete(storyId);
     }
 }

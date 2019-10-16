@@ -11,4 +11,6 @@ public interface IStoryService {
     Story findById(Integer storyId);
     List<Story> findAll();
     List<Story> findByPersonId(Integer personId);
+    Story createOrUpdate(Story story);
+    void delete(Integer storyId);
 }
