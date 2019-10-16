@@ -1,16 +1,21 @@
 package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
+import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +31,8 @@ public class StoryController {
     private IStoryService storyService;
     @Autowired
     private IPersonService personService;
+    @Autowired
+    private IPageService pageService;
 
     @ApiOperation( value = "Récupère la liste des histoires" )
     @GetMapping(value = "/all")
@@ -35,12 +42,12 @@ public class StoryController {
 
     @ApiOperation( value = "Récupère une histoire à partir de son identifiant" )
     @GetMapping(value = "/{storyId}")
-    public Story getStoryById(@PathVariable int storyId) {
+    public Story getStoryById(@PathVariable @NotNull Integer storyId) {
         return storyService.findById(storyId);
     }
 
     @GetMapping(value = "/all/Person/{personId}")
-    public List<Story> getStoryByPersonId(@PathVariable Integer personId) {
+    public List<Story> getStoryByPersonId(@PathVariable @NotNull Integer personId) {
         if (personService.notExists(personId)) {
             throw new StoryNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
         }
@@ -48,12 +55,25 @@ public class StoryController {
     }
 
     @PutMapping
-    public void createStory(@RequestBody Story story) {
-        storyDao.save(story);
+    public Story createStory(@RequestBody @NotNull Story story) {
+        Assertions.assertNotNull(story.getAuthorId(), () -> {
+            throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
+        });
+        Assertions.assertNotNull(story.getFirstPageId(), () -> {
+            throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
+        });
+        if (personService.notExists(story.getAuthorId())) {
+            throw new StoryInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", story.getAuthorId()).getMessage());
+        }
+        if (pageService.notExists(story.getFirstPageId())) {
+            throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
+        }
+
+        return storyDao.save(story);
     }
 
     @DeleteMapping(value = "/{storyId}")
-    public void deleteStory(@PathVariable Integer storyId) {
+    public void deleteStory(@PathVariable @NotNull Integer storyId) {
         Story story = storyService.findById(storyId);
         storyDao.delete(story);
     }
