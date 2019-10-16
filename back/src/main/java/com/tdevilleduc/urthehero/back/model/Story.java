@@ -27,11 +27,15 @@ public class Story {
     @NonNull
     private Integer firstPageId;
     @Transient
-    private Integer currentPageId = 0;
+    private Integer currentPageId;
     @Transient
-    private Long numberOfPages = 0L;
+    private Long numberOfPages;
     @Transient
-    private Long numberOfReaders = 0L;
+    private Long numberOfReaders;
+
+    private String detailedText;
+
+    private String image;
 
 @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore

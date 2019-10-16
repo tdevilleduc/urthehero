@@ -18,7 +18,7 @@ public class StoryTest {
         Assertions.assertEquals(story.getTitle(), storyTitle);
         Assertions.assertEquals(story.getAuthorId(), storyAuthorId);
         Assertions.assertEquals(story.getFirstPageId(), storyFirstPageId);
-        Assertions.assertEquals(Integer.valueOf(0), story.getCurrentPageId());
+        Assertions.assertNull(story.getCurrentPageId());
         Assertions.assertTrue(story.getPages().isEmpty());
 
         Story secondStory = new Story();

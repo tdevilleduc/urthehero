@@ -3,9 +3,9 @@ INSERT INTO person VALUES(1, 'Thomas Deville-Duc', 'thomas@gmail.com', 'tdeville
 INSERT INTO person VALUES(2, 'Marion Gianesini', 'marion@gmail.com', 'mgianesini', 'password');
 INSERT INTO person VALUES(3, 'Nicolas Danet', 'nicolas@gmail.com', 'ndanet', 'password');
 -- storyId, authorId, firstPageId, title
-INSERT INTO story VALUES(1, 1, 1, 'Ulysse');
-INSERT INTO story VALUES(2, 2, 4, 'Voyage au bout de la nuit');
-INSERT INTO story VALUES(3, 3, 7, 'Madame Bovary');
+INSERT INTO story(id, author_Id, first_Page_Id, title, detailed_Text, image) VALUES(1, 1, 1, 'Ulysse', 'blablabla Ulysse prenons un texte long pour décrire lhistoire', 'imageUlysse');
+INSERT INTO story(id, author_Id, first_Page_Id, title, detailed_Text, image) VALUES(2, 2, 4, 'Voyage au bout de la nuit', 'bliblibli voyage voyage !!', 'imageVoyage');
+INSERT INTO story(id, author_Id, first_Page_Id, title, detailed_Text, image) VALUES(3, 3, 7, 'Madame Bovary', 'blablabla Bovary', 'imageBovary');
 -- pageId, image, text, storyId
 INSERT INTO page VALUES(1, 'image3', 'Ulysse', 1);
 INSERT INTO page VALUES(2, 'image3', 'Dès', 1);
