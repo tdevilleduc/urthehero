@@ -1,16 +1,16 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.PersonDao;
-import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
+import com.tdevilleduc.urthehero.back.exceptions.PersonInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Person;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.junit.jupiter.api.Assertions;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Api(value = "Person", tags = { "Person Controller" } )
@@ -19,22 +19,38 @@ import java.util.List;
 public class PersonController {
 
     @Autowired
-    private PersonDao personDao;
+    private IPersonService personService;
 
     @ApiOperation( value = "Récupère la liste des utilisateurs" )
     @GetMapping(value="/all")
     public List<Person> getPersons() {
-        return personDao.findAll();
+        return personService.findAll();
     }
 
     @ApiOperation( value = "Récupère un utilisateur par son identifiant id" )
     @GetMapping(value="/{id}")
-    public Person getPersonById(@PathVariable int id) {
-        Person person = personDao.findById(id);
-        if (person == null) {
-            throw new PersonNotFoundException("L'utilisateur avec l'id "+id+" n'existe pas");
-        }
+    public Person getPersonById(@PathVariable @NotNull int id) {
+        return personService.findById(id);
+    }
 
-        return person;
+    @PutMapping
+    public Person createStory(@RequestBody @NotNull Person person) {
+        if (person.getId() != null && personService.exists(person.getId())) {
+            throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", person.getId()).getMessage());
+        }
+        return personService.createOrUpdate(person);
+    }
+
+    @PostMapping
+    public Person updateStory(@RequestBody @NotNull Person story) {
+        Assertions.assertNotNull(story.getId(), () -> {
+            throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
+        });
+        return personService.createOrUpdate(story);
+    }
+
+    @DeleteMapping(value = "/{personId}")
+    public void deletePerson(@PathVariable @NotNull Integer personId) {
+        personService.delete(personId);
     }
 }

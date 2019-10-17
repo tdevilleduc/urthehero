@@ -3,9 +3,11 @@ package com.tdevilleduc.urthehero.back.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.Collections;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
@@ -17,9 +19,9 @@ import java.util.List;
 public class Person {
 
     @Id
-    @NonNull
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    private Integer id;
     @NonNull
     private String login;
     @NonNull
