@@ -5,6 +5,8 @@ import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,9 @@ public class StoryService implements IStoryService {
     private ProgressionDao progressionDao;
 
     @Autowired
-    private PersonService personService;
+    private IPersonService personService;
     @Autowired
-    private PageService pageService;
+    private IPageService pageService;
 
     public boolean exists(Integer storyId) {
         Optional<Story> story = storyDao.findById(storyId);

@@ -3,8 +3,8 @@ package com.tdevilleduc.urthehero.back.controller;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Story;
-import com.tdevilleduc.urthehero.back.service.impl.PageService;
-import com.tdevilleduc.urthehero.back.service.impl.StoryService;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import java.util.List;
 public class PageController {
 
     @Autowired
-    private StoryService storyService;
+    private IStoryService storyService;
     @Autowired
-    private PageService pageService;
+    private IPageService pageService;
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/{pageId}")
