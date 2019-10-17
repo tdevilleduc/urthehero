@@ -28,6 +28,7 @@
 
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
         <swagger.version>2.9.2</swagger.version>
+        <chaos-monkey-spring-boot.version>2.0.2</chaos-monkey-spring-boot.version>
 
         <docker.plugin.version>1.2.0</docker.plugin.version>
         <docker.image.prefix>urthehero</docker.image.prefix>
@@ -126,6 +127,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>chaos-monkey-spring-boot</artifactId>
+                <version>${chaos-monkey-spring-boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
