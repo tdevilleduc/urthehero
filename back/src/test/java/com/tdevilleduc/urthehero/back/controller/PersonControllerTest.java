@@ -2,8 +2,8 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +40,7 @@ public class PersonControllerTest {
     @Test
     public void testGetAllPersons() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
@@ -50,7 +50,7 @@ public class PersonControllerTest {
     @Test
     public void testGetPersonById() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))

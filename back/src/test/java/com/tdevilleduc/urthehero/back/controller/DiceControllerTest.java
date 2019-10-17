@@ -12,7 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -44,7 +43,7 @@ public class DiceControllerTest {
     public void test_rollOne_thenSuccess() throws Exception {
         String diceString = "DE_20";
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.value", Matchers.isA(Integer.class)))
@@ -59,7 +58,7 @@ public class DiceControllerTest {
         String diceString = "DE_20";
         Integer numberOfRolls = 4;
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString + "/" + numberOfRolls))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(numberOfRolls)))

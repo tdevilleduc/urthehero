@@ -2,8 +2,8 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,7 +41,7 @@ public class StoryControllerTest {
     @Test
     public void test_getStoryById() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
@@ -57,7 +57,7 @@ public class StoryControllerTest {
     @Test
     public void test_getAllStories() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
@@ -67,7 +67,7 @@ public class StoryControllerTest {
     @Test
     public void test_getStoryByPersonId() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/Person/1"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
