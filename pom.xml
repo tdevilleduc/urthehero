@@ -29,6 +29,7 @@
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
         <swagger.version>2.9.2</swagger.version>
         <chaos-monkey-spring-boot.version>2.0.2</chaos-monkey-spring-boot.version>
+        <resilience4j.version>1.1.0</resilience4j.version>
 
         <docker.plugin.version>1.2.0</docker.plugin.version>
         <docker.image.prefix>urthehero</docker.image.prefix>
@@ -137,6 +138,11 @@
                 <groupId>de.codecentric</groupId>
                 <artifactId>chaos-monkey-spring-boot</artifactId>
                 <version>${chaos-monkey-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-spring-boot2</artifactId>
+                <version>${resilience4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
