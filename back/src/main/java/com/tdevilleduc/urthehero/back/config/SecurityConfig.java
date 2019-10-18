@@ -14,7 +14,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+                .antMatchers("/chaosmonkey**").permitAll()
                 .anyRequest().permitAll()
-                .and().csrf().disable();
+                .and().csrf().ignoringAntMatchers("/chaosmonkey/**");
     }
 }
