@@ -22,5 +22,6 @@ services:
       - ./back/target:/deployments
     ports:
       - "8083:8083"
+    restart: always
     depends_on:
       - mysql
