@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.impl.PageService;
@@ -30,15 +29,16 @@ public class PageController {
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/{pageId}")
-    public Page getPageById(@PathVariable int pageId) {
+    public Callable<ResponseEntity<Page>> getPageById(@PathVariable int pageId) {
+        return () -> {
+            Page page = pageService.findById(pageId);
+            Story story = page.getStory();
+            if (story == null) {
+                ResponseEntity.notFound().build();
+            }
 
-        Page page = pageService.findById(pageId);
-        Story story = page.getStory();
-        if (story == null) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'est pas associée à une histoire");
-        }
-
-        return page;
+            return ResponseEntity.ok(page);
+        };
     }
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )

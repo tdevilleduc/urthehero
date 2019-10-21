@@ -41,7 +41,10 @@ public class PageControllerTest {
 
     @Test
     public void test_getPageById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/1"))
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/1"))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+        mockMvc.perform(asyncDispatch(resultActions))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().string(is(notNullValue())))

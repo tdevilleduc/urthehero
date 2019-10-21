@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
@@ -41,16 +40,20 @@ public class StoryController {
     public Callable<ResponseEntity<Story>> getStoryById(@PathVariable int storyId) {
         return () -> {
             Optional<Story> optional = this.storyService.findById(storyId);
-            return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            return optional
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         };
     }
 
     @ResponseBody
     @GetMapping(value = "/all/Person/{personId}")
     public Callable<ResponseEntity<List<Story>>> getStoryByPersonId(@PathVariable Integer personId) {
-        if (personService.notExists(personId)) {
-            throw new StoryNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
-        }
-        return () -> ResponseEntity.ok(storyService.findByPersonId(personId));
+        return () -> {
+            if (personService.notExists(personId)) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(this.storyService.findByPersonId(personId));
+        };
     }
 }
