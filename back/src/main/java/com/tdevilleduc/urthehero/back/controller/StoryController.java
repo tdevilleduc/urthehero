@@ -9,12 +9,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @Slf4j
 @Api(value = "Story", tags = { "Story Controller" } )
@@ -28,23 +27,26 @@ public class StoryController {
     @Autowired
     private IPersonService personService;
 
+    @ResponseBody
     @ApiOperation( value = "Récupère la liste des histoires" )
     @GetMapping(value = "/all")
-    public List<Story> getAllStories() {
-        return storyService.findAll();
+    public Callable<ResponseEntity<List<Story>>> getAllStories() {
+        return () -> ResponseEntity.ok(storyService.findAll());
     }
 
+    @ResponseBody
     @ApiOperation( value = "Récupère une histoire à partir de son identifiant" )
     @GetMapping(value = "/{storyId}")
-    public Story getStoryById(@PathVariable int storyId) {
-        return storyService.findById(storyId);
+    public Callable<ResponseEntity<Story>> getStoryById(@PathVariable int storyId) {
+        return () -> ResponseEntity.ok(storyService.findById(storyId));
     }
 
+    @ResponseBody
     @GetMapping(value = "/all/Person/{personId}")
-    public List<Story> getStoryByPersonId(@PathVariable Integer personId) {
+    public Callable<ResponseEntity<List<Story>>> getStoryByPersonId(@PathVariable Integer personId) {
         if (personService.notExists(personId)) {
             throw new StoryNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
         }
-        return storyService.findByPersonId(personId);
+        return () -> ResponseEntity.ok(storyService.findByPersonId(personId));
     }
 }
