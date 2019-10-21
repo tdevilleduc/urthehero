@@ -8,6 +8,7 @@ import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class StoryService implements IStoryService {
     }
 
     public Optional<Story> findById(Integer storyId) {
+        Assert.notNull(storyId, "The storyId parameter is mandatory !");
         return storyDao.findById(storyId)
                 .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders);

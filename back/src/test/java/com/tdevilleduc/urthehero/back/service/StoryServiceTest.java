@@ -12,6 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 public class StoryServiceTest {
@@ -49,4 +51,9 @@ public class StoryServiceTest {
         Assertions.assertEquals(4, story.getPages().size());
     }
 
+
+    @Test
+    public void findByIdWithIdNull() {
+        assertThrows(IllegalArgumentException.class, () -> storyService.findById(null));
+    }
 }
