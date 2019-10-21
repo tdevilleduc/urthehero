@@ -30,6 +30,7 @@
         <swagger.version>2.9.2</swagger.version>
         <chaos-monkey-spring-boot.version>2.0.2</chaos-monkey-spring-boot.version>
         <resilience4j.version>1.1.0</resilience4j.version>
+        <junit-jupiter.version>5.5.2</junit-jupiter.version>
 
         <docker.plugin.version>1.2.0</docker.plugin.version>
         <docker.image.prefix>urthehero</docker.image.prefix>
@@ -120,12 +121,7 @@
 
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit-jupiter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
+                <artifactId>junit-jupiter</artifactId>
                 <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
