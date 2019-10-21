@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class PageControllerTest {
 
-    private static String uriController = "/Page";
+    private static final String uriController = "/Page";
 
     private MockMvc mockMvc;
 

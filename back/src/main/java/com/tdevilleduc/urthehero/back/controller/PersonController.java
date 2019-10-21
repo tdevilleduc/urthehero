@@ -34,7 +34,7 @@ public class PersonController {
         return () -> {
             Person person = personService.findById(id);
             if (person == null) {
-                ResponseEntity.notFound().build();
+                return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok(person);

@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class StoryControllerTest {
 
-    private static String uriController = "/Story";
+    private static final String uriController = "/Story";
 
     private MockMvc mockMvc;
 
@@ -52,7 +52,7 @@ public class StoryControllerTest {
                 .andExpect(jsonPath("$.title", Matchers.is("Voyage au bout de la nuit")))
                 .andExpect(jsonPath("$.authorId", Matchers.is(2)))
                 .andExpect(jsonPath("$.firstPageId", Matchers.is(4)))
-                .andExpect(jsonPath("$.currentPageId", Matchers.isEmptyOrNullString()))
+                .andExpect(jsonPath("$.currentPageId", Matchers.is(Matchers.emptyOrNullString())))
                 .andExpect(jsonPath("$.numberOfPages", Matchers.is(3)))
                 .andExpect(jsonPath("$.numberOfReaders", Matchers.is(2)))
         ;

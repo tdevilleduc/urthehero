@@ -39,7 +39,7 @@ public class Story {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Page> pages = Collections.EMPTY_LIST;
+    private List<Page> pages = Collections.emptyList();
 
 
 

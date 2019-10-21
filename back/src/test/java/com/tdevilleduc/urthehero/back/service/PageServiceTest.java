@@ -25,7 +25,7 @@ public class PageServiceTest {
 
     @Test
     public void test_findByPageId_thenCorrect() {
-        Integer pageId = Integer.valueOf(1);
+        Integer pageId = 1;
         Page page = pageService.findById(pageId);
         Assertions.assertNotNull(page);
         Assertions.assertEquals(pageId, page.getId());
@@ -69,10 +69,8 @@ public class PageServiceTest {
 
     @Test
     public void test_findByPageId_thenNotFound() {
-        Integer pageId = Integer.valueOf(13);
-        Assertions.assertThrows(PageNotFoundException.class, () -> {
-            pageService.findById(pageId);
-        });
+        Integer pageId = 13;
+        Assertions.assertThrows(PageNotFoundException.class, () -> pageService.findById(pageId));
     }
 
 }

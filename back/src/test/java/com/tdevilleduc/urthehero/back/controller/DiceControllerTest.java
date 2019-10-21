@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DiceControllerTest {
 
 
-    private static String uriController = "/Dice";
+    private static final String uriController = "/Dice";
 
     private MockMvc mockMvc;
 
@@ -51,8 +51,8 @@ public class DiceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(jsonPath("$.value", Matchers.isA(Integer.class)))
-                .andExpect(jsonPath("$.value", Matchers.greaterThan(Integer.valueOf(0))))
-                .andExpect(jsonPath("$.value", Matchers.lessThanOrEqualTo(Integer.valueOf(20))))
+                .andExpect(jsonPath("$.value", Matchers.greaterThan(0)))
+                .andExpect(jsonPath("$.value", Matchers.lessThanOrEqualTo(20)))
                 .andExpect(jsonPath("$.dice", Matchers.is(diceString)))
         ;
     }
@@ -60,7 +60,7 @@ public class DiceControllerTest {
     @Test
     public void test_rollMulti_thenSuccess() throws Exception {
         String diceString = "DE_20";
-        Integer numberOfRolls = 4;
+        int numberOfRolls = 4;
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString + "/" + numberOfRolls))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -70,8 +70,8 @@ public class DiceControllerTest {
                 .andExpect(content().string(is(notNullValue())))
                 .andExpect(jsonPath("$", hasSize(numberOfRolls)))
                 .andExpect(jsonPath("$[1].value", Matchers.isA(Integer.class)))
-                .andExpect(jsonPath("$[1].value", Matchers.greaterThan(Integer.valueOf(0))))
-                .andExpect(jsonPath("$[1].value", Matchers.lessThanOrEqualTo(Integer.valueOf(20))))
+                .andExpect(jsonPath("$[1].value", Matchers.greaterThan(0)))
+                .andExpect(jsonPath("$[1].value", Matchers.lessThanOrEqualTo(20)))
                 .andExpect(jsonPath("$[1].dice", Matchers.is(diceString)))
         ;
     }

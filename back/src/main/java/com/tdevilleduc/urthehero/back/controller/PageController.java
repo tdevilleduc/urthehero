@@ -34,7 +34,7 @@ public class PageController {
             Page page = pageService.findById(pageId);
             Story story = page.getStory();
             if (story == null) {
-                ResponseEntity.notFound().build();
+                return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok(page);
@@ -47,7 +47,7 @@ public class PageController {
         return () -> {
             Optional<Story> optional = storyService.findById(storyId);
             return optional
-                    .map(story -> story.getPages())
+                    .map(Story::getPages)
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
         };
@@ -59,7 +59,7 @@ public class PageController {
         return () -> {
             Optional<Story> optional = storyService.findById(storyId);
             return optional
-                    .map(story -> story.getFirstPageId())
+                    .map(Story::getFirstPageId)
                     .map(firstPageId -> pageService.findById(firstPageId))
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());

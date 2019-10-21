@@ -61,9 +61,7 @@ public class StoryService implements IStoryService {
 
     private Optional<Story> getStoryFromProgression(Progression progression) {
         Optional<Story> optionalStory = storyDao.findById(progression.getStoryId());
-        optionalStory.ifPresent(story -> {
-            story.setCurrentPageId(progression.getActualPageId());
-        });
+        optionalStory.ifPresent(story -> story.setCurrentPageId(progression.getActualPageId()));
         return optionalStory;
     }
 
@@ -74,7 +72,7 @@ public class StoryService implements IStoryService {
     }
 
     private Story fillStoryWithNumberOfPages(Story story) {
-        story.setNumberOfPages(Long.valueOf(story.getPages().size()));
+        story.setNumberOfPages((long) story.getPages().size());
         return story;
     }
 }

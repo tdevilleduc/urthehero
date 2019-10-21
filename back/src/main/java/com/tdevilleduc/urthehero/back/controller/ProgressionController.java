@@ -1,7 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
-import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.impl.PersonService;
@@ -36,7 +35,7 @@ public class ProgressionController {
     public Callable<ResponseEntity<List<Progression>>> getAllByPersonId(@PathVariable int personId) {
         return () -> {
             if (personService.notExists(personId)) {
-                throw new PersonNotFoundException(String.format("La personne avec l'id {} n'existe pas", personId));
+                return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok(progressionDao.findByPersonId(personId));
@@ -48,16 +47,16 @@ public class ProgressionController {
     public Callable<ResponseEntity<Progression>> getOneByPersonIdAndStoryId(@PathVariable int personId, @PathVariable int storyId) {
         return () -> {
             if (personService.notExists(personId)) {
-                ResponseEntity.notFound().build();
+                return ResponseEntity.notFound().build();
             }
 
             if (storyService.notExists(storyId)) {
-                ResponseEntity.notFound().build();
+                return ResponseEntity.notFound().build();
             }
 
             Optional<Progression> progression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
             if (progression.isEmpty()) {
-                ResponseEntity.notFound().build();
+                return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok(progression.get());

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -42,7 +41,6 @@ public class PersonService implements IPersonService {
     }
 
     public List<Person> findAll() {
-        return personDao.findAll().stream()
-                .collect(Collectors.toList());
+        return personDao.findAll();
     }
 }

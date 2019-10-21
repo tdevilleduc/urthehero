@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public class PersonControllerTest {
 
-    private static String uriController = "/Person";
+    private static final String uriController = "/Person";
 
     private MockMvc mockMvc;
 
