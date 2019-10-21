@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 public class StoryServiceTest {
@@ -34,9 +36,10 @@ public class StoryServiceTest {
     @Test
     public void test_findByPageId_thenCorrect() {
         Integer storyId = 1;
-        Story story = storyService.findById(storyId);
+        Optional<Story> optional = storyService.findById(storyId);
 
-        Assertions.assertNotNull(story);
+        Assertions.assertTrue(optional.isPresent());
+        Story story = optional.get();
         Assertions.assertEquals(Integer.valueOf(1), story.getId());
         Assertions.assertEquals("Ulysse", story.getTitle());
         Assertions.assertEquals(Integer.valueOf(1), story.getAuthorId());

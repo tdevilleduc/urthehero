@@ -8,12 +8,15 @@ import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
@@ -40,18 +43,26 @@ public class PageController {
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
     @GetMapping(value = "/all/Story/{storyId}")
-    public List<Page> getAllPagesByStoryId(@PathVariable int storyId) {
-        Story story = storyService.findById(storyId);
-        return story.getPages();
+    public Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(@PathVariable int storyId) {
+        return () -> {
+            Optional<Story> optional = storyService.findById(storyId);
+            return optional
+                    .map(story -> story.getPages())
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
     }
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
     @GetMapping(value = "/Story/{storyId}")
-    public Page getFirstPageByStoryId(@PathVariable int storyId) {
-
-        Story story = storyService.findById(storyId);
-        Integer firstPageId = story.getFirstPageId();
-
-        return pageService.findById(firstPageId);
+    public Callable<ResponseEntity<Page>> getFirstPageByStoryId(@PathVariable int storyId) {
+        return () -> {
+            Optional<Story> optional = storyService.findById(storyId);
+            return optional
+                    .map(story -> story.getFirstPageId())
+                    .map(firstPageId -> pageService.findById(firstPageId))
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
     }
 }

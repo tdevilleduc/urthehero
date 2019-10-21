@@ -37,7 +37,7 @@ public class Story {
 
     private String image;
 
-@OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Page> pages = Collections.EMPTY_LIST;
 

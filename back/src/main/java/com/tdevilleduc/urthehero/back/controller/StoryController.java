@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @Slf4j
@@ -38,7 +39,10 @@ public class StoryController {
     @ApiOperation( value = "Récupère une histoire à partir de son identifiant" )
     @GetMapping(value = "/{storyId}")
     public Callable<ResponseEntity<Story>> getStoryById(@PathVariable int storyId) {
-        return () -> ResponseEntity.ok(storyService.findById(storyId));
+        return () -> {
+            Optional<Story> optional = this.storyService.findById(storyId);
+            return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        };
     }
 
     @ResponseBody

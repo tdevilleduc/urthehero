@@ -2,7 +2,6 @@ package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
-import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
@@ -36,17 +35,10 @@ public class StoryService implements IStoryService {
         return ! exists(storyId);
     }
 
-    public Story findById(Integer storyId) {
-        Optional<Story> optionalStory = storyDao.findById(storyId);
-        if (optionalStory.isEmpty()) {
-            throw new StoryNotFoundException("L'histoire avec l'id " + storyId + " n'existe pas");
-        }
-
-        Story story = optionalStory.get();
-        story = fillStoryWithNumberOfPages(story);
-        story = fillStoryWithNumberOfReaders(story);
-
-        return story;
+    public Optional<Story> findById(Integer storyId) {
+        return storyDao.findById(storyId)
+                .map(this::fillStoryWithNumberOfPages)
+                .map(this::fillStoryWithNumberOfReaders);
     }
 
     public List<Story> findAll() {
