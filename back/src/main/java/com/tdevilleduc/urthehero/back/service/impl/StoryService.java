@@ -5,6 +5,7 @@ import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,17 @@ public class StoryService implements IStoryService {
         return ! exists(storyId);
     }
 
+    @CircuitBreaker(name = "storyFindById", fallbackMethod = "emptyStory")
     public Optional<Story> findById(Integer storyId) {
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         return storyDao.findById(storyId)
                 .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders);
+    }
+
+    private Optional<Story> emptyStory(Integer storyId, Exception e) {
+        log.error("Cannot retrieve story", e);
+        return Optional.empty();
     }
 
     public List<Story> findAll() {
@@ -50,7 +57,9 @@ public class StoryService implements IStoryService {
                 .collect(Collectors.toList());
     }
 
+    @CircuitBreaker(name = "storyFindByPersonId")
     public List<Story> findByPersonId(Integer personId) {
+        Assert.notNull(personId, "The personId parameter is mandatory !");
         List<Progression> progressionList = progressionDao.findByPersonId(personId);
         return progressionList.stream()
                 .map(this::getStoryFromProgression)
