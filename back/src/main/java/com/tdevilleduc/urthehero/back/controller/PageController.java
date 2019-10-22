@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller;
 
+import com.tdevilleduc.urthehero.back.exceptions.PageInternalErrorException;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Story;
@@ -7,12 +8,12 @@ import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.junit.jupiter.api.Assertions;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Api(value = "Page", tags = { "Page Controller" } )
@@ -53,5 +54,26 @@ public class PageController {
         Integer firstPageId = story.getFirstPageId();
 
         return pageService.findById(firstPageId);
+    }
+
+    @PutMapping
+    public Page createPage(@RequestBody @NotNull Page page) {
+        if (page.getId() != null && pageService.exists(page.getId())) {
+            throw new PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.getId()).getMessage());
+        }
+        return pageService.createOrUpdate(page);
+    }
+
+    @PostMapping
+    public Page updatePage(@RequestBody @NotNull Page page) {
+        Assertions.assertNotNull(page.getId(), () -> {
+            throw new PageInternalErrorException("L'identifiant de la page passée en paramètre ne peut pas être null");
+        });
+        return pageService.createOrUpdate(page);
+    }
+
+    @DeleteMapping(value = "/{pageId}")
+    public void deletePage(@PathVariable @NotNull Integer pageId) {
+        pageService.delete(pageId);
     }
 }

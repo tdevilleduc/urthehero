@@ -34,7 +34,7 @@ public class PersonController {
     }
 
     @PutMapping
-    public Person createStory(@RequestBody @NotNull Person person) {
+    public Person createPerson(@RequestBody @NotNull Person person) {
         if (person.getId() != null && personService.exists(person.getId())) {
             throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", person.getId()).getMessage());
         }
@@ -42,11 +42,11 @@ public class PersonController {
     }
 
     @PostMapping
-    public Person updateStory(@RequestBody @NotNull Person story) {
-        Assertions.assertNotNull(story.getId(), () -> {
+    public Person updatePerson(@RequestBody @NotNull Person person) {
+        Assertions.assertNotNull(person.getId(), () -> {
             throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
         });
-        return personService.createOrUpdate(story);
+        return personService.createOrUpdate(person);
     }
 
     @DeleteMapping(value = "/{personId}")

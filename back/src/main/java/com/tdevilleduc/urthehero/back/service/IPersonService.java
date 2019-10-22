@@ -8,7 +8,6 @@ public interface IPersonService {
 
     boolean exists(Integer personId);
     boolean notExists(Integer personId);
-
     Person findById(Integer personId);
     List<Person> findAll();
     Person createOrUpdate(Person person);

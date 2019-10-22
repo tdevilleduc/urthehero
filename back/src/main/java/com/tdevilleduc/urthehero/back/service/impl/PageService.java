@@ -54,4 +54,13 @@ public class PageService implements IPageService {
     public List<Page> findAll() {
         return pageDao.findAll();
     }
+
+    public Page createOrUpdate(Page page) {
+        return pageDao.save(page);
+    }
+
+    public void delete(Integer pageId) {
+        Page page = findById(pageId);
+        pageDao.delete(page);
+    }
 }
