@@ -5,11 +5,11 @@ import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.junit.jupiter.api.Assertions;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -52,7 +52,7 @@ public class PersonController {
 
     @PostMapping
     public Person updatePerson(@RequestBody @NotNull Person person) {
-        Assertions.assertNotNull(person.getId(), () -> {
+        Assert.notNull(person.getId(), () -> {
             throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
         });
         return personService.createOrUpdate(person);

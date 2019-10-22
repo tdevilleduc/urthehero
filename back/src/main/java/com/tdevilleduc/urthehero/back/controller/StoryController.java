@@ -2,7 +2,6 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
-import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
@@ -11,10 +10,10 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -71,10 +70,10 @@ public class StoryController {
 
     @PutMapping
     public Story createStory(@RequestBody @NotNull Story story) {
-        Assertions.assertNotNull(story.getAuthorId(), () -> {
+        Assert.notNull(story.getAuthorId(), () -> {
             throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
         });
-        Assertions.assertNotNull(story.getFirstPageId(), () -> {
+        Assert.notNull(story.getFirstPageId(), () -> {
             throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
         });
         if (personService.notExists(story.getAuthorId())) {
@@ -91,13 +90,13 @@ public class StoryController {
 
     @PostMapping
     public Story updateStory(@RequestBody @NotNull Story story) {
-        Assertions.assertNotNull(story.getAuthorId(), () -> {
+        Assert.notNull(story.getAuthorId(), () -> {
             throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
         });
-        Assertions.assertNotNull(story.getFirstPageId(), () -> {
+        Assert.notNull(story.getFirstPageId(), () -> {
             throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
         });
-        Assertions.assertNotNull(story.getId(), () -> {
+        Assert.notNull(story.getId(), () -> {
             throw new StoryInternalErrorException("L'identifiant de l'histoire passée en paramètre ne peut pas être null");
         });
         if (personService.notExists(story.getAuthorId())) {

@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
+import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
@@ -9,7 +10,9 @@ import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -99,7 +102,12 @@ public class StoryService implements IStoryService {
     }
 
     public void delete(Integer storyId) {
-        Story story = findById(storyId);
-        storyDao.delete(story);
+        Optional<Story> optional = findById(storyId);
+        optional
+            .ifPresentOrElse(story -> storyDao.delete(story),
+                () -> {
+                    throw new StoryInternalErrorException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+                }
+        );
     }
 }
