@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
@@ -27,9 +26,6 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/story")
 @CircuitBreaker(name = "storyController")
 public class StoryController {
-
-    @Autowired
-    private StoryDao storyDao;
 
     @Autowired
     private IStoryService storyService;

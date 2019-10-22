@@ -26,7 +26,8 @@ public class ProgressionController {
     private IStoryService storyService;
     @Autowired
     private PersonService personService;
-    
+
+    // TODO: remove this dependency
     @Autowired
     private ProgressionDao progressionDao;
 
