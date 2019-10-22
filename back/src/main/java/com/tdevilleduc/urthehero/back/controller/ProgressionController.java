@@ -3,8 +3,8 @@ package com.tdevilleduc.urthehero.back.controller;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import com.tdevilleduc.urthehero.back.service.impl.PersonService;
-import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ProgressionController {
     @Autowired
     private IProgressionService progressionService;
     @Autowired
-    private StoryService storyService;
+    private IStoryService storyService;
     @Autowired
     private PersonService personService;
     

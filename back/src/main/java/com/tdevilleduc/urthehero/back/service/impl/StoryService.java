@@ -2,12 +2,17 @@ package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
+import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -23,6 +28,11 @@ public class StoryService implements IStoryService {
     private StoryDao storyDao;
     @Autowired
     private ProgressionDao progressionDao;
+
+    @Autowired
+    private IPersonService personService;
+    @Autowired
+    private IPageService pageService;
 
     public boolean exists(Integer storyId) {
         Optional<Story> story = storyDao.findById(storyId);
@@ -85,5 +95,19 @@ public class StoryService implements IStoryService {
     private Story fillStoryWithNumberOfPages(Story story) {
         story.setNumberOfPages((long) story.getPages().size());
         return story;
+    }
+
+    public Story createOrUpdate(Story story) {
+        return storyDao.save(story);
+    }
+
+    public void delete(Integer storyId) {
+        Optional<Story> optional = findById(storyId);
+        optional
+            .ifPresentOrElse(story -> storyDao.delete(story),
+                () -> {
+                    throw new StoryInternalErrorException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+                }
+        );
     }
 }

@@ -12,6 +12,7 @@ import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.Optional;
 public class ProgressionService implements IProgressionService {
 
     @Autowired
-    private StoryService storyService;
+    private IStoryService storyService;
 
     @Autowired
     private PersonDao personDao;

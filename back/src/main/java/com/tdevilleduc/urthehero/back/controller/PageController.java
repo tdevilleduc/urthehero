@@ -1,18 +1,19 @@
 package com.tdevilleduc.urthehero.back.controller;
 
+import com.tdevilleduc.urthehero.back.exceptions.PageInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Story;
-import com.tdevilleduc.urthehero.back.service.impl.PageService;
-import com.tdevilleduc.urthehero.back.service.impl.StoryService;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -23,9 +24,9 @@ import java.util.concurrent.Callable;
 public class PageController {
 
     @Autowired
-    private StoryService storyService;
+    private IStoryService storyService;
     @Autowired
-    private PageService pageService;
+    private IPageService pageService;
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/{pageId}")
@@ -64,5 +65,26 @@ public class PageController {
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
         };
+    }
+
+    @PutMapping
+    public Page createPage(@RequestBody @NotNull Page page) {
+        if (page.getId() != null && pageService.exists(page.getId())) {
+            throw new PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.getId()).getMessage());
+        }
+        return pageService.createOrUpdate(page);
+    }
+
+    @PostMapping
+    public Page updatePage(@RequestBody @NotNull Page page) {
+        Assert.notNull(page.getId(), () -> {
+            throw new PageInternalErrorException("L'identifiant de la page passée en paramètre ne peut pas être null");
+        });
+        return pageService.createOrUpdate(page);
+    }
+
+    @DeleteMapping(value = "/{pageId}")
+    public void deletePage(@PathVariable @NotNull Integer pageId) {
+        pageService.delete(pageId);
     }
 }
