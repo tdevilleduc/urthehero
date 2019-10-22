@@ -12,9 +12,12 @@ import org.junit.jupiter.api.Assertions;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
@@ -28,32 +31,41 @@ public class PageController {
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/{pageId}")
-    public Page getPageById(@PathVariable int pageId) {
+    public Callable<ResponseEntity<Page>> getPageById(@PathVariable int pageId) {
+        return () -> {
+            Page page = pageService.findById(pageId);
+            Story story = page.getStory();
+            if (story == null) {
+                return ResponseEntity.notFound().build();
+            }
 
-        Page page = pageService.findById(pageId);
-        Story story = page.getStory();
-        if (story == null) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'est pas associée à une histoire");
-        }
-
-        return page;
+            return ResponseEntity.ok(page);
+        };
     }
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
     @GetMapping(value = "/all/Story/{storyId}")
-    public List<Page> getAllPagesByStoryId(@PathVariable int storyId) {
-        Story story = storyService.findById(storyId);
-        return story.getPages();
+    public Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(@PathVariable int storyId) {
+        return () -> {
+            Optional<Story> optional = storyService.findById(storyId);
+            return optional
+                    .map(Story::getPages)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
     }
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
     @GetMapping(value = "/Story/{storyId}")
-    public Page getFirstPageByStoryId(@PathVariable int storyId) {
-
-        Story story = storyService.findById(storyId);
-        Integer firstPageId = story.getFirstPageId();
-
-        return pageService.findById(firstPageId);
+    public Callable<ResponseEntity<Page>> getFirstPageByStoryId(@PathVariable int storyId) {
+        return () -> {
+            Optional<Story> optional = storyService.findById(storyId);
+            return optional
+                    .map(Story::getFirstPageId)
+                    .map(firstPageId -> pageService.findById(firstPageId))
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
     }
 
     @PutMapping

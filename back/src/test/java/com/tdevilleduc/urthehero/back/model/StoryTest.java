@@ -18,7 +18,7 @@ public class StoryTest {
         Assertions.assertEquals(story.getTitle(), storyTitle);
         Assertions.assertEquals(story.getAuthorId(), storyAuthorId);
         Assertions.assertEquals(story.getFirstPageId(), storyFirstPageId);
-        Assertions.assertEquals(Integer.valueOf(0), story.getCurrentPageId());
+        Assertions.assertNull(story.getCurrentPageId());
         Assertions.assertTrue(story.getPages().isEmpty());
 
         Story secondStory = new Story();
@@ -26,7 +26,7 @@ public class StoryTest {
         secondStory.setTitle(storyTitle);
         secondStory.setAuthorId(storyAuthorId);
         secondStory.setFirstPageId(storyFirstPageId);
-        secondStory.setPages(Collections.EMPTY_LIST);
+        secondStory.setPages(Collections.emptyList());
 
         Assertions.assertEquals(secondStory.toString(), story.toString());
         Assertions.assertEquals(secondStory, story);

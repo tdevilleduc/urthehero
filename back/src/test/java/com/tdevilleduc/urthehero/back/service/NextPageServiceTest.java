@@ -23,7 +23,7 @@ public class NextPageServiceTest {
 
     @Test
     public void test_findByPageId_thenCorrect() {
-        Integer pageId = Integer.valueOf(1);
+        Integer pageId = 1;
         List<NextPage> nextPageList = nextPageService.findByPageId(pageId);
         Assertions.assertNotNull(nextPageList);
         Assertions.assertFalse(nextPageList.isEmpty());
@@ -57,10 +57,8 @@ public class NextPageServiceTest {
 
     @Test
     public void test_findByPageId_thenNotFound() {
-        Integer pageId = Integer.valueOf(13);
-        Assertions.assertThrows(PageNotFoundException.class, () -> {
-            nextPageService.findByPageId(pageId);
-        });
+        Integer pageId = 13;
+        Assertions.assertThrows(PageNotFoundException.class, () -> nextPageService.findByPageId(pageId));
     }
 
 }

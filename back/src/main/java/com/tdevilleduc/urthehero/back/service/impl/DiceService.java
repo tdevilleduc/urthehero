@@ -5,7 +5,6 @@ import com.tdevilleduc.urthehero.back.model.DiceValue;
 import com.tdevilleduc.urthehero.back.service.IDiceService;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class DiceService implements IDiceService {

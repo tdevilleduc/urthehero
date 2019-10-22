@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Assertions;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @Api(value = "Person", tags = { "Person Controller" } )
 @RestController
@@ -23,16 +25,23 @@ public class PersonController {
 
     @ApiOperation( value = "Récupère la liste des utilisateurs" )
     @GetMapping(value="/all")
-    public List<Person> getPersons() {
-        return personService.findAll();
+    public Callable<ResponseEntity<List<Person>>> getPersons() {
+        return () -> ResponseEntity.ok(personService.findAll());
     }
 
     @ApiOperation( value = "Récupère un utilisateur par son identifiant id" )
     @GetMapping(value="/{id}")
-    public Person getPersonById(@PathVariable @NotNull int id) {
-        return personService.findById(id);
-    }
+    public Callable<ResponseEntity<Person>> getPersonById(@PathVariable int id) {
+        return () -> {
+            Person person = personService.findById(id);
+            if (person == null) {
+                return ResponseEntity.notFound().build();
+            }
 
+            return ResponseEntity.ok(person);
+        };
+    }
+  
     @PutMapping
     public Person createPerson(@RequestBody @NotNull Person person) {
         if (person.getId() != null && personService.exists(person.getId())) {

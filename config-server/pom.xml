@@ -7,7 +7,6 @@
 		<artifactId>urthehero</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.tdevilleduc.urthehero</groupId>
 	<artifactId>config-server</artifactId>
 	<name>config-server</name>
 
@@ -34,7 +33,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

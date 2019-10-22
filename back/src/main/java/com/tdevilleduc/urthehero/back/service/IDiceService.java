@@ -7,8 +7,8 @@ public interface IDiceService {
 
     /**
      * Effectue un lancer de dés avec le dé dice
-     * @param dice
-     * @return
+     * @param dice le type de dé à lancer
+     * @return la valeur du dé après lancé
      */
     DiceValue roll(Dice dice);
 

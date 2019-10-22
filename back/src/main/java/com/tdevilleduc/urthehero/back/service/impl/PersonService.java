@@ -43,8 +43,7 @@ public class PersonService implements IPersonService {
     }
 
     public List<Person> findAll() {
-        return personDao.findAll().stream()
-                .collect(Collectors.toList());
+        return personDao.findAll();
     }
 
     public Person createOrUpdate(Person person) {

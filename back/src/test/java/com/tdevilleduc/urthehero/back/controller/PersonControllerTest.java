@@ -2,8 +2,8 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,12 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @ExtendWith(SpringExtension.class)
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public class PersonControllerTest {
 
-    private static String uriController = "/Person";
+    private static final String uriController = "/Person";
 
     private MockMvc mockMvc;
 
@@ -39,24 +40,30 @@ public class PersonControllerTest {
 
     @Test
     public void testGetAllPersons() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+        mockMvc.perform(asyncDispatch(resultActions))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$", hasSize(3)))
         ;
     }
 
     @Test
     public void testGetPersonById() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+        mockMvc.perform(asyncDispatch(resultActions))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
                 .andExpect(content().string(is(notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.login", Matchers.is("mgianesini")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.displayName", Matchers.is("Marion Gianesini")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is("marion@gmail.com")))
+                .andExpect(jsonPath("$.id", Matchers.is(2)))
+                .andExpect(jsonPath("$.login", Matchers.is("mgianesini")))
+                .andExpect(jsonPath("$.displayName", Matchers.is("Marion Gianesini")))
+                .andExpect(jsonPath("$.email", Matchers.is("marion@gmail.com")))
         ;
     }
 }
