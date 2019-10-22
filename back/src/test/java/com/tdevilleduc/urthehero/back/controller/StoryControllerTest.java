@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class StoryControllerTest {
 
-    private static final String uriController = "/Story";
+    private static final String uriController = "/api/story";
 
     private MockMvc mockMvc;
 
@@ -73,7 +73,7 @@ public class StoryControllerTest {
 
     @Test
     public void test_getStoryByPersonId() throws Exception {
-        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/Person/1"))
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/person/1"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         mockMvc.perform(asyncDispatch(resultActions))

@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
 @Slf4j
 @Api(value = "Story", tags = { "Story Controller" } )
 @RestController
-@RequestMapping("/Story")
+@RequestMapping("/api/story")
 @CircuitBreaker(name = "storyController")
 public class StoryController {
 
@@ -58,7 +58,7 @@ public class StoryController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/all/Person/{personId}")
+    @GetMapping(value = "/all/person/{personId}")
     public Callable<ResponseEntity<List<Story>>> getStoryByPersonId(@PathVariable @NotNull Integer personId) {
         return () -> {
             if (personService.notExists(personId)) {

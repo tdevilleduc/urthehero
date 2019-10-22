@@ -20,7 +20,7 @@ import java.util.concurrent.Callable;
 
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
-@RequestMapping("/Page")
+@RequestMapping("/api/page")
 public class PageController {
 
     @Autowired
@@ -43,7 +43,7 @@ public class PageController {
     }
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
-    @GetMapping(value = "/all/Story/{storyId}")
+    @GetMapping(value = "/all/story/{storyId}")
     public Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(@PathVariable int storyId) {
         return () -> {
             Optional<Story> optional = storyService.findById(storyId);
@@ -55,7 +55,7 @@ public class PageController {
     }
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
-    @GetMapping(value = "/Story/{storyId}")
+    @GetMapping(value = "/story/{storyId}")
     public Callable<ResponseEntity<Page>> getFirstPageByStoryId(@PathVariable int storyId) {
         return () -> {
             Optional<Story> optional = storyService.findById(storyId);

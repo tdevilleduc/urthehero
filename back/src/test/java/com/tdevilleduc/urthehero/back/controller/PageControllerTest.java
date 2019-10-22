@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class PageControllerTest {
 
-    private static final String uriController = "/Page";
+    private static final String uriController = "/api/page";
 
     private MockMvc mockMvc;
 
@@ -57,7 +57,7 @@ public class PageControllerTest {
 
     @Test
     public void test_getFirstPageByStoryId() throws Exception {
-        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/Story/2"))
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/story/2"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         mockMvc.perform(asyncDispatch(resultActions))
@@ -72,7 +72,7 @@ public class PageControllerTest {
 
     @Test
     public void test_getAllPagesByStoryId() throws Exception {
-        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/Story/1"))
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/story/1"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
         mockMvc.perform(asyncDispatch(resultActions))

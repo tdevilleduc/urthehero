@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DiceControllerTest {
 
 
-    private static final String uriController = "/Dice";
+    private static final String uriController = "/api/dice";
 
     private MockMvc mockMvc;
 

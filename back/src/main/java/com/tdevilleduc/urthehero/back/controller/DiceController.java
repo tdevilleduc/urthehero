@@ -19,7 +19,7 @@ import java.util.concurrent.Callable;
 
 @Api(value = "Dice", tags = { "Dice Controller" } )
 @RestController
-@RequestMapping("/Dice")
+@RequestMapping("/api/dice")
 public class DiceController {
 
     @Autowired

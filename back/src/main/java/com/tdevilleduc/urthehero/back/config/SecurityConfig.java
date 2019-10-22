@@ -15,7 +15,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .antMatchers("/chaosmonkey**").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .anyRequest().permitAll()
-                .and().csrf().ignoringAntMatchers("/chaosmonkey/**");
+                .and().csrf().disable();
     }
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.Callable;
 
 @Api(value = "Person", tags = { "Person Controller" } )
 @RestController
-@RequestMapping("/Person")
+@RequestMapping("/api/person")
 public class PersonController {
 
     @Autowired
