@@ -66,6 +66,8 @@ public class StoryServiceTest extends AbstractTest {
 
     @Test
     public void findByIdWithIdNull() {
+        // with resilience4j, IllegalArgumentException is catched and fallback method 'emptyStory' is called
+//        Assertions.assertThrows(IllegalArgumentException.class, () -> storyService.findById(null));
         assertEquals(Optional.empty(), storyService.findById(null));
     }
 

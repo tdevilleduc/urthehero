@@ -1,21 +1,23 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
-import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
+import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
+import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,16 +27,17 @@ import java.util.stream.Collectors;
 public class StoryService implements IStoryService {
 
     @Autowired
-    private StoryDao storyDao;
-    @Autowired
-    private ProgressionDao progressionDao;
-
-    @Autowired
     private IPersonService personService;
     @Autowired
     private IPageService pageService;
+    @Autowired
+    private IProgressionService progressionService;
+
+    @Autowired
+    private StoryDao storyDao;
 
     public boolean exists(Integer storyId) {
+        Assert.notNull(storyId, "The story parameter is mandatory !");
         Optional<Story> story = storyDao.findById(storyId);
         if (story.isEmpty()) {
             log.error("L'histoire avec l'id {} n'existe pas", storyId);
@@ -67,10 +70,10 @@ public class StoryService implements IStoryService {
                 .collect(Collectors.toList());
     }
 
-    @CircuitBreaker(name = "storyFindByPersonId")
+    @CircuitBreaker(name = "story_findByPersonId")
     public List<Story> findByPersonId(Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
-        List<Progression> progressionList = progressionDao.findByPersonId(personId);
+        List<Progression> progressionList = progressionService.findByPersonId(personId);
         return progressionList.stream()
                 .map(this::getStoryFromProgression)
                 .filter(Optional::isPresent)
@@ -87,7 +90,7 @@ public class StoryService implements IStoryService {
     }
 
     private Story fillStoryWithNumberOfReaders(Story story) {
-        Long numberOfReaders = progressionDao.countByStoryId(story.getId());
+        Long numberOfReaders = progressionService.countByStoryId(story.getId());
         story.setNumberOfReaders(numberOfReaders);
         return story;
     }
@@ -102,6 +105,7 @@ public class StoryService implements IStoryService {
     }
 
     public void delete(Integer storyId) {
+        Assert.notNull(storyId, "The storyId parameter is mandatory !");
         Optional<Story> optional = findById(storyId);
         optional
             .ifPresentOrElse(story -> storyDao.delete(story),

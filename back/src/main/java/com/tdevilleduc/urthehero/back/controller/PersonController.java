@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @Api(value = "Person", tags = { "Person Controller" } )
@@ -30,15 +31,13 @@ public class PersonController {
     }
 
     @ApiOperation( value = "Récupère un utilisateur par son identifiant id" )
-    @GetMapping(value="/{id}")
-    public Callable<ResponseEntity<Person>> getPersonById(@PathVariable int id) {
+    @GetMapping(value="/{personId}")
+    public Callable<ResponseEntity<Person>> getPersonById(@PathVariable int personId) {
         return () -> {
-            Person person = personService.findById(id);
-            if (person == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok(person);
+            Optional<Person> optional = personService.findById(personId);
+            return optional
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         };
     }
   

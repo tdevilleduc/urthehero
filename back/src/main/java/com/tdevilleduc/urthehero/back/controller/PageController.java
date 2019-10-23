@@ -32,13 +32,10 @@ public class PageController {
     @GetMapping(value = "/{pageId}")
     public Callable<ResponseEntity<Page>> getPageById(@PathVariable int pageId) {
         return () -> {
-            Page page = pageService.findById(pageId);
-            Story story = page.getStory();
-            if (story == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok(page);
+            Optional<Page> optional = pageService.findById(pageId);
+            return optional
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         };
     }
 
@@ -62,6 +59,7 @@ public class PageController {
             return optional
                     .map(Story::getFirstPageId)
                     .map(firstPageId -> pageService.findById(firstPageId))
+                    .map(Optional::get)
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());
         };

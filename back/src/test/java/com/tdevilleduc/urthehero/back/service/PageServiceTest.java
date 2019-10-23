@@ -2,7 +2,6 @@ package com.tdevilleduc.urthehero.back.service;
 
 import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
-import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Position;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
@@ -25,9 +25,12 @@ public class PageServiceTest extends AbstractTest {
     private PageService pageService;
 
     @Test
-    public void test_findByPageId_thenCorrect() {
+    public void test_findById_thenCorrect() {
         Integer pageId = 1;
-        Page page = pageService.findById(pageId);
+        Optional<Page> optional = pageService.findById(pageId);
+        Assertions.assertTrue(optional.isPresent());
+        Page page = optional.get();
+
         Assertions.assertNotNull(page);
         Assertions.assertEquals(pageId, page.getId());
         Assertions.assertEquals("image3", page.getImage());
@@ -69,9 +72,15 @@ public class PageServiceTest extends AbstractTest {
     }
 
     @Test
-    public void test_findByPageId_thenNotFound() {
+    public void test_findById_thenNotFound() {
         Integer pageId = 13;
-        Assertions.assertThrows(PageNotFoundException.class, () -> pageService.findById(pageId));
+        Optional<Page> optional = pageService.findById(pageId);
+        Assertions.assertTrue(optional.isEmpty());
+    }
+
+    @Test
+    public void test_findById_withIdNull() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> pageService.findById(null));
     }
 
 }

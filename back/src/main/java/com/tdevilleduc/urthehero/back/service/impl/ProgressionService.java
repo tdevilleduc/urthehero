@@ -1,22 +1,22 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
-import com.tdevilleduc.urthehero.back.dao.PageDao;
-import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
-import com.tdevilleduc.urthehero.back.model.Page;
-import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
-import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,38 +25,29 @@ public class ProgressionService implements IProgressionService {
 
     @Autowired
     private IStoryService storyService;
+    @Autowired
+    private IPersonService personService;
+    @Autowired
+    private IPageService pageService;
 
-    @Autowired
-    private PersonDao personDao;
-    @Autowired
-    private PageDao pageDao;
     @Autowired
     private ProgressionDao progressionDao;
 
-    @Override
     public Progression doProgressionAction(Integer personId, Integer storyId, Integer pageId) {
+        Assert.notNull(personId, "The personId parameter is mandatory !");
+        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        Assert.notNull(pageId, "The pageId parameter is mandatory !");
 
-        // controle des parametres
+        if (personService.notExists(personId)) {
+            throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+        }
         if (storyService.notExists(storyId)) {
             throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
         }
-
-        Optional<Person> person = personDao.findById(personId);
-        if (person.isEmpty()) {
-            throw new PersonNotFoundException("L'utilisateur avec l'id "+ personId +" n'existe pas");
+        if (pageService.notExists(pageId)) {
+            throw new PageNotFoundException(String.format("La page avec l'id {} n'existe pas", pageId));
         }
 
-        Optional<Page> newPage = pageDao.findById(pageId);
-        if (newPage.isEmpty()) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'existe pas");
-        }
-
-        Story storyFromPage = newPage.get().getStory();
-        if (storyFromPage == null) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'est pas associée à une histoire");
-        }
-
-        // recuperation de la progression
         Optional<Progression> optionalProgression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
         if (optionalProgression.isEmpty()) {
             throw new ProgressionNotFoundException("Aucune progression avec le personId " + personId + " et le storyId " + storyId);
@@ -64,10 +55,40 @@ public class ProgressionService implements IProgressionService {
 
         Progression progression = optionalProgression.get();
 
-        // modification de la progression
+        // TODO: vérifier qu'on a le droit d'avancer sur cette page depuis la page précédente
         progression.setActualPageId(pageId);
 
         return progressionDao.save(progression);
     }
 
+    public List<Progression> findByPersonId(Integer personId) {
+        Assert.notNull(personId, "The personId parameter is mandatory !");
+        if (personService.notExists(personId)) {
+            throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+        }
+
+        return progressionDao.findByPersonId(personId);
+    }
+
+    public Optional<Progression> findByPersonIdAndStoryId(Integer personId, Integer storyId) {
+        Assert.notNull(personId, "The personId parameter is mandatory !");
+        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        if (personService.notExists(personId)) {
+            throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+        }
+        if (storyService.notExists(storyId)) {
+            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
+        }
+
+        return progressionDao.findByPersonIdAndStoryId(personId, storyId);
+    }
+
+    public Long countByStoryId(Integer storyId) {
+        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        if (storyService.notExists(storyId)) {
+            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
+        }
+
+        return progressionDao.countByStoryId(storyId);
+    }
 }

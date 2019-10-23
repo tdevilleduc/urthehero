@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
@@ -27,10 +26,6 @@ public class ProgressionController {
     @Autowired
     private PersonService personService;
 
-    // TODO: remove this dependency
-    @Autowired
-    private ProgressionDao progressionDao;
-
     @ApiOperation( value = "Récupère la liste des histoires en cours d'une personne" )
     @GetMapping(value="/person/{personId}/all")
     public Callable<ResponseEntity<List<Progression>>> getAllByPersonId(@PathVariable int personId) {
@@ -39,7 +34,7 @@ public class ProgressionController {
                 return ResponseEntity.notFound().build();
             }
 
-            return ResponseEntity.ok(progressionDao.findByPersonId(personId));
+            return ResponseEntity.ok(progressionService.findByPersonId(personId));
         };
     }
 
@@ -55,7 +50,7 @@ public class ProgressionController {
                 return ResponseEntity.notFound().build();
             }
 
-            Optional<Progression> progression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
+            Optional<Progression> progression = progressionService.findByPersonIdAndStoryId(personId, storyId);
             if (progression.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }

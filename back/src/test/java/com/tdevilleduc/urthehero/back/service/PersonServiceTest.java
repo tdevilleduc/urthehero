@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 public class PersonServiceTest extends AbstractTest {
 
     @Autowired
     private PersonService personService;
-
 
     @Test
     public void test_exists_thenCorrect() {
@@ -34,9 +35,11 @@ public class PersonServiceTest extends AbstractTest {
     }
 
     @Test
-    public void test_findByPageId_thenCorrect() {
+    public void test_findById_thenCorrect() {
         Integer personId = 1;
-        Person person = personService.findById(personId);
+        Optional<Person> optional = personService.findById(personId);
+        Assertions.assertTrue(optional.isPresent());
+        Person person = optional.get();
 
         Assertions.assertNotNull(person);
         Assertions.assertEquals(Integer.valueOf(1), person.getId());
@@ -44,5 +47,17 @@ public class PersonServiceTest extends AbstractTest {
         Assertions.assertEquals("thomas@gmail.com", person.getEmail());
         Assertions.assertEquals("tdevilleduc", person.getLogin());
         Assertions.assertEquals("password", person.getPassword());
+    }
+
+    @Test
+    public void test_findById_thenNotFound() {
+        Integer personId = 13;
+        Optional<Person> optional = personService.findById(personId);
+        Assertions.assertTrue(optional.isEmpty());
+    }
+
+    @Test
+    public void test_findById_withIdNull() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> personService.findById(null));
     }
 }

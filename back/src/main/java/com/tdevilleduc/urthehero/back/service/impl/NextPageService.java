@@ -20,9 +20,7 @@ public class NextPageService implements INextPageService {
     @Autowired
     private NextPageDao nextPageDao;
 
-    @Override
     public List<NextPage> findByPageId(Integer pageId) {
-        List<Page> pageList;
         if (pageService.notExists(pageId)) {
             throw new PageNotFoundException(String.format("La page avec l'id {} n'existe pas", pageId));
         }
