@@ -13,6 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 public class PersonServiceTest extends AbstractTest {
@@ -57,7 +59,9 @@ public class PersonServiceTest extends AbstractTest {
     }
 
     @Test
-    public void test_findById_withIdNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> personService.findById(null));
+    public void findByIdWithIdNull() {
+        // with resilience4j, IllegalArgumentException is catched and fallback method 'emptyPerson' is called
+//        Assertions.assertThrows(IllegalArgumentException.class, () -> personService.findById(null));
+        assertEquals(Optional.empty(), personService.findById(null));
     }
 }

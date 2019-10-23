@@ -71,8 +71,12 @@ public class StoryService implements IStoryService {
                 .collect(Collectors.toList());
     }
 
+    private List<Story> emptyStoryList(Throwable e) {
+        return Collections.emptyList();
+    }
+
     @CircuitBreaker(name = "story_findByPersonId")
-    @Retry(name = "story_findByPersonId", fallbackMethod = "emptyStoryList")
+//    @Retry(name = "story_findByPersonId")
     public List<Story> findByPersonId(Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         List<Progression> progressionList = progressionService.findByPersonId(personId);
@@ -83,10 +87,6 @@ public class StoryService implements IStoryService {
                 .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders)
                 .collect(Collectors.toList());
-    }
-
-    private List<Story> emptyStoryList(Throwable e) {
-        return Collections.emptyList();
     }
 
     private Optional<Story> getStoryFromProgression(Progression progression) {

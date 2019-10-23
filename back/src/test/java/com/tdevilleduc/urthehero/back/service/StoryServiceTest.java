@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(classes = BackApplication.class)
 public class StoryServiceTest extends AbstractTest {
 
-    private final static String CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID = "storyFindByPersonId";
+    private final static String CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID = "story_findByPersonId";
 
     @Autowired
     private CircuitBreakerRegistry registry;
@@ -63,7 +63,6 @@ public class StoryServiceTest extends AbstractTest {
         Assertions.assertEquals(4, story.getPages().size());
     }
 
-
     @Test
     public void findByIdWithIdNull() {
         // with resilience4j, IllegalArgumentException is catched and fallback method 'emptyStory' is called
@@ -92,10 +91,5 @@ public class StoryServiceTest extends AbstractTest {
 
         // check if circuitBreaker status is closed
         checkHealthStatus(CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID, State.CLOSED);
-    }
-
-    private void checkHealthStatus(String circuitBreakerName, State state) {
-        CircuitBreaker circuitBreaker = registry.circuitBreaker(circuitBreakerName);
-        assertEquals(state, circuitBreaker.getState());
     }
 }
