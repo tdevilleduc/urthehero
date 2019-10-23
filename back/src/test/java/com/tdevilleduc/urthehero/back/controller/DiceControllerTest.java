@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller;
 
+import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class DiceControllerTest {
+public class DiceControllerTest extends AbstractTest {
 
 
     private static final String uriController = "/api/dice";

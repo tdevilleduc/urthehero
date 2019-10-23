@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.service;
 
+import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.service.impl.PersonService;
@@ -12,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class PersonServiceTest {
+public class PersonServiceTest extends AbstractTest {
 
     @Autowired
     private PersonService personService;

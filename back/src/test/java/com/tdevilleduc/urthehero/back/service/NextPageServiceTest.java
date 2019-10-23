@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.service;
 
+import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class NextPageServiceTest {
+public class NextPageServiceTest extends AbstractTest {
 
     @Autowired
     private NextPageService nextPageService;

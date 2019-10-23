@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.service;
 
+import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class StoryServiceTest {
+public class StoryServiceTest extends AbstractTest {
 
     private final static String CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID = "storyFindByPersonId";
 
