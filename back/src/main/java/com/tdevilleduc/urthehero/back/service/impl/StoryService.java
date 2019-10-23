@@ -63,6 +63,7 @@ public class StoryService implements IStoryService {
         return Optional.empty();
     }
 
+    @Retry(name = "story_findAll", fallbackMethod = "emptyStoryList")
     public List<Story> findAll() {
         return storyDao.findAll().stream()
                 .map(this::fillStoryWithNumberOfPages)
@@ -71,6 +72,7 @@ public class StoryService implements IStoryService {
     }
 
     @CircuitBreaker(name = "story_findByPersonId")
+    @Retry(name = "story_findByPersonId", fallbackMethod = "emptyStoryList")
     public List<Story> findByPersonId(Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         List<Progression> progressionList = progressionService.findByPersonId(personId);
@@ -81,6 +83,10 @@ public class StoryService implements IStoryService {
                 .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders)
                 .collect(Collectors.toList());
+    }
+
+    private List<Story> emptyStoryList(Throwable e) {
+        return Collections.emptyList();
     }
 
     private Optional<Story> getStoryFromProgression(Progression progression) {

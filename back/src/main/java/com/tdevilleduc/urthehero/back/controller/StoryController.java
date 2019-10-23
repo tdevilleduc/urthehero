@@ -6,6 +6,7 @@ import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.util.concurrent.Callable;
 @RestController
 @RequestMapping("/api/story")
 @CircuitBreaker(name = "storyController")
+@Retry(name = "storyController")
 public class StoryController {
 
     @Autowired
