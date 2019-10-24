@@ -7,7 +7,11 @@ import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.helpers.MessageFormatter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +34,19 @@ public class PageController {
         this.pageService = pageService;
     }
 
-    @ApiOperation( value = "Récupère une page à partir de son identifiant" )
-    @GetMapping(value = "/{pageId}")
-    public Callable<ResponseEntity<Page>> getPageById(@PathVariable int pageId) {
+    @GetMapping(value = "/{pageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.page.get-by-id.value}",
+            notes = "${swagger.controller.page.get-by-id.notes}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = ""),
+            @ApiResponse(code = 408, message = ""),
+            @ApiResponse(code = 500, message = "")
+    })
+    public @ResponseBody Callable<ResponseEntity<Page>> getPageById(
+            @PathVariable Integer pageId) {
         return () -> {
             Optional<Page> optional = pageService.findById(pageId);
             return optional
@@ -43,7 +57,8 @@ public class PageController {
 
     @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
     @GetMapping(value = "/all/story/{storyId}")
-    public Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(@PathVariable int storyId) {
+    public @ResponseBody Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(
+            @PathVariable Integer storyId) {
         return () -> {
             Optional<Story> optional = storyService.findById(storyId);
             return optional
@@ -55,7 +70,8 @@ public class PageController {
 
     @ApiOperation( value = "Récupère la première page d'une histoire" )
     @GetMapping(value = "/story/{storyId}")
-    public Callable<ResponseEntity<Page>> getFirstPageByStoryId(@PathVariable int storyId) {
+    public @ResponseBody Callable<ResponseEntity<Page>> getFirstPageByStoryId(
+            @PathVariable int storyId) {
         return () -> {
             Optional<Story> optional = storyService.findById(storyId);
             return optional

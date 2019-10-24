@@ -9,14 +9,16 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -39,17 +41,35 @@ public class StoryController {
         this.pageService = pageService;
     }
 
-    @ResponseBody
-    @ApiOperation( value = "Récupère la liste des histoires" )
-    @GetMapping(value = "/all")
-    public Callable<ResponseEntity<List<Story>>> getAllStories() {
+
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.story.get-all.value}",
+            notes = "${swagger.controller.story.get-all.notes}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = ""),
+            @ApiResponse(code = 408, message = ""),
+            @ApiResponse(code = 500, message = "")
+    })
+    public @ResponseBody Callable<ResponseEntity<List<Story>>> getAllStories() {
         return () -> ResponseEntity.ok(storyService.findAll());
     }
 
-    @ResponseBody
-    @ApiOperation( value = "Récupère une histoire à partir de son identifiant" )
-    @GetMapping(value = "/{storyId}")
-    public Callable<ResponseEntity<Story>> getStoryById(@PathVariable @NotNull int storyId) {
+    @GetMapping(value = "/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.story.get-by-id.value}",
+            notes = "${swagger.controller.story.get-by-id.notes}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = ""),
+            @ApiResponse(code = 408, message = ""),
+            @ApiResponse(code = 500, message = "")
+    })
+    public @ResponseBody Callable<ResponseEntity<Story>> getStoryById(
+            @PathVariable Integer storyId) {
         return () -> {
             Optional<Story> optional = this.storyService.findById(storyId);
             return optional
@@ -58,9 +78,19 @@ public class StoryController {
         };
     }
 
-    @ResponseBody
-    @GetMapping(value = "/all/person/{personId}")
-    public Callable<ResponseEntity<List<Story>>> getStoryByPersonId(@PathVariable @NotNull Integer personId) {
+    @GetMapping(value = "/all/person/{personId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.story.get-by-person-id.value}",
+            notes = "${swagger.controller.story.get-by-person-id.notes}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = ""),
+            @ApiResponse(code = 404, message = ""),
+            @ApiResponse(code = 408, message = ""),
+            @ApiResponse(code = 500, message = "")
+    })
+    public @ResponseBody Callable<ResponseEntity<List<Story>>> getStoryByPersonId(
+            @PathVariable Integer personId) {
         return () -> {
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
@@ -70,7 +100,8 @@ public class StoryController {
     }
 
     @PutMapping
-    public Story createStory(@RequestBody @NotNull Story story) {
+    public Story createStory(@RequestBody Story story) {
+        //TODO: déplacer les controles dans le service ?
         Assert.notNull(story.getAuthorId(), () -> {
             throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
         });
@@ -90,7 +121,8 @@ public class StoryController {
     }
 
     @PostMapping
-    public Story updateStory(@RequestBody @NotNull Story story) {
+    public Story updateStory(@RequestBody Story story) {
+        //TODO: déplacer les controles dans le service ?
         Assert.notNull(story.getAuthorId(), () -> {
             throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
         });
@@ -113,7 +145,7 @@ public class StoryController {
     }
 
     @DeleteMapping(value = "/{storyId}")
-    public void deleteStory(@PathVariable @NotNull Integer storyId) {
+    public void deleteStory(@PathVariable Integer storyId) {
         storyService.delete(storyId);
     }
 }

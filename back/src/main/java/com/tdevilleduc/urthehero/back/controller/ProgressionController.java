@@ -30,7 +30,7 @@ public class ProgressionController {
 
     @ApiOperation( value = "Récupère la liste des histoires en cours d'une personne" )
     @GetMapping(value="/person/{personId}/all")
-    public Callable<ResponseEntity<List<Progression>>> getAllByPersonId(@PathVariable int personId) {
+    public Callable<ResponseEntity<List<Progression>>> getAllByPersonId(@PathVariable Integer personId) {
         return () -> {
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
@@ -42,7 +42,7 @@ public class ProgressionController {
 
     @ApiOperation( value = "Récupère la progression d'une personne sur une histoire" )
     @GetMapping(value="/person/{personId}/story/{storyId}")
-    public Callable<ResponseEntity<Progression>> getOneByPersonIdAndStoryId(@PathVariable int personId, @PathVariable int storyId) {
+    public Callable<ResponseEntity<Progression>> getOneByPersonIdAndStoryId(@PathVariable Integer personId, @PathVariable Integer storyId) {
         return () -> {
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
@@ -63,7 +63,7 @@ public class ProgressionController {
 
     @ApiOperation( value = "Met à jour la progression d'une personne sur une histoire avec une page définie" )
     @PostMapping(value="/person/{personId}/story/{storyId}/page/{newPageId}")
-    public Callable<ResponseEntity<Progression>> postProgressionAction(@PathVariable int personId, @PathVariable int storyId, @PathVariable int newPageId) {
+    public Callable<ResponseEntity<Progression>> postProgressionAction(@PathVariable Integer personId, @PathVariable Integer storyId, @PathVariable Integer newPageId) {
         return () -> ResponseEntity.ok(progressionService.doProgressionAction(personId, storyId, newPageId));
     }
 

@@ -34,7 +34,7 @@ public class PersonController {
 
     @ApiOperation( value = "Récupère un utilisateur par son identifiant id" )
     @GetMapping(value="/{personId}")
-    public Callable<ResponseEntity<Person>> getPersonById(@PathVariable int personId) {
+    public Callable<ResponseEntity<Person>> getPersonById(@PathVariable Integer personId) {
         return () -> {
             Optional<Person> optional = personService.findById(personId);
             return optional
