@@ -42,10 +42,10 @@ public class ProgressionService implements IProgressionService {
             throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
         }
         if (storyService.notExists(storyId)) {
-            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
+            throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
         }
         if (pageService.notExists(pageId)) {
-            throw new PageNotFoundException(String.format("La page avec l'id {} n'existe pas", pageId));
+            throw new PageNotFoundException(MessageFormatter.format("La page avec l'id {} n'existe pas", pageId).getMessage());
         }
 
         Optional<Progression> optionalProgression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
@@ -77,7 +77,7 @@ public class ProgressionService implements IProgressionService {
             throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
         }
         if (storyService.notExists(storyId)) {
-            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
+            throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
         }
 
         return progressionDao.findByPersonIdAndStoryId(personId, storyId);
@@ -86,7 +86,7 @@ public class ProgressionService implements IProgressionService {
     public Long countByStoryId(Integer storyId) {
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         if (storyService.notExists(storyId)) {
-            throw new StoryNotFoundException(String.format("L'histoire avec l'id {} n'existe pas", storyId));
+            throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
         }
 
         return progressionDao.countByStoryId(storyId);
