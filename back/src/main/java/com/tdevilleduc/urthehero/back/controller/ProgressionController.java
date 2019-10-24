@@ -1,12 +1,11 @@
 package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.model.Progression;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
-import com.tdevilleduc.urthehero.back.service.impl.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +18,15 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/progression")
 public class ProgressionController {
 
-    @Autowired
     private IProgressionService progressionService;
-    @Autowired
     private IStoryService storyService;
-    @Autowired
-    private PersonService personService;
+    private IPersonService personService;
+
+    public ProgressionController(IProgressionService progressionService, IStoryService storyService, IPersonService personService) {
+        this.progressionService = progressionService;
+        this.storyService = storyService;
+        this.personService = personService;
+    }
 
     @ApiOperation( value = "Récupère la liste des histoires en cours d'une personne" )
     @GetMapping(value="/person/{personId}/all")

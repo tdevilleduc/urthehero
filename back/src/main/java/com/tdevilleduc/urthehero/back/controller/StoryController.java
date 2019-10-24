@@ -29,12 +29,15 @@ import java.util.concurrent.Callable;
 @Retry(name = "storyController")
 public class StoryController {
 
-    @Autowired
     private IStoryService storyService;
-    @Autowired
     private IPersonService personService;
-    @Autowired
     private IPageService pageService;
+
+    public StoryController(IStoryService storyService, IPersonService personService, IPageService pageService) {
+        this.storyService = storyService;
+        this.personService = personService;
+        this.pageService = pageService;
+    }
 
     @ResponseBody
     @ApiOperation( value = "Récupère la liste des histoires" )

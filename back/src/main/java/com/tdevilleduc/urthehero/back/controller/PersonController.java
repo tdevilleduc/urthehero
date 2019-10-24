@@ -6,7 +6,6 @@ import com.tdevilleduc.urthehero.back.service.IPersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.helpers.MessageFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +20,11 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/person")
 public class PersonController {
 
-    @Autowired
     private IPersonService personService;
+
+    public PersonController(IPersonService personService) {
+        this.personService = personService;
+    }
 
     @ApiOperation( value = "Récupère la liste des utilisateurs" )
     @GetMapping(value="/all")

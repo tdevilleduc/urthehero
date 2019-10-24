@@ -8,7 +8,6 @@ import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.helpers.MessageFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +22,13 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/page")
 public class PageController {
 
-    @Autowired
     private IStoryService storyService;
-    @Autowired
     private IPageService pageService;
+
+    public PageController(IStoryService storyService, IPageService pageService) {
+        this.storyService = storyService;
+        this.pageService = pageService;
+    }
 
     @ApiOperation( value = "Récupère une page à partir de son identifiant" )
     @GetMapping(value = "/{pageId}")

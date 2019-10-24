@@ -5,7 +5,6 @@ import com.tdevilleduc.urthehero.back.model.DiceValue;
 import com.tdevilleduc.urthehero.back.service.IDiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +21,11 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/dice")
 public class DiceController {
 
-    @Autowired
     private IDiceService diceService;
+
+    public DiceController(IDiceService diceService) {
+        this.diceService = diceService;
+    }
 
     @ApiOperation( value = "Effectue un lancer de dés" )
     @GetMapping(value = "/roll/{dice}")
