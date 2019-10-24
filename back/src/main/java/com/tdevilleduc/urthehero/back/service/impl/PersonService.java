@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +35,7 @@ public class PersonService implements IPersonService {
         return ! exists(personId);
     }
 
-    @CircuitBreaker(name = "person_findById", fallbackMethod = "emptyPerson")
+    @CircuitBreaker(name = "personService_findById", fallbackMethod = "emptyPerson")
     public Optional<Person> findById(Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         return personDao.findById(personId);
@@ -51,7 +50,7 @@ public class PersonService implements IPersonService {
         return Optional.empty();
     }
 
-    @CircuitBreaker(name = "person_findAll", fallbackMethod = "emptyPersonList")
+    @CircuitBreaker(name = "personService_findAll", fallbackMethod = "emptyPersonList")
     public List<Person> findAll() {
         return personDao.findAll();
     }

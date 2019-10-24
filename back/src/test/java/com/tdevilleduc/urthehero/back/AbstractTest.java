@@ -24,7 +24,7 @@ public abstract class AbstractTest {
     }
 
     private void resetAllCircuitBreakers() {
-        registry.getAllCircuitBreakers().forEach(circuitBreaker -> circuitBreaker.reset());
+        registry.getAllCircuitBreakers().forEach(CircuitBreaker::reset);
     }
 
     protected void checkHealthStatus(String circuitBreakerName, CircuitBreaker.State state) {

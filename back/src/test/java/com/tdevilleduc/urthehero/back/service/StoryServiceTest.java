@@ -4,7 +4,6 @@ import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker.State;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.vavr.collection.Stream;
@@ -26,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(classes = BackApplication.class)
 public class StoryServiceTest extends AbstractTest {
 
-    private final static String CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID = "story_findByPersonId";
+    private final static String CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID = "storyService_findByPersonId";
 
     @Autowired
     private CircuitBreakerRegistry registry;

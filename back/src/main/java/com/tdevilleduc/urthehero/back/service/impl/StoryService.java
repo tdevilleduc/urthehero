@@ -2,7 +2,6 @@ package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
-import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
@@ -50,7 +49,7 @@ public class StoryService implements IStoryService {
         return ! exists(storyId);
     }
 
-    @CircuitBreaker(name = "storyFindById", fallbackMethod = "emptyStory")
+    @CircuitBreaker(name = "storyService_findById", fallbackMethod = "emptyStory")
     public Optional<Story> findById(Integer storyId) {
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         return storyDao.findById(storyId)
@@ -63,7 +62,7 @@ public class StoryService implements IStoryService {
         return Optional.empty();
     }
 
-    @Retry(name = "story_findAll", fallbackMethod = "emptyStoryList")
+    @Retry(name = "storyService_findAll", fallbackMethod = "emptyStoryList")
     public List<Story> findAll() {
         return storyDao.findAll().stream()
                 .map(this::fillStoryWithNumberOfPages)
@@ -75,7 +74,7 @@ public class StoryService implements IStoryService {
         return Collections.emptyList();
     }
 
-    @CircuitBreaker(name = "story_findByPersonId")
+    @CircuitBreaker(name = "storyService_findByPersonId")
 //    @Retry(name = "story_findByPersonId")
     public List<Story> findByPersonId(Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
