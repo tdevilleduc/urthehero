@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.service;
 
 import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
+import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.service.impl.PersonService;
 import org.junit.jupiter.api.Assertions;
@@ -63,5 +64,16 @@ public class PersonServiceTest extends AbstractTest {
         // with resilience4j, IllegalArgumentException is catched and fallback method 'emptyPerson' is called
 //        Assertions.assertThrows(IllegalArgumentException.class, () -> personService.findById(null));
         assertEquals(Optional.empty(), personService.findById(null));
+    }
+
+    @Test
+    public void deleteWithIdNull() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> personService.delete(null));
+    }
+
+    @Test
+    public void delete_thenNotFound() {
+        Integer personId = 13;
+        Assertions.assertThrows(PersonNotFoundException.class, () -> personService.delete(personId));
     }
 }

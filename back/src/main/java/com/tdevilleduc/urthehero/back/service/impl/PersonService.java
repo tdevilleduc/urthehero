@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonInternalErrorException;
+import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -70,7 +71,7 @@ public class PersonService implements IPersonService {
         optional
             .ifPresentOrElse(person -> personDao.delete(person),
                 () -> {
-                    throw new PersonInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+                    throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
                 }
         );
     }

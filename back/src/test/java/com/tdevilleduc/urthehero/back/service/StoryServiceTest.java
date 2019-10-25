@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.service;
 
 import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
+import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.impl.StoryService;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker.State;
@@ -90,5 +91,11 @@ public class StoryServiceTest extends AbstractTest {
 
         // check if circuitBreaker status is closed
         checkHealthStatus(CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID, State.CLOSED);
+    }
+
+    @Test
+    public void delete_thenNotFound() {
+        Integer storyId = 13;
+        Assertions.assertThrows(StoryNotFoundException.class, () -> storyService.delete(storyId));
     }
 }

@@ -1,7 +1,7 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.PageDao;
-import com.tdevilleduc.urthehero.back.exceptions.PageInternalErrorException;
+import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.service.INextPageService;
@@ -65,7 +65,7 @@ public class PageService implements IPageService {
         optional
             .ifPresentOrElse(page -> pageDao.delete(page),
                 () -> {
-                    throw new PageInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", pageId).getMessage());
+                    throw new PageNotFoundException(MessageFormatter.format("La page avec l'id {} n'existe pas", pageId).getMessage());
                 }
         );
     }

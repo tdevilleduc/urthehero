@@ -1,7 +1,7 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
-import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
+import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
@@ -115,7 +115,7 @@ public class StoryService implements IStoryService {
         optional
             .ifPresentOrElse(story -> storyDao.delete(story),
                 () -> {
-                    throw new StoryInternalErrorException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+                    throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
                 }
         );
     }

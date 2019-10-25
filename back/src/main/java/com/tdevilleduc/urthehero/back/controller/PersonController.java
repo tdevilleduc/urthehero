@@ -44,11 +44,13 @@ public class PersonController {
     }
   
     @PutMapping
-    public Person createPerson(@RequestBody @NotNull Person person) {
-        if (person.getId() != null && personService.exists(person.getId())) {
-            throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", person.getId()).getMessage());
-        }
-        return personService.createOrUpdate(person);
+    public Callable<ResponseEntity<Person>> createPerson(@RequestBody @NotNull Person person) {
+        return () -> {
+            if (person.getId() != null && personService.exists(person.getId())) {
+                throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", person.getId()).getMessage());
+            }
+            return ResponseEntity.ok(personService.createOrUpdate(person));
+        };
     }
 
     @PostMapping

@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.service;
 
 import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
+import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Position;
@@ -81,6 +82,12 @@ public class PageServiceTest extends AbstractTest {
     @Test
     public void test_findById_withIdNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> pageService.findById(null));
+    }
+
+    @Test
+    public void delete_thenNotFound() {
+        Integer pageId = 13;
+        Assertions.assertThrows(PageNotFoundException.class, () -> pageService.delete(pageId));
     }
 
 }
