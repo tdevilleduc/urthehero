@@ -31,9 +31,9 @@ import java.util.concurrent.Callable;
 @Retry(name = "storyController")
 public class StoryController {
 
-    private IStoryService storyService;
-    private IPersonService personService;
-    private IPageService pageService;
+    private final IStoryService storyService;
+    private final IPersonService personService;
+    private final IPageService pageService;
 
     public StoryController(IStoryService storyService, IPersonService personService, IPageService pageService) {
         this.storyService = storyService;

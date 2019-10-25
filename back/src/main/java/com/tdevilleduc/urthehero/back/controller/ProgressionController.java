@@ -18,9 +18,9 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/progression")
 public class ProgressionController {
 
-    private IProgressionService progressionService;
-    private IStoryService storyService;
-    private IPersonService personService;
+    private final IProgressionService progressionService;
+    private final IStoryService storyService;
+    private final IPersonService personService;
 
     public ProgressionController(IProgressionService progressionService, IStoryService storyService, IPersonService personService) {
         this.progressionService = progressionService;

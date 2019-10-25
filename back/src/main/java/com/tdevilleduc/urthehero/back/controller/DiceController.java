@@ -21,7 +21,7 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/dice")
 public class DiceController {
 
-    private IDiceService diceService;
+    private final IDiceService diceService;
 
     public DiceController(IDiceService diceService) {
         this.diceService = diceService;

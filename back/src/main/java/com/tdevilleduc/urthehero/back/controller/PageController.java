@@ -26,8 +26,8 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/page")
 public class PageController {
 
-    private IStoryService storyService;
-    private IPageService pageService;
+    private final IStoryService storyService;
+    private final IPageService pageService;
 
     public PageController(IStoryService storyService, IPageService pageService) {
         this.storyService = storyService;
@@ -76,7 +76,7 @@ public class PageController {
             Optional<Story> optional = storyService.findById(storyId);
             return optional
                     .map(Story::getFirstPageId)
-                    .map(firstPageId -> pageService.findById(firstPageId))
+                    .map(pageService::findById)
                     .map(Optional::get)
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.notFound().build());

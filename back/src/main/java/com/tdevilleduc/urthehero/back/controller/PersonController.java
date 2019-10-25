@@ -20,7 +20,7 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/person")
 public class PersonController {
 
-    private IPersonService personService;
+    private final IPersonService personService;
 
     public PersonController(IPersonService personService) {
         this.personService = personService;
