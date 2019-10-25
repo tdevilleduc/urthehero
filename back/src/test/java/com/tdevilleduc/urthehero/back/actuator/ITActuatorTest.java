@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.actuator;
 
+import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = {BackApplication.class})
-public class ITActuatorTest {
+public class ITActuatorTest extends AbstractTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
