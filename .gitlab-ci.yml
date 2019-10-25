@@ -28,8 +28,12 @@ build_job:
 
 test_job:
   stage: test
+  services:
+    - docker:stable-dind
   script:
-    - ./mvnw test
+    - apk add --no-cache docker
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - ./mvnw install -PbuildDocker
       -Dhttps.protocols=TLSv1.2
       -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
       -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
