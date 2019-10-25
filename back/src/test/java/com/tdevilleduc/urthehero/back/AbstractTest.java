@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class AbstractTest {
 
     @ClassRule
-    public static final MySQLContainer mySqlContainer = (MySQLContainer) new MySQLContainer()
+    public static final MySQLContainer mySqlContainer = new MySQLContainer()
             .withDatabaseName("test")
             .withUsername("test")
             .withPassword("test");
@@ -47,8 +47,7 @@ public abstract class AbstractTest {
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
-
-
+    
     private void resetAllCircuitBreakers() {
         registry.getAllCircuitBreakers().forEach(CircuitBreaker::reset);
     }
