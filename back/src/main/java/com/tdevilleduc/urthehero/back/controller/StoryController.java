@@ -9,8 +9,6 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.http.HttpStatus;
@@ -47,12 +45,6 @@ public class StoryController {
     @ApiOperation(
             value = "${swagger.controller.story.get-all.value}",
             notes = "${swagger.controller.story.get-all.notes}")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = ""),
-            @ApiResponse(code = 404, message = ""),
-            @ApiResponse(code = 408, message = ""),
-            @ApiResponse(code = 500, message = "")
-    })
     public @ResponseBody Callable<ResponseEntity<List<Story>>> getAllStories() {
         return () -> ResponseEntity.ok(storyService.findAll());
     }
@@ -62,12 +54,6 @@ public class StoryController {
     @ApiOperation(
             value = "${swagger.controller.story.get-by-id.value}",
             notes = "${swagger.controller.story.get-by-id.notes}")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = ""),
-            @ApiResponse(code = 404, message = ""),
-            @ApiResponse(code = 408, message = ""),
-            @ApiResponse(code = 500, message = "")
-    })
     public @ResponseBody Callable<ResponseEntity<Story>> getStoryById(
             @PathVariable Integer storyId) {
         return () -> {
@@ -83,12 +69,6 @@ public class StoryController {
     @ApiOperation(
             value = "${swagger.controller.story.get-by-person-id.value}",
             notes = "${swagger.controller.story.get-by-person-id.notes}")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = ""),
-            @ApiResponse(code = 404, message = ""),
-            @ApiResponse(code = 408, message = ""),
-            @ApiResponse(code = 500, message = "")
-    })
     public @ResponseBody Callable<ResponseEntity<List<Story>>> getStoryByPersonId(
             @PathVariable Integer personId) {
         return () -> {
@@ -100,7 +80,7 @@ public class StoryController {
     }
 
     @PutMapping
-    public Story createStory(@RequestBody Story story) {
+    public @ResponseBody Story createStory(@RequestBody Story story) {
         //TODO: déplacer les controles dans le service ?
         Assert.notNull(story.getAuthorId(), () -> {
             throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
@@ -121,7 +101,7 @@ public class StoryController {
     }
 
     @PostMapping
-    public Story updateStory(@RequestBody Story story) {
+    public @ResponseBody Story updateStory(@RequestBody Story story) {
         //TODO: déplacer les controles dans le service ?
         Assert.notNull(story.getAuthorId(), () -> {
             throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
@@ -145,7 +125,7 @@ public class StoryController {
     }
 
     @DeleteMapping(value = "/{storyId}")
-    public void deleteStory(@PathVariable Integer storyId) {
+    public @ResponseBody void deleteStory(@PathVariable Integer storyId) {
         storyService.delete(storyId);
     }
 }

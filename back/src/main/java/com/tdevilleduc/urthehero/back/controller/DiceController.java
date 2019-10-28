@@ -5,17 +5,18 @@ import com.tdevilleduc.urthehero.back.model.DiceValue;
 import com.tdevilleduc.urthehero.back.service.IDiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+@Slf4j
 @Api(value = "Dice", tags = { "Dice Controller" } )
 @RestController
 @RequestMapping("/api/dice")
@@ -27,18 +28,24 @@ public class DiceController {
         this.diceService = diceService;
     }
 
-    @ApiOperation( value = "Effectue un lancer de dés" )
-    @GetMapping(value = "/roll/{dice}")
-    public Callable<ResponseEntity<DiceValue>> roll(@PathVariable Dice dice) {
+    @GetMapping(value = "/roll/{dice}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.dice.roll.value}",
+            notes = "${swagger.controller.dice.roll.notes}")
+    public @ResponseBody Callable<ResponseEntity<DiceValue>> roll(@PathVariable Dice dice) {
         return () -> {
             Assert.notNull(dice, "The dice parameter is mandatory !");
             return ResponseEntity.ok(diceService.roll(dice));
         };
     }
 
-    @ApiOperation( value = "Effectue un lancer de dés avec plusieurs dés en même temps" )
-    @GetMapping(value = "/roll/{dice}/{count}")
-    public Callable<ResponseEntity<List<DiceValue>>> roll(@PathVariable Dice dice, @PathVariable Integer count) {
+    @GetMapping(value = "/roll/{dice}/{count}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.dice.roll-many.value}",
+            notes = "${swagger.controller.dice.roll-many.notes}")
+    public @ResponseBody Callable<ResponseEntity<List<DiceValue>>> roll(@PathVariable Dice dice, @PathVariable Integer count) {
         return () -> {
             Assert.notNull(dice, "The dice parameter is mandatory !");
             Assert.notNull(count, "The dice parameter is mandatory !");

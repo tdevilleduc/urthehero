@@ -7,8 +7,7 @@ import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+@Slf4j
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
 @RequestMapping("/api/page")
@@ -39,12 +39,6 @@ public class PageController {
     @ApiOperation(
             value = "${swagger.controller.page.get-by-id.value}",
             notes = "${swagger.controller.page.get-by-id.notes}")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = ""),
-            @ApiResponse(code = 404, message = ""),
-            @ApiResponse(code = 408, message = ""),
-            @ApiResponse(code = 500, message = "")
-    })
     public @ResponseBody Callable<ResponseEntity<Page>> getPageById(
             @PathVariable Integer pageId) {
         return () -> {
@@ -55,8 +49,11 @@ public class PageController {
         };
     }
 
-    @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
-    @GetMapping(value = "/all/story/{storyId}")
+    @GetMapping(value = "/all/story/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.page.get-all-by-story-id.value}",
+            notes = "${swagger.controller.page.get-all-by-story-id.notes}")
     public @ResponseBody Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(
             @PathVariable Integer storyId) {
         return () -> {
@@ -68,8 +65,11 @@ public class PageController {
         };
     }
 
-    @ApiOperation( value = "Récupère la première page d'une histoire" )
-    @GetMapping(value = "/story/{storyId}")
+    @GetMapping(value = "/story/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.page.get-first-by-story-id.value}",
+            notes = "${swagger.controller.page.get-first-by-story-id.notes}")
     public @ResponseBody Callable<ResponseEntity<Page>> getFirstPageByStoryId(
             @PathVariable int storyId) {
         return () -> {
