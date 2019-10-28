@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +36,13 @@ public class PersonController {
     @ApiOperation(
             value = "${swagger.controller.person.get-all.value}",
             notes = "${swagger.controller.person.get-all.notes}")
-    public @ResponseBody Callable<ResponseEntity<List<Person>>> getPersons() {
-        return () -> ResponseEntity.ok(personService.findAll());
+    public @ResponseBody Callable<ResponseEntity<List<Person>>> getPersons(HttpServletRequest request) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            return ResponseEntity.ok(personService.findAll());
+        };
     }
 
     @GetMapping(value="/{personId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,8 +50,12 @@ public class PersonController {
     @ApiOperation(
             value = "${swagger.controller.person.get-by-id.value}",
             notes = "${swagger.controller.person.get-by-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<Person>> getPersonById(@PathVariable Integer personId) {
+    public @ResponseBody Callable<ResponseEntity<Person>> getPersonById(HttpServletRequest request,
+                                                                        @PathVariable Integer personId) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             Optional<Person> optional = personService.findById(personId);
             return optional
                     .map(ResponseEntity::ok)
@@ -54,8 +64,12 @@ public class PersonController {
     }
   
     @PutMapping
-    public Callable<ResponseEntity<Person>> createPerson(@RequestBody @NotNull Person person) {
+    public @ResponseBody Callable<ResponseEntity<Person>> createPerson(HttpServletRequest request,
+                                                         @RequestBody @NotNull Person person) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             if (person.getId() != null && personService.exists(person.getId())) {
                 throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", person.getId()).getMessage());
             }
@@ -64,15 +78,25 @@ public class PersonController {
     }
 
     @PostMapping
-    public Person updatePerson(@RequestBody @NotNull Person person) {
-        Assert.notNull(person.getId(), () -> {
-            throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
-        });
-        return personService.createOrUpdate(person);
+    public @ResponseBody Callable<ResponseEntity<Person>> updatePerson(HttpServletRequest request,
+                               @RequestBody @NotNull Person person) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Assert.notNull(person.getId(), () -> {
+                throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
+            });
+            return ResponseEntity.ok(personService.createOrUpdate(person));
+        };
     }
 
     @DeleteMapping(value = "/{personId}")
-    public void deletePerson(@PathVariable @NotNull Integer personId) {
+    public @ResponseBody void deletePerson(HttpServletRequest request,
+                             @PathVariable @NotNull Integer personId) {
+        if (log.isInfoEnabled()) {
+            log.info("call: {}", request.getRequestURI());
+        }
         personService.delete(personId);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +40,12 @@ public class PageController {
     @ApiOperation(
             value = "${swagger.controller.page.get-by-id.value}",
             notes = "${swagger.controller.page.get-by-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<Page>> getPageById(
-            @PathVariable Integer pageId) {
+    public @ResponseBody Callable<ResponseEntity<Page>> getPageById(HttpServletRequest request,
+                                                                    @PathVariable Integer pageId) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             Optional<Page> optional = pageService.findById(pageId);
             return optional
                     .map(ResponseEntity::ok)
@@ -54,9 +58,12 @@ public class PageController {
     @ApiOperation(
             value = "${swagger.controller.page.get-all-by-story-id.value}",
             notes = "${swagger.controller.page.get-all-by-story-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(
-            @PathVariable Integer storyId) {
+    public @ResponseBody Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(HttpServletRequest request,
+                                                                                   @PathVariable Integer storyId) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             Optional<Story> optional = storyService.findById(storyId);
             return optional
                     .map(Story::getPages)
@@ -70,9 +77,12 @@ public class PageController {
     @ApiOperation(
             value = "${swagger.controller.page.get-first-by-story-id.value}",
             notes = "${swagger.controller.page.get-first-by-story-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<Page>> getFirstPageByStoryId(
-            @PathVariable int storyId) {
+    public @ResponseBody Callable<ResponseEntity<Page>> getFirstPageByStoryId(HttpServletRequest request,
+                                                                              @PathVariable int storyId) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             Optional<Story> optional = storyService.findById(storyId);
             return optional
                     .map(Story::getFirstPageId)
@@ -84,23 +94,39 @@ public class PageController {
     }
 
     @PutMapping
-    public Page createPage(@RequestBody @NotNull Page page) {
-        if (page.getId() != null && pageService.exists(page.getId())) {
-            throw new PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.getId()).getMessage());
-        }
-        return pageService.createOrUpdate(page);
+    public @ResponseBody Callable<ResponseEntity<Page>> createPage(HttpServletRequest request,
+                           @RequestBody @NotNull Page page) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            if (page.getId() != null && pageService.exists(page.getId())) {
+                throw new PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.getId()).getMessage());
+            }
+            return ResponseEntity.ok(pageService.createOrUpdate(page));
+        };
     }
 
     @PostMapping
-    public Page updatePage(@RequestBody @NotNull Page page) {
-        Assert.notNull(page.getId(), () -> {
-            throw new PageInternalErrorException("L'identifiant de la page passée en paramètre ne peut pas être null");
-        });
-        return pageService.createOrUpdate(page);
+    public @ResponseBody Callable<ResponseEntity<Page>> updatePage(HttpServletRequest request,
+                           @RequestBody @NotNull Page page) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Assert.notNull(page.getId(), () -> {
+                throw new PageInternalErrorException("L'identifiant de la page passée en paramètre ne peut pas être null");
+            });
+            return ResponseEntity.ok(pageService.createOrUpdate(page));
+        };
     }
 
     @DeleteMapping(value = "/{pageId}")
-    public void deletePage(@PathVariable @NotNull Integer pageId) {
+    public @ResponseBody void deletePage(HttpServletRequest request,
+                           @PathVariable @NotNull Integer pageId) {
+        if (log.isInfoEnabled()) {
+            log.info("call: {}", request.getRequestURI());
+        }
         pageService.delete(pageId);
     }
 }

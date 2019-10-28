@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -33,8 +34,12 @@ public class DiceController {
     @ApiOperation(
             value = "${swagger.controller.dice.roll.value}",
             notes = "${swagger.controller.dice.roll.notes}")
-    public @ResponseBody Callable<ResponseEntity<DiceValue>> roll(@PathVariable Dice dice) {
+    public @ResponseBody Callable<ResponseEntity<DiceValue>> roll(HttpServletRequest request,
+                                                                  @PathVariable Dice dice) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             Assert.notNull(dice, "The dice parameter is mandatory !");
             return ResponseEntity.ok(diceService.roll(dice));
         };
@@ -45,8 +50,13 @@ public class DiceController {
     @ApiOperation(
             value = "${swagger.controller.dice.roll-many.value}",
             notes = "${swagger.controller.dice.roll-many.notes}")
-    public @ResponseBody Callable<ResponseEntity<List<DiceValue>>> roll(@PathVariable Dice dice, @PathVariable Integer count) {
+    public @ResponseBody Callable<ResponseEntity<List<DiceValue>>> roll(HttpServletRequest request,
+                                                                        @PathVariable Dice dice,
+                                                                        @PathVariable Integer count) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             Assert.notNull(dice, "The dice parameter is mandatory !");
             Assert.notNull(count, "The dice parameter is mandatory !");
             List<DiceValue> diceValues = new ArrayList<>();

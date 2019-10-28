@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -37,8 +38,12 @@ public class ProgressionController {
     @ApiOperation(
             value = "${swagger.controller.progression.get-all-by-person-id.value}",
             notes = "${swagger.controller.progression.get-all-by-person-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<List<Progression>>> getAllByPersonId(@PathVariable Integer personId) {
+    public @ResponseBody Callable<ResponseEntity<List<Progression>>> getAllByPersonId(HttpServletRequest request,
+                                                                                      @PathVariable Integer personId) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
             }
@@ -52,8 +57,13 @@ public class ProgressionController {
     @ApiOperation(
             value = "${swagger.controller.progression.get-by-person-id-and-story-id.value}",
             notes = "${swagger.controller.progression.get-by-person-id-and-story-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<Progression>> getOneByPersonIdAndStoryId(@PathVariable Integer personId, @PathVariable Integer storyId) {
+    public @ResponseBody Callable<ResponseEntity<Progression>> getOneByPersonIdAndStoryId(HttpServletRequest request,
+                                                                                          @PathVariable Integer personId,
+                                                                                          @PathVariable Integer storyId) {
         return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
             }
@@ -73,8 +83,16 @@ public class ProgressionController {
 
     @ApiOperation( value = "Met à jour la progression d'une personne sur une histoire avec une page définie" )
     @PostMapping(value="/person/{personId}/story/{storyId}/page/{newPageId}")
-    public Callable<ResponseEntity<Progression>> postProgressionAction(@PathVariable Integer personId, @PathVariable Integer storyId, @PathVariable Integer newPageId) {
-        return () -> ResponseEntity.ok(progressionService.doProgressionAction(personId, storyId, newPageId));
+    public @ResponseBody Callable<ResponseEntity<Progression>> postProgressionAction(HttpServletRequest request,
+                                                                       @PathVariable Integer personId,
+                                                                       @PathVariable Integer storyId,
+                                                                       @PathVariable Integer newPageId) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            return ResponseEntity.ok(progressionService.doProgressionAction(personId, storyId, newPageId));
+        };
     }
 
 
