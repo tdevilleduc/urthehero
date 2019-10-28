@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>config-server</artifactId>
 	<name>config-server</name>
+	<version>0.1.0</version>
 
 	<properties>
 		<java.version>11</java.version>

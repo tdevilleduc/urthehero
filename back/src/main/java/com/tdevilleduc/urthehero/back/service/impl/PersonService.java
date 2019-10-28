@@ -1,7 +1,6 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
-import com.tdevilleduc.urthehero.back.exceptions.PersonInternalErrorException;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
