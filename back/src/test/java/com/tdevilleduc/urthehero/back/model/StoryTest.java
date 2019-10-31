@@ -22,7 +22,7 @@ public class StoryTest {
         Assertions.assertTrue(story.getPages().isEmpty());
 
         Story secondStory = new Story();
-        secondStory.setId(storyId);
+        secondStory.setStoryId(storyId);
         secondStory.setTitle(storyTitle);
         secondStory.setAuthorId(storyAuthorId);
         secondStory.setFirstPageId(storyFirstPageId);

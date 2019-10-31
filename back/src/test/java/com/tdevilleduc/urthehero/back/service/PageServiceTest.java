@@ -39,7 +39,7 @@ public class PageServiceTest extends AbstractTest {
 
         Story story = page.getStory();
         Assertions.assertNotNull(story);
-        Assertions.assertEquals(Integer.valueOf(1), story.getId());
+        Assertions.assertEquals(Integer.valueOf(1), story.getStoryId());
 
         List<NextPage> nextPageList = page.getNextPageList();
         Assertions.assertNotNull(nextPageList);

@@ -111,8 +111,8 @@ public class StoryController {
             if (pageService.notExists(story.getFirstPageId())) {
                 throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
             }
-            if (story.getId() != null && storyService.exists(story.getId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} existe déjà. Elle ne peut être créée", story.getId()).getMessage());
+            if (story.getStoryId() != null && storyService.exists(story.getStoryId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} existe déjà. Elle ne peut être créée", story.getStoryId()).getMessage());
             }
             return ResponseEntity.ok(storyService.createOrUpdate(story));
         };
@@ -132,7 +132,7 @@ public class StoryController {
             Assert.notNull(story.getFirstPageId(), () -> {
                 throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
             });
-            Assert.notNull(story.getId(), () -> {
+            Assert.notNull(story.getStoryId(), () -> {
                 throw new StoryInternalErrorException("L'identifiant de l'histoire passée en paramètre ne peut pas être null");
             });
             if (personService.notExists(story.getAuthorId())) {
@@ -141,8 +141,8 @@ public class StoryController {
             if (pageService.notExists(story.getFirstPageId())) {
                 throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
             }
-            if (storyService.notExists(story.getId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} n'existe pas", story.getId()).getMessage());
+            if (storyService.notExists(story.getStoryId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} n'existe pas", story.getStoryId()).getMessage());
             }
             return ResponseEntity.ok(storyService.createOrUpdate(story));
         };

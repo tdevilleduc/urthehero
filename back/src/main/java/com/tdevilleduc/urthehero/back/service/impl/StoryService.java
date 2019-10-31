@@ -95,7 +95,7 @@ public class StoryService implements IStoryService {
     }
 
     private Story fillStoryWithNumberOfReaders(Story story) {
-        Long numberOfReaders = progressionService.countByStoryId(story.getId());
+        Long numberOfReaders = progressionService.countByStoryId(story.getStoryId());
         story.setNumberOfReaders(numberOfReaders);
         return story;
     }

@@ -54,7 +54,7 @@ public class StoryServiceTest extends AbstractTest {
 
         Assertions.assertTrue(optional.isPresent());
         Story story = optional.get();
-        Assertions.assertEquals(Integer.valueOf(1), story.getId());
+        Assertions.assertEquals(Integer.valueOf(1), story.getStoryId());
         Assertions.assertEquals("Ulysse", story.getTitle());
         Assertions.assertEquals(Integer.valueOf(1), story.getAuthorId());
         Assertions.assertEquals(Integer.valueOf(1), story.getFirstPageId());

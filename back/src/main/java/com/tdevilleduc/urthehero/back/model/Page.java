@@ -20,7 +20,7 @@ public class Page {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "story_Id", insertable = false, updatable = false)
     @JsonIgnore
     private Story story;
 
