@@ -128,6 +128,26 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>localDocker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${dockerfile-maven-version}</version>
+						<configuration>
+							<repository>urthehero_back</repository>
+							<tag>${project.version}</tag>
+							<dockerfile>Dockerfile</dockerfile>
+							<buildArgs>
+								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 </project>

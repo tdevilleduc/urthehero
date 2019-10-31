@@ -16,7 +16,7 @@ services:
 
   back:
     container_name: urthehero-back
-    image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.1-4
+    image: urthehero_back:0.1.0
     volumes:
       - ./back/target:/deployments
     ports:

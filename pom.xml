@@ -40,6 +40,8 @@
         <docker.image.dockerfile.dir>./back</docker.image.dockerfile.dir>
         <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
 
+        <dockerfile-maven-version>1.4.10</dockerfile-maven-version>
+
         <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
     </properties>
 
@@ -273,6 +275,27 @@
                 </pluginManagement>
             </build>
         </profile>
-
+        <profile>
+            <id>localDocker</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.spotify</groupId>
+                            <artifactId>dockerfile-maven-plugin</artifactId>
+                            <version>${dockerfile-maven-version}</version>
+                            <executions>
+                                <execution>
+                                    <id>default</id>
+                                    <goals>
+                                        <goal>build</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
 	</profiles>
 </project>
