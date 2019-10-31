@@ -1,73 +1,159 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.PageDao;
-import com.tdevilleduc.urthehero.back.dao.PersonDao;
-import com.tdevilleduc.urthehero.back.dao.ProgressionDao;
-import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
-import com.tdevilleduc.urthehero.back.model.Person;
-import com.tdevilleduc.urthehero.back.model.Progression;
+import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
-import com.tdevilleduc.urthehero.back.service.impl.StoryService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.helpers.MessageFormatter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @Slf4j
 @Api(value = "Story", tags = { "Story Controller" } )
 @RestController
-@RequestMapping("/Story")
+@RequestMapping("/api/story")
+@CircuitBreaker(name = "storyController")
+@Retry(name = "storyController")
 public class StoryController {
 
-    @Autowired
-    private PageDao pageDao;
-    @Autowired
-    private PersonDao personDao;
-    @Autowired
-    private ProgressionDao progressionDao;
+    private final IStoryService storyService;
+    private final IPersonService personService;
+    private final IPageService pageService;
 
-    @Autowired
-    private IStoryService storyService;
-
-    @ApiOperation( value = "Récupère la liste des histoires" )
-    @GetMapping(value = "/all")
-    public List<Story> getAllStories() {
-        return storyService.findAll();
-    }
-
-    @ApiOperation( value = "Récupère une histoire à partir de son identifiant" )
-    @GetMapping(value = "/{storyId}")
-    public Story getStoryById(@PathVariable int storyId) {
-        return storyService.findById(storyId);
+    public StoryController(IStoryService storyService, IPersonService personService, IPageService pageService) {
+        this.storyService = storyService;
+        this.personService = personService;
+        this.pageService = pageService;
     }
 
 
-    @ApiOperation( value = "Récupère une histoire à partir de son identifiant storyId, avec la progression de la personne personId" )
-    @GetMapping(value = "/{storyId}/Person/{personId}")
-    public Story getStoryByStoryIdAndPersonId(@PathVariable int storyId, @PathVariable Integer personId) {
-        Story story = storyService.findById(storyId);
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.story.get-all.value}",
+            notes = "${swagger.controller.story.get-all.notes}")
+    public @ResponseBody Callable<ResponseEntity<List<Story>>> getAllStories(HttpServletRequest request) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            return ResponseEntity.ok(storyService.findAll());
+        };
+    }
 
-        Optional<Person> person = personDao.findById(personId);
-        if (person.isEmpty()) {
-            throw new PersonNotFoundException("L'utilisateur avec l'id "+ personId +" n'existe pas");
+    @GetMapping(value = "/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.story.get-by-id.value}",
+            notes = "${swagger.controller.story.get-by-id.notes}")
+    public @ResponseBody Callable<ResponseEntity<Story>> getStoryById(HttpServletRequest request,
+                                                                      @PathVariable Integer storyId) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Optional<Story> optional = this.storyService.findById(storyId);
+            return optional
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
+    }
+
+    @GetMapping(value = "/all/person/{personId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.story.get-by-person-id.value}",
+            notes = "${swagger.controller.story.get-by-person-id.notes}")
+    public @ResponseBody Callable<ResponseEntity<List<Story>>> getStoryByPersonId(HttpServletRequest request,
+                                                                                  @PathVariable Integer personId) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            if (personService.notExists(personId)) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(this.storyService.findByPersonId(personId));
+        };
+    }
+
+    @PutMapping
+    public @ResponseBody Callable<ResponseEntity<Story>> createStory(HttpServletRequest request,
+                                           @RequestBody Story story) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            //TODO: déplacer les controles dans le service ?
+            Assert.notNull(story.getAuthorId(), () -> {
+                throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
+            });
+            Assert.notNull(story.getFirstPageId(), () -> {
+                throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
+            });
+            if (personService.notExists(story.getAuthorId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", story.getAuthorId()).getMessage());
+            }
+            if (pageService.notExists(story.getFirstPageId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
+            }
+            if (story.getStoryId() != null && storyService.exists(story.getStoryId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} existe déjà. Elle ne peut être créée", story.getStoryId()).getMessage());
+            }
+            return ResponseEntity.ok(storyService.createOrUpdate(story));
+        };
+    }
+
+    @PostMapping
+    public @ResponseBody Callable<ResponseEntity<Story>> updateStory(HttpServletRequest request,
+                                           @RequestBody Story story) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            //TODO: déplacer les controles dans le service ?
+            Assert.notNull(story.getAuthorId(), () -> {
+                throw new StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null");
+            });
+            Assert.notNull(story.getFirstPageId(), () -> {
+                throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
+            });
+            Assert.notNull(story.getStoryId(), () -> {
+                throw new StoryInternalErrorException("L'identifiant de l'histoire passée en paramètre ne peut pas être null");
+            });
+            if (personService.notExists(story.getAuthorId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", story.getAuthorId()).getMessage());
+            }
+            if (pageService.notExists(story.getFirstPageId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", story.getFirstPageId()).getMessage());
+            }
+            if (storyService.notExists(story.getStoryId())) {
+                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} n'existe pas", story.getStoryId()).getMessage());
+            }
+            return ResponseEntity.ok(storyService.createOrUpdate(story));
+        };
+    }
+
+    @DeleteMapping(value = "/{storyId}")
+    public @ResponseBody void deleteStory(HttpServletRequest request,
+                                          @PathVariable Integer storyId) {
+        if (log.isInfoEnabled()) {
+            log.info("call: {}", request.getRequestURI());
         }
-
-        Optional<Progression> progression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
-        if (progression.isPresent()) {
-            story.setCurrentPageId(progression.get().getActualPageId());
-        } else {
-            story.setCurrentPageId(story.getFirstPageId());
-        }
-
-        return story;
+        storyService.delete(storyId);
     }
-
 }

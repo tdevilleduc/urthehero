@@ -1,68 +1,132 @@
 package com.tdevilleduc.urthehero.back.controller;
 
-import com.tdevilleduc.urthehero.back.dao.PageDao;
-import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
+import com.tdevilleduc.urthehero.back.exceptions.PageInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Story;
-import com.tdevilleduc.urthehero.back.service.impl.StoryService;
+import com.tdevilleduc.urthehero.back.service.IPageService;
+import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.helpers.MessageFormatter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
+@Slf4j
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
-@RequestMapping("/Page")
+@RequestMapping("/api/page")
 public class PageController {
 
-    @Autowired
-    private PageDao pageDao;
+    private final IStoryService storyService;
+    private final IPageService pageService;
 
-    @Autowired
-    private StoryService storyService;
-
-    @ApiOperation( value = "Récupère une page à partir de son identifiant" )
-    @GetMapping(value = "/{pageId}")
-    public Page getPageById(@PathVariable int pageId) {
-
-        Optional<Page> page = pageDao.findById(pageId);
-        if (page.isEmpty()) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'existe pas");
-        }
-
-        Story story = page.get().getStory();
-        if (story == null) {
-            throw new PageNotFoundException("La page avec l'id " + pageId + " n'est pas associée à une histoire");
-        }
-
-        return page.get();
+    public PageController(IStoryService storyService, IPageService pageService) {
+        this.storyService = storyService;
+        this.pageService = pageService;
     }
 
-    @ApiOperation( value = "Récupère la liste des pages d'une histoire" )
-    @GetMapping(value = "/all/Story/{storyId}")
-    public List<Page> getAllPagesByStoryId(@PathVariable int storyId) {
-        Story story = storyService.findById(storyId);
-        return story.getPages();
+    @GetMapping(value = "/{pageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.page.get-by-id.value}",
+            notes = "${swagger.controller.page.get-by-id.notes}")
+    public @ResponseBody Callable<ResponseEntity<Page>> getPageById(HttpServletRequest request,
+                                                                    @PathVariable Integer pageId) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Optional<Page> optional = pageService.findById(pageId);
+            return optional
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
     }
 
-    @ApiOperation( value = "Récupère la première page d'une histoire" )
-    @GetMapping(value = "/Story/{storyId}")
-    public Page getFirstPageByStoryId(@PathVariable int storyId) {
+    @GetMapping(value = "/all/story/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.page.get-all-by-story-id.value}",
+            notes = "${swagger.controller.page.get-all-by-story-id.notes}")
+    public @ResponseBody Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(HttpServletRequest request,
+                                                                                   @PathVariable Integer storyId) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Optional<Story> optional = storyService.findById(storyId);
+            return optional
+                    .map(Story::getPages)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
+    }
 
-        Story story = storyService.findById(storyId);
-        Integer firstPageId = story.getFirstPageId();
+    @GetMapping(value = "/story/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(
+            value = "${swagger.controller.page.get-first-by-story-id.value}",
+            notes = "${swagger.controller.page.get-first-by-story-id.notes}")
+    public @ResponseBody Callable<ResponseEntity<Page>> getFirstPageByStoryId(HttpServletRequest request,
+                                                                              @PathVariable int storyId) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Optional<Story> optional = storyService.findById(storyId);
+            return optional
+                    .map(Story::getFirstPageId)
+                    .map(pageService::findById)
+                    .map(Optional::get)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        };
+    }
 
-        Optional<Page> page = pageDao.findById(firstPageId);
-        if (page.isEmpty()) {
-            throw new PageNotFoundException("La page avec l'id " + firstPageId + " n'existe pas");
+    @PutMapping
+    public @ResponseBody Callable<ResponseEntity<Page>> createPage(HttpServletRequest request,
+                           @RequestBody @NotNull Page page) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            if (page.getId() != null && pageService.exists(page.getId())) {
+                throw new PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.getId()).getMessage());
+            }
+            return ResponseEntity.ok(pageService.createOrUpdate(page));
+        };
+    }
+
+    @PostMapping
+    public @ResponseBody Callable<ResponseEntity<Page>> updatePage(HttpServletRequest request,
+                           @RequestBody @NotNull Page page) {
+        return () -> {
+            if (log.isInfoEnabled()) {
+                log.info("call: {}", request.getRequestURI());
+            }
+            Assert.notNull(page.getId(), () -> {
+                throw new PageInternalErrorException("L'identifiant de la page passée en paramètre ne peut pas être null");
+            });
+            return ResponseEntity.ok(pageService.createOrUpdate(page));
+        };
+    }
+
+    @DeleteMapping(value = "/{pageId}")
+    public @ResponseBody void deletePage(HttpServletRequest request,
+                           @PathVariable @NotNull Integer pageId) {
+        if (log.isInfoEnabled()) {
+            log.info("call: {}", request.getRequestURI());
         }
-
-        return page.get();
+        pageService.delete(pageId);
     }
 }

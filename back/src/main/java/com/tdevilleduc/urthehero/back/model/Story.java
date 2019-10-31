@@ -1,81 +1,46 @@
 package com.tdevilleduc.urthehero.back.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Story {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
+    private Integer storyId;
+    @NonNull
     private String title;
+    @NonNull
     private Integer authorId;
+    @NonNull
     private Integer firstPageId;
     @Transient
     private Integer currentPageId;
+    @Transient
+    private Long numberOfPages;
+    @Transient
+    private Long numberOfReaders;
 
-    @OneToMany(mappedBy = "story", cascade = CascadeType.ALL)
-    private List<Page> pages;
+    private String detailedText;
 
-    public Story() {
-    }
+    private String image;
 
-    public Story(Integer id, String title, Integer authorId, Integer firstPageId, Page... pages) {
-        this.id = id;
-        this.title = title;
-        this.authorId = authorId;
-        this.firstPageId = firstPageId;
-        this.pages = Stream.of(pages).collect(Collectors.toList());
-        this.pages.forEach(x -> x.setStory(this));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Integer authorId) {
-        this.authorId = authorId;
-    }
-
-    public Integer getFirstPageId() {
-        return firstPageId;
-    }
-
-    public void setFirstPageId(Integer firstPageId) {
-        this.firstPageId = firstPageId;
-    }
-
-    public Integer getCurrentPageId() {
-        return currentPageId;
-    }
-
-    public void setCurrentPageId(Integer currentPageId) {
-        this.currentPageId = currentPageId;
-    }
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore
-    public List<Page> getPages() {
-        return pages;
-    }
+    private List<Page> pages = Collections.emptyList();
+
+
+
 }

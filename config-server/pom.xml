@@ -2,16 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!--<parent>-->
-		<!--<groupId>com.tdevilleduc.urthehero</groupId>-->
-		<!--<artifactId>urthehero</artifactId>-->
-		<!--<version>0.0.1-SNAPSHOT</version>-->
-	<!--</parent>-->
-	<groupId>com.tdevilleduc.urthehero</groupId>
+	<parent>
+		<groupId>com.tdevilleduc.urthehero</groupId>
+		<artifactId>urthehero</artifactId>
+		<version>0.1.0</version>
+	</parent>
 	<artifactId>config-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>config-server</name>
-	<description>Demo project for Spring Boot</description>
+	<version>0.1.0</version>
 
 	<properties>
 		<java.version>11</java.version>
@@ -19,23 +17,40 @@
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-parent</artifactId>
-			<version>2.1.6.RELEASE</version>
-			<type>pom</type>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<version>2.1.6.RELEASE</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-surefire-provider</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -57,7 +72,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.1.6.RELEASE</version>
 			</plugin>
 		</plugins>
 	</build>

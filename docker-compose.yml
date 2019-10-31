@@ -1,17 +1,36 @@
 version: '3.7'
 
 services:
-  postgres:
-    build: postgres/
-    volumes:
-      - db-data:/var/lib/postgresql/data/
+  mysql:
+    container_name: urthehero-mysql
+    image: mysql/mysql-server:5.7
     environment:
-      - POSTGRES_PASSWORD=postgres
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_ROOT_PASSWORD: tdevilleduc
+      MYSQL_ROOT_HOST: '%'
     ports:
-      - "5432:5432"
-  app:
-    build: app/
+      - "3306:3306"
+    networks:
+      - urthehero
+
+  back:
+    container_name: urthehero-back
+    image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
+    volumes:
+      - ./back/target:/deployments
+    environment:
+      JAVA_APP_JAR: back-0.1.0.jar
+      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8
     ports:
-      - "8080:8080"
-volumes:
-  db-data:
+      - "8083:8083"
+    restart: always
+    networks:
+      - urthehero
+    depends_on:
+      - mysql
+
+networks:
+  urthehero:
+    driver: bridge
+    name: urthehero

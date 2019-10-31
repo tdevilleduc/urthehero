@@ -3,11 +3,15 @@ package com.tdevilleduc.urthehero.back.service;
 import com.tdevilleduc.urthehero.back.model.Story;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IStoryService {
 
-    public boolean exists(Integer storyId);
-    public boolean notExists(Integer storyId);
-    public Story findById(Integer storyId);
-    public List<Story> findAll();
+    boolean exists(Integer storyId);
+    boolean notExists(Integer storyId);
+    Optional<Story> findById(Integer storyId);
+    List<Story> findAll();
+    List<Story> findByPersonId(Integer personId);
+    Story createOrUpdate(Story story);
+    void delete(Integer storyId);
 }
