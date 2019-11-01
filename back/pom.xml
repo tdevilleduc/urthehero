@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>com.tdevilleduc.urthehero</groupId>
 		<artifactId>urthehero</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>back</artifactId>
 	<name>urthehero_back</name>
 	<description>Backend du projet URtheHero</description>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 
 	<properties>
 		<java.version>11</java.version>
