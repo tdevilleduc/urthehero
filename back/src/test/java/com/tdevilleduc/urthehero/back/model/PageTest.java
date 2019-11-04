@@ -4,6 +4,8 @@ import com.tdevilleduc.urthehero.back.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 public class PageTest {
 
     @Test
@@ -12,13 +14,13 @@ public class PageTest {
         String pageText = "test de titre";
         String pageImage = "image de ouf";
         Story story = TestUtils.createRandomStory();
-        Page page = new Page(pageId, story, pageText, pageImage, null);
+        Page page = new Page(pageId, pageText, pageImage);
+        page.setStory(story);
 
         Assertions.assertEquals(page.getId(), pageId);
         Assertions.assertEquals(page.getText(), pageText);
         Assertions.assertEquals(page.getImage(), pageImage);
-        // TODO: make nextPageList not null
-        Assertions.assertNull(page.getNextPageList());
+        Assertions.assertTrue(page.getNextPageList().isEmpty());
 
         Page secondPage = new Page();
         secondPage.setId(pageId);

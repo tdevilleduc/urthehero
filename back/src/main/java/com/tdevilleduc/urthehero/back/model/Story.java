@@ -26,16 +26,17 @@ public class Story {
     private Integer authorId;
     @NonNull
     private Integer firstPageId;
+    @NonNull
+    private String detailedText;
+    @NonNull
+    private String image;
+
     @Transient
     private Integer currentPageId;
     @Transient
     private Long numberOfPages;
     @Transient
     private Long numberOfReaders;
-
-    private String detailedText;
-
-    private String image;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
     @JsonIgnore
