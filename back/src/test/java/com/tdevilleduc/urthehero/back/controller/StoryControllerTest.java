@@ -2,6 +2,8 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
+import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.utils.TestUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -29,6 +32,8 @@ public class StoryControllerTest extends AbstractTest {
     private static final String uriController = "/api/story";
 
     private MockMvc mockMvc;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -99,4 +104,33 @@ public class StoryControllerTest extends AbstractTest {
         ;
     }
 
+    @Test
+    public void test_createStory() throws Exception {
+        Integer authorId = 1;
+        Integer firstPageId = 1;
+        Story story = TestUtils.createStory(authorId, firstPageId);
+        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(story))
+                .contentType(MediaType.APPLICATION_JSON))
+				.andExpect(request().asyncStarted())
+                .andReturn();
+        mockMvc.perform(asyncDispatch(resultActions))
+                .andExpect(status().isOk())
+                .andExpect(content().string(is(notNullValue())));
+    }
+
+//    @Test
+//    public void test_updateStory() throws Exception {
+//        Integer authorId = 1;
+//        Integer firstPageId = 1;
+//        Story story = TestUtils.createStory(authorId, firstPageId);
+//        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.post(uriController)
+//                .content(objectMapper.writeValueAsString(story))
+//                .contentType(MediaType.APPLICATION_JSON))
+//				.andExpect(request().asyncStarted())
+//                .andReturn();
+//        mockMvc.perform(asyncDispatch(resultActions))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string(is(notNullValue())));
+//    }
 }
