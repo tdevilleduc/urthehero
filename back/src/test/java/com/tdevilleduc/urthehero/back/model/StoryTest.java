@@ -13,11 +13,15 @@ public class StoryTest {
         String storyTitle = "test de titre";
         Integer storyAuthorId = 23;
         Integer storyFirstPageId = 98;
-        Story story = new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId);
+        String storyDetailedText = "Tintin long tintin";
+        String storyImage = "/chemin/to/image";
+        Story story = new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId, storyDetailedText, storyImage);
 
         Assertions.assertEquals(story.getTitle(), storyTitle);
         Assertions.assertEquals(story.getAuthorId(), storyAuthorId);
         Assertions.assertEquals(story.getFirstPageId(), storyFirstPageId);
+        Assertions.assertEquals(story.getDetailedText(), storyDetailedText);
+        Assertions.assertEquals(story.getImage(), storyImage);
         Assertions.assertNull(story.getCurrentPageId());
         Assertions.assertTrue(story.getPages().isEmpty());
 
@@ -26,6 +30,8 @@ public class StoryTest {
         secondStory.setTitle(storyTitle);
         secondStory.setAuthorId(storyAuthorId);
         secondStory.setFirstPageId(storyFirstPageId);
+        secondStory.setDetailedText(storyDetailedText);
+        secondStory.setImage(storyImage);
         secondStory.setPages(Collections.emptyList());
 
         Assertions.assertEquals(secondStory.toString(), story.toString());

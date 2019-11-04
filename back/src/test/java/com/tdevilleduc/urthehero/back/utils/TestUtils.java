@@ -14,12 +14,16 @@ public class TestUtils {
         String storyTitle = RandomStringUtils.random(20);
         Integer storyAuthorId = random.nextInt();
         Integer storyFirstPageId = random.nextInt();
-        return new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId);
+        String storyDetailedText = RandomStringUtils.random(20);
+        String storyImage = RandomStringUtils.random(20);
+        return new Story(storyId, storyTitle, storyAuthorId, storyFirstPageId,storyDetailedText, storyImage);
     }
 
     public static Story createStory(Integer authorId, Integer firstPageId) {
         Integer storyId = random.nextInt();
         String storyTitle = RandomStringUtils.random(20);
-        return new Story(storyId, storyTitle, authorId, firstPageId);
+        String storyDetailedText = RandomStringUtils.random(20);
+        String storyImage = RandomStringUtils.random(20);
+        return new Story(storyId, storyTitle, authorId, firstPageId,storyDetailedText, storyImage);
     }
 }
