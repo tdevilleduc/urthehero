@@ -1,0 +1,33 @@
+server:
+  port: 8083
+
+  # Show or not log for each sql query
+spring.jpa:
+  show-sql: false
+  # Hibernate ddl auto (create, create-drop, update)
+  generate-ddl: true
+  hibernate.ddl-auto: create
+  properties.hibernate.hbm2ddl.import_files: data.sql
+
+# Actuator
+management.endpoints:
+  web.base-path: /
+  enabled-by-default: false
+management.endpoint:
+  health:
+    enabled: true
+    sensitive: false
+    show-details: ALWAYS
+  info.enabled: true
+
+  # Resilience4J
+resilience4j.circuitbreaker.configs.default:
+  registerHealthIndicator: false
+  slidingWindowSize: 10
+  minimumNumberOfCalls: 5
+  permittedNumberOfCallsInHalfOpenState: 3
+  automaticTransitionFromOpenToHalfOpenEnabled: true
+  waitDurationInOpenState: 2s
+  failureRateThreshold: 50
+  eventConsumerBufferSize: 10
+  recordExceptions: java.lang.Exception
