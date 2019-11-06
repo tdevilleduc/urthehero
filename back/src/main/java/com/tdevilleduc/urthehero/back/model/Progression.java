@@ -4,11 +4,12 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -16,10 +17,14 @@ import javax.persistence.Id;
 public class Progression {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Integer id;
+    @NotNull
     private Integer storyId;
+    @NotNull
     private Integer personId;
+    @NotNull
     private Integer actualPageId;
 
 }

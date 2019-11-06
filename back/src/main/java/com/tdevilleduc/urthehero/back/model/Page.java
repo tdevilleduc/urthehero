@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -16,19 +17,20 @@ import java.util.List;
 public class Page {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Integer id;
+    @NonNull
+    private String text;
+    @NonNull
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "story_Id", insertable = false, updatable = false)
     @JsonIgnore
     private Story story;
 
-    @Column(columnDefinition = "TEXT")
-    private String text;
-    private String image;
-
     @Transient
-    private List<NextPage> nextPageList;
+    private List<NextPage> nextPageList = Collections.emptyList();
 
 }

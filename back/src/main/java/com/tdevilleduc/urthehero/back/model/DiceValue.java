@@ -2,7 +2,8 @@ package com.tdevilleduc.urthehero.back.model;
 
 import lombok.*;
 
-@NoArgsConstructor
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -10,7 +11,9 @@ import lombok.*;
 @EqualsAndHashCode
 public class DiceValue {
 
+    @NotNull
     private Integer value;
+    @NotNull
     private Dice dice;
 
 }
