@@ -21,11 +21,11 @@ import java.util.concurrent.Callable;
 @Api(value = "Dice", tags = { "Dice Controller" } )
 @RestController
 @RequestMapping("/api/dice")
-public class DiceController {
+class DiceController {
 
     private final IDiceService diceService;
 
-    public DiceController(IDiceService diceService) {
+    private DiceController(IDiceService diceService) {
         this.diceService = diceService;
     }
 

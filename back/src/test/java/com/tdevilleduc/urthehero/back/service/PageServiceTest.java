@@ -20,13 +20,13 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class PageServiceTest extends AbstractTest {
+class PageServiceTest extends AbstractTest {
 
     @Autowired
     private PageService pageService;
 
     @Test
-    public void test_findById_thenCorrect() {
+    void test_findById_thenCorrect() {
         Integer pageId = 1;
         Optional<Page> optional = pageService.findById(pageId);
         Assertions.assertTrue(optional.isPresent());
@@ -73,19 +73,19 @@ public class PageServiceTest extends AbstractTest {
     }
 
     @Test
-    public void test_findById_thenNotFound() {
+    void test_findById_thenNotFound() {
         Integer pageId = 13;
         Optional<Page> optional = pageService.findById(pageId);
         Assertions.assertTrue(optional.isEmpty());
     }
 
     @Test
-    public void test_findById_withIdNull() {
+    void test_findById_withIdNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> pageService.findById(null));
     }
 
     @Test
-    public void delete_thenNotFound() {
+    void delete_thenNotFound() {
         Integer pageId = 13;
         Assertions.assertThrows(PageNotFoundException.class, () -> pageService.delete(pageId));
     }

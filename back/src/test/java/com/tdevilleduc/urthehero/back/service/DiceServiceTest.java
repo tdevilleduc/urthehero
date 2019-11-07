@@ -8,32 +8,32 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DiceServiceTest {
+class DiceServiceTest {
 
     private DiceService diceService;
 
     @BeforeEach
-    public void onSetupClass() {
+    void onSetupClass() {
         diceService = new DiceService();
     }
 
     @AfterEach
-    public void onTeardownClass() {
+    void onTeardownClass() {
         diceService = null;
     }
 
     @Test
-    public void test_roll6_thenCorrect() {
+    void test_roll6_thenCorrect() {
         assertRollDice(Dice.DE_6);
     }
 
     @Test
-    public void test_roll10_thenCorrect() {
+    void test_roll10_thenCorrect() {
         assertRollDice(Dice.DE_10);
     }
 
     @Test
-    public void test_roll20_thenCorrect() {
+    void test_roll20_thenCorrect() {
         assertRollDice(Dice.DE_20);
     }
 

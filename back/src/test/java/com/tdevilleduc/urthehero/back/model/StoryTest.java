@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-public class StoryTest {
+class StoryTest {
 
     @Test
-    public void test_Constructor() {
+    void test_Constructor() {
         Integer storyId = 67;
         String storyTitle = "test de titre";
         Integer storyAuthorId = 23;

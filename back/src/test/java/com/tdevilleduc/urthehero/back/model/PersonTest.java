@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils;
 
-public class PersonTest {
+class PersonTest {
 
     @Test
-    public void test_Constructor() {
+    void test_Constructor() {
         String personLogin = RandomStringUtils.random(20);
         String personDisplayName = RandomStringUtils.random(20);
         String personEmail = RandomStringUtils.random(20);

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class DiceControllerTest extends AbstractTest {
+class DiceControllerTest extends AbstractTest {
 
 
     private static final String uriController = "/api/dice";
@@ -35,14 +35,14 @@ public class DiceControllerTest extends AbstractTest {
     private WebApplicationContext webApplicationContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
     }
 
     @Test
-    public void test_rollOne_thenSuccess() throws Exception {
+    void test_rollOne_thenSuccess() throws Exception {
         String diceString = "DE_20";
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString))
                 .andExpect(request().asyncStarted())
@@ -59,7 +59,7 @@ public class DiceControllerTest extends AbstractTest {
     }
 
     @Test
-    public void test_rollMulti_thenSuccess() throws Exception {
+    void test_rollMulti_thenSuccess() throws Exception {
         String diceString = "DE_20";
         int numberOfRolls = 4;
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/roll/" + diceString + "/" + numberOfRolls))

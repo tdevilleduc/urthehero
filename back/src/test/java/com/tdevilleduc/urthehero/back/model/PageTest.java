@@ -4,12 +4,10 @@ import com.tdevilleduc.urthehero.back.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
-public class PageTest {
+class PageTest {
 
     @Test
-    public void test_Constructor() {
+    void test_Constructor() {
         Integer pageId = 46;
         String pageText = "test de titre";
         String pageImage = "image de ouf";

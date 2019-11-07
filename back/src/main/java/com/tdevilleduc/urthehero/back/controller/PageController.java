@@ -25,12 +25,12 @@ import java.util.concurrent.Callable;
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
 @RequestMapping("/api/page")
-public class PageController {
+class PageController {
 
     private final IStoryService storyService;
     private final IPageService pageService;
 
-    public PageController(IStoryService storyService, IPageService pageService) {
+    private PageController(IStoryService storyService, IPageService pageService) {
         this.storyService = storyService;
         this.pageService = pageService;
     }

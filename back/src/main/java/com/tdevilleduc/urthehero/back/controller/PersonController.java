@@ -23,11 +23,11 @@ import java.util.concurrent.Callable;
 @Api(value = "Person", tags = { "Person Controller" } )
 @RestController
 @RequestMapping("/api/person")
-public class PersonController {
+class PersonController {
 
     private final IPersonService personService;
 
-    public PersonController(IPersonService personService) {
+    private PersonController(IPersonService personService) {
         this.personService = personService;
     }
 

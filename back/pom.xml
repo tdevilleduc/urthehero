@@ -10,13 +10,6 @@
 	<artifactId>back</artifactId>
 	<name>urthehero_back</name>
 	<description>Backend du projet URtheHero</description>
-	<version>0.1.1-SNAPSHOT</version>
-
-	<properties>
-		<java.version>11</java.version>
-		<maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -46,7 +39,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -65,7 +57,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -91,7 +82,6 @@
 			<artifactId>mysql</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class PageControllerTest extends AbstractTest {
+class PageControllerTest extends AbstractTest {
 
     private static final String uriController = "/api/page";
 
@@ -34,14 +34,14 @@ public class PageControllerTest extends AbstractTest {
     private WebApplicationContext webApplicationContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
     }
 
     @Test
-    public void test_getPageById() throws Exception {
+    void test_getPageById() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/1"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -57,7 +57,7 @@ public class PageControllerTest extends AbstractTest {
     }
 
     @Test
-    public void test_getFirstPageByStoryId() throws Exception {
+    void test_getFirstPageByStoryId() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/story/2"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -72,7 +72,7 @@ public class PageControllerTest extends AbstractTest {
     }
 
     @Test
-    public void test_getAllPagesByStoryId() throws Exception {
+    void test_getAllPagesByStoryId() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/story/1"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
