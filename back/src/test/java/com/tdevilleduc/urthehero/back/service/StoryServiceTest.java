@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class StoryServiceTest extends AbstractTest {
+class StoryServiceTest extends AbstractTest {
 
     private final static String CIRCUIT_BREAKER_STORY_FIND_BY_PERSON_ID = "storyService_findByPersonId";
 
@@ -34,21 +34,21 @@ public class StoryServiceTest extends AbstractTest {
     private StoryService storyService;
 
     @Test
-    public void test_exists_thenCorrect() {
+    void test_exists_thenCorrect() {
         Integer storyId = 1;
         boolean exists = storyService.exists(storyId);
         Assertions.assertTrue(exists);
     }
 
     @Test
-    public void test_notExists_thenCorrect() {
+    void test_notExists_thenCorrect() {
         Integer storyId = 41;
         boolean notExists = storyService.notExists(storyId);
         Assertions.assertTrue(notExists);
     }
 
     @Test
-    public void test_findByPageId_thenCorrect() {
+    void test_findByPageId_thenCorrect() {
         Integer storyId = 1;
         Optional<Story> optional = storyService.findById(storyId);
 
@@ -64,14 +64,14 @@ public class StoryServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findByIdWithIdNull() {
+    void findByIdWithIdNull() {
         // with resilience4j, IllegalArgumentException is catched and fallback method 'emptyStory' is called
 //        Assertions.assertThrows(IllegalArgumentException.class, () -> storyService.findById(null));
         assertEquals(Optional.empty(), storyService.findById(null));
     }
 
     @Test
-    public void findByPersonIdWithResilience4j() throws InterruptedException {
+    void findByPersonIdWithResilience4j() throws InterruptedException {
         Integer personId = 1;
 
         // request 'minimumNumberOfCalls' times with error
@@ -94,7 +94,7 @@ public class StoryServiceTest extends AbstractTest {
     }
 
     @Test
-    public void delete_thenNotFound() {
+    void delete_thenNotFound() {
         Integer storyId = 13;
         Assertions.assertThrows(StoryNotFoundException.class, () -> storyService.delete(storyId));
     }

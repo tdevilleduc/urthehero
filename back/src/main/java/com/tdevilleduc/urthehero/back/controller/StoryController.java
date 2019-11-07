@@ -28,7 +28,7 @@ import java.util.concurrent.Callable;
 @RequestMapping("/api/story")
 @CircuitBreaker(name = "storyController")
 @Retry(name = "storyController")
-public class StoryController {
+class StoryController {
 
     private final IStoryService storyService;
     private final IPersonService personService;

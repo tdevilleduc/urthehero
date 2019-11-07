@@ -17,13 +17,13 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class NextPageServiceTest extends AbstractTest {
+class NextPageServiceTest extends AbstractTest {
 
     @Autowired
     private NextPageService nextPageService;
 
     @Test
-    public void test_findByPageId_thenCorrect() {
+    void test_findByPageId_thenCorrect() {
         Integer pageId = 1;
         List<NextPage> nextPageList = nextPageService.findByPageId(pageId);
         Assertions.assertNotNull(nextPageList);
@@ -57,7 +57,7 @@ public class NextPageServiceTest extends AbstractTest {
     }
 
     @Test
-    public void test_findByPageId_thenNotFound() {
+    void test_findByPageId_thenNotFound() {
         Integer pageId = 13;
         Assertions.assertThrows(PageNotFoundException.class, () -> nextPageService.findByPageId(pageId));
     }

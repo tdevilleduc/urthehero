@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = {BackApplication.class})
-public class ITActuatorTest extends AbstractTest {
+class ITActuatorTest extends AbstractTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -37,12 +37,12 @@ public class ITActuatorTest extends AbstractTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void health() throws Exception{
+    void health() throws Exception{
         final MvcResult result = this.mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
                 .andReturn();

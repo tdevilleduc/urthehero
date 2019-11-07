@@ -27,26 +27,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class StoryControllerTest extends AbstractTest {
+class StoryControllerTest extends AbstractTest {
 
     private static final String uriController = "/api/story";
 
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
     }
 
     @Test
-    public void test_getStoryById() throws Exception {
+    void test_getStoryById() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -65,7 +65,7 @@ public class StoryControllerTest extends AbstractTest {
     }
 
     @Test
-    public void test_getAllStories() throws Exception {
+    void test_getAllStories() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -78,7 +78,7 @@ public class StoryControllerTest extends AbstractTest {
     }
 
     @Test
-    public void test_getStoryByPersonId() throws Exception {
+    void test_getStoryByPersonId() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/person/1"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -105,7 +105,7 @@ public class StoryControllerTest extends AbstractTest {
     }
 
     @Test
-    public void test_createStory() throws Exception {
+    void test_createStory() throws Exception {
         Integer authorId = 1;
         Integer firstPageId = 1;
         Story story = TestUtils.createStory(authorId, firstPageId);

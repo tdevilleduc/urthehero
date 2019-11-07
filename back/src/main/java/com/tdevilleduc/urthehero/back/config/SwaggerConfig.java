@@ -22,7 +22,7 @@ import java.util.Collections;
 @PropertySource(value = {
         "classpath:/swagger/swagger-messages_fr.properties"
 })
-public class SwaggerConfig {
+class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

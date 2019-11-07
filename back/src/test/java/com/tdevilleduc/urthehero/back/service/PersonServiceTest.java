@@ -18,27 +18,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
-public class PersonServiceTest extends AbstractTest {
+class PersonServiceTest extends AbstractTest {
 
     @Autowired
     private PersonService personService;
 
     @Test
-    public void test_exists_thenCorrect() {
+    void test_exists_thenCorrect() {
         Integer personId = 1;
         boolean exists = personService.exists(personId);
         Assertions.assertTrue(exists);
     }
 
     @Test
-    public void test_notExists_thenCorrect() {
+    void test_notExists_thenCorrect() {
         Integer personId = 41;
         boolean notExists = personService.notExists(personId);
         Assertions.assertTrue(notExists);
     }
 
     @Test
-    public void test_findById_thenCorrect() {
+    void test_findById_thenCorrect() {
         Integer personId = 1;
         Optional<Person> optional = personService.findById(personId);
         Assertions.assertTrue(optional.isPresent());
@@ -53,26 +53,26 @@ public class PersonServiceTest extends AbstractTest {
     }
 
     @Test
-    public void test_findById_thenNotFound() {
+    void test_findById_thenNotFound() {
         Integer personId = 13;
         Optional<Person> optional = personService.findById(personId);
         Assertions.assertTrue(optional.isEmpty());
     }
 
     @Test
-    public void findByIdWithIdNull() {
+    void findByIdWithIdNull() {
         // with resilience4j, IllegalArgumentException is catched and fallback method 'emptyPerson' is called
 //        Assertions.assertThrows(IllegalArgumentException.class, () -> personService.findById(null));
         assertEquals(Optional.empty(), personService.findById(null));
     }
 
     @Test
-    public void deleteWithIdNull() {
+    void deleteWithIdNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> personService.delete(null));
     }
 
     @Test
-    public void delete_thenNotFound() {
+    void delete_thenNotFound() {
         Integer personId = 13;
         Assertions.assertThrows(PersonNotFoundException.class, () -> personService.delete(personId));
     }

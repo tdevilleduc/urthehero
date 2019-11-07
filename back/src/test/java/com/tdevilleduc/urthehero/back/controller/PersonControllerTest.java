@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BackApplication.class)
 @WebAppConfiguration
-public class PersonControllerTest extends AbstractTest {
+class PersonControllerTest extends AbstractTest {
 
     private static final String uriController = "/api/person";
 
@@ -35,12 +35,12 @@ public class PersonControllerTest extends AbstractTest {
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void testGetAllPersons() throws Exception {
+    void testGetAllPersons() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -53,7 +53,7 @@ public class PersonControllerTest extends AbstractTest {
     }
 
     @Test
-    public void testGetPersonById() throws Exception {
+    void testGetPersonById() throws Exception {
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/2"))
                 .andExpect(request().asyncStarted())
                 .andReturn();
