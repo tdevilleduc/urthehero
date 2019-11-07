@@ -28,7 +28,7 @@
 
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <swagger.version>2.9.2</swagger.version>
-        <chaos-monkey-spring-boot.version>2.0.2</chaos-monkey-spring-boot.version>
+        <chaos-monkey-spring-boot.version>2.1.1</chaos-monkey-spring-boot.version>
         <resilience4j.version>1.1.0</resilience4j.version>
         <junit.platform.version>1.2.0</junit.platform.version>
         <testcontainers.version>1.12.3</testcontainers.version>
