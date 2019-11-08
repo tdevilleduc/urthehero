@@ -6,12 +6,14 @@ import com.tdevilleduc.urthehero.back.model.NextPage;
 import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.service.INextPageService;
 import com.tdevilleduc.urthehero.back.service.IPageService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +41,26 @@ public class PageService implements IPageService {
         return ! exists(pageId);
     }
 
+    @CircuitBreaker(name = "pageService_findAll", fallbackMethod = "emptyPage")
     public Optional<Page> findById(Integer pageId) {
         Assert.notNull(pageId, "The pageId parameter is mandatory !");
         return pageDao.findById(pageId)
                 .map(this::fillPageWithNextPages);
     }
 
+    private Optional<Page> emptyPage(Integer pageId, Throwable e) {
+        log.error("Unable to retrieve page with id {}", pageId, e);
+        return Optional.empty();
+    }
+
+    @CircuitBreaker(name = "pageService_findAll", fallbackMethod = "emptyPageList")
     public List<Page> findAll() {
         return pageDao.findAll();
+    }
+
+    private List<Page> emptyPageList(Throwable e) {
+        log.error("Unable to retrieve page list", e);
+        return Collections.emptyList();
     }
 
     private Page fillPageWithNextPages(Page page) {

@@ -30,7 +30,7 @@ class PageController {
     private final IStoryService storyService;
     private final IPageService pageService;
 
-    private PageController(IStoryService storyService, IPageService pageService) {
+    public PageController(IStoryService storyService, IPageService pageService) {
         this.storyService = storyService;
         this.pageService = pageService;
     }

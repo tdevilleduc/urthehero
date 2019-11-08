@@ -119,18 +119,4 @@ class StoryControllerTest extends AbstractTest {
                 .andExpect(content().string(is(notNullValue())));
     }
 
-//    @Test
-//    public void test_updateStory() throws Exception {
-//        Integer authorId = 1;
-//        Integer firstPageId = 1;
-//        Story story = TestUtils.createStory(authorId, firstPageId);
-//        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.post(uriController)
-//                .content(objectMapper.writeValueAsString(story))
-//                .contentType(MediaType.APPLICATION_JSON))
-//				.andExpect(request().asyncStarted())
-//                .andReturn();
-//        mockMvc.perform(asyncDispatch(resultActions))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(is(notNullValue())));
-//    }
 }

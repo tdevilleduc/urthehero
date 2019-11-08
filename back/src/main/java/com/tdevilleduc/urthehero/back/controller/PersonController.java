@@ -27,7 +27,7 @@ class PersonController {
 
     private final IPersonService personService;
 
-    private PersonController(IPersonService personService) {
+    public PersonController(IPersonService personService) {
         this.personService = personService;
     }
 
