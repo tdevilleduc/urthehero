@@ -27,7 +27,7 @@ class ProgressionController {
     private final IStoryService storyService;
     private final IPersonService personService;
 
-    private ProgressionController(IProgressionService progressionService, IStoryService storyService, IPersonService personService) {
+    public ProgressionController(IProgressionService progressionService, IStoryService storyService, IPersonService personService) {
         this.progressionService = progressionService;
         this.storyService = storyService;
         this.personService = personService;

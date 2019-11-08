@@ -41,10 +41,6 @@ public class PersonService implements IPersonService {
         return personDao.findById(personId);
     }
 
-    private Optional<Person> emptyPerson(Integer personId, IllegalArgumentException e) {
-        return Optional.empty();
-    }
-
     private Optional<Person> emptyPerson(Integer personId, Throwable e) {
         log.error("Unable to retrieve person with id {}", personId, e);
         return Optional.empty();

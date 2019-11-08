@@ -9,7 +9,6 @@ import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,11 +57,11 @@ public class StoryService implements IStoryService {
     }
 
     private Optional<Story> emptyStory(Integer storyId, Exception e) {
-        log.error("Cannot retrieve story", e);
+        log.error("Cannot retrieve story");
         return Optional.empty();
     }
 
-    @Retry(name = "storyService_findAll", fallbackMethod = "emptyStoryList")
+    @CircuitBreaker(name = "storyService_findAll", fallbackMethod = "emptyStoryList")
     public List<Story> findAll() {
         return storyDao.findAll().stream()
                 .map(this::fillStoryWithNumberOfPages)
@@ -71,11 +70,11 @@ public class StoryService implements IStoryService {
     }
 
     private List<Story> emptyStoryList(Throwable e) {
+        log.error("Unable to retrieve story list");
         return Collections.emptyList();
     }
 
-    @CircuitBreaker(name = "storyService_findByPersonId")
-//    @Retry(name = "story_findByPersonId")
+    @CircuitBreaker(name = "storyService_findByPersonId", fallbackMethod = "emptyStoryList")
     public List<Story> findByPersonId(Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         List<Progression> progressionList = progressionService.findByPersonId(personId);

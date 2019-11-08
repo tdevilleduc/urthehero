@@ -25,7 +25,7 @@ class DiceController {
 
     private final IDiceService diceService;
 
-    private DiceController(IDiceService diceService) {
+    public DiceController(IDiceService diceService) {
         this.diceService = diceService;
     }
 

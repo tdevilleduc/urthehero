@@ -81,7 +81,8 @@ class PageServiceTest extends AbstractTest {
 
     @Test
     void test_findById_withIdNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> pageService.findById(null));
+        Optional<Page> optional = pageService.findById(null);
+        Assertions.assertTrue(optional.isEmpty());
     }
 
     @Test
