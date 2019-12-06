@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_PAGE_SERVICE;
+
 @Slf4j
 @Service
 public class PageService implements IPageService {
@@ -26,7 +28,8 @@ public class PageService implements IPageService {
     @Autowired
     private PageDao pageDao;
 
-    public boolean exists(Integer pageId) {
+    @CircuitBreaker(name = INSTANCE_PAGE_SERVICE, fallbackMethod = "notExists")
+    public boolean exists(final Integer pageId) {
         Assert.notNull(pageId, "The pageId parameter is mandatory !");
         Optional<Page> page = pageDao.findById(pageId);
         if (page.isEmpty()) {
@@ -36,28 +39,33 @@ public class PageService implements IPageService {
         return true;
     }
 
-    public boolean notExists(Integer pageId) {
+    @CircuitBreaker(name = INSTANCE_PAGE_SERVICE, fallbackMethod = "notExists")
+    public boolean notExists(final Integer pageId) {
         return ! exists(pageId);
     }
 
-    @CircuitBreaker(name = "pageService_findAll", fallbackMethod = "emptyPage")
-    public Optional<Page> findById(Integer pageId) {
+    private boolean notExists(final Integer pageId, final Throwable e) {
+        return false;
+    }
+
+    @CircuitBreaker(name = INSTANCE_PAGE_SERVICE, fallbackMethod = "emptyPage")
+    public Optional<Page> findById(final Integer pageId) {
         Assert.notNull(pageId, "The pageId parameter is mandatory !");
         return pageDao.findById(pageId)
                 .map(this::fillPageWithNextPages);
     }
 
-    private Optional<Page> emptyPage(Integer pageId, Throwable e) {
+    private Optional<Page> emptyPage(final Integer pageId, final Throwable e) {
         log.error("Unable to retrieve page with id {}", pageId, e);
         return Optional.empty();
     }
 
-    @CircuitBreaker(name = "pageService_findAll", fallbackMethod = "emptyPageList")
+    @CircuitBreaker(name = INSTANCE_PAGE_SERVICE, fallbackMethod = "emptyPageList")
     public List<Page> findAll() {
         return pageDao.findAll();
     }
 
-    private List<Page> emptyPageList(Throwable e) {
+    private List<Page> emptyPageList(final Throwable e) {
         log.error("Unable to retrieve page list", e);
         return Collections.emptyList();
     }

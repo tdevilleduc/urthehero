@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_STORY_SERVICE;
+
 @Slf4j
 @Service
 public class StoryService implements IStoryService {
@@ -27,7 +29,8 @@ public class StoryService implements IStoryService {
     @Autowired
     private StoryDao storyDao;
 
-    public boolean exists(Integer storyId) {
+    @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "notExists")
+    public boolean exists(final Integer storyId) {
         Assert.notNull(storyId, "The story parameter is mandatory !");
         Optional<Story> story = storyDao.findById(storyId);
         if (story.isEmpty()) {
@@ -37,24 +40,29 @@ public class StoryService implements IStoryService {
         return true;
     }
 
-    public boolean notExists(Integer storyId) {
+    @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "notExists")
+    public boolean notExists(final Integer storyId) {
         return ! exists(storyId);
     }
 
-    @CircuitBreaker(name = "storyService_findById", fallbackMethod = "emptyStory")
-    public Optional<Story> findById(Integer storyId) {
+    private boolean notExists(final Integer storyId, final Throwable e) {
+        return false;
+    }
+
+    @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "emptyStory")
+    public Optional<Story> findById(final Integer storyId) {
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         return storyDao.findById(storyId)
                 .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders);
     }
 
-    private Optional<Story> emptyStory(Integer storyId, Exception e) {
+    private Optional<Story> emptyStory(final Integer storyId, final Throwable e) {
         log.error("Cannot retrieve story");
         return Optional.empty();
     }
 
-    @CircuitBreaker(name = "storyService_findAll", fallbackMethod = "emptyStoryList")
+    @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "emptyStoryList")
     public List<Story> findAll() {
         return storyDao.findAll().stream()
                 .map(this::fillStoryWithNumberOfPages)
@@ -62,13 +70,13 @@ public class StoryService implements IStoryService {
                 .collect(Collectors.toList());
     }
 
-    private List<Story> emptyStoryList(Throwable e) {
+    private List<Story> emptyStoryList(final Throwable e) {
         log.error("Unable to retrieve story list");
         return Collections.emptyList();
     }
 
-    @CircuitBreaker(name = "storyService_findByPersonId", fallbackMethod = "emptyStoryList")
-    public List<Story> findByPersonId(Integer personId) {
+    @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "emptyStoryList")
+    public List<Story> findByPersonId(final Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         List<Progression> progressionList = progressionService.findByPersonId(personId);
         return progressionList.stream()
