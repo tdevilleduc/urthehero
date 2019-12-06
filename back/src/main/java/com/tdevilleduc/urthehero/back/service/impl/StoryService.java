@@ -4,8 +4,6 @@ import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
-import com.tdevilleduc.urthehero.back.service.IPageService;
-import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -25,12 +23,7 @@ import java.util.stream.Collectors;
 public class StoryService implements IStoryService {
 
     @Autowired
-    private IPersonService personService;
-    @Autowired
-    private IPageService pageService;
-    @Autowired
     private IProgressionService progressionService;
-
     @Autowired
     private StoryDao storyDao;
 

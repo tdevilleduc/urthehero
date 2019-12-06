@@ -16,7 +16,6 @@ public class NextPageService implements INextPageService {
 
     @Autowired
     private IPageService pageService;
-    
     @Autowired
     private NextPageDao nextPageDao;
 
