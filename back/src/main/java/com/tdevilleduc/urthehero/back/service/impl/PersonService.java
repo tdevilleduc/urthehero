@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_PERSON_SERVICE;
+
 @Slf4j
 @Service
 public class PersonService implements IPersonService {
@@ -22,7 +24,8 @@ public class PersonService implements IPersonService {
     @Autowired
     private PersonDao personDao;
 
-    public boolean exists(Integer personId) {
+    @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "notExists")
+    public boolean exists(final Integer personId) {
         Optional<Person> person = personDao.findById(personId);
         if (person.isEmpty()) {
             log.error("La personne avec l'id {} n'existe pas", personId);
@@ -31,27 +34,32 @@ public class PersonService implements IPersonService {
         return true;
     }
 
-    public boolean notExists(Integer personId) {
+    @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "notExists")
+    public boolean notExists(final Integer personId) {
         return ! exists(personId);
     }
 
-    @CircuitBreaker(name = "personService_findById", fallbackMethod = "emptyPerson")
-    public Optional<Person> findById(Integer personId) {
+    private boolean notExists(final Integer personId, final Throwable e) {
+        return false;
+    }
+
+    @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "emptyPerson")
+    public Optional<Person> findById(final Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         return personDao.findById(personId);
     }
 
-    private Optional<Person> emptyPerson(Integer personId, Throwable e) {
+    private Optional<Person> emptyPerson(final Integer personId, final Throwable e) {
         log.error("Unable to retrieve person with id {}", personId, e);
         return Optional.empty();
     }
 
-    @CircuitBreaker(name = "personService_findAll", fallbackMethod = "emptyPersonList")
+    @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "emptyPersonList")
     public List<Person> findAll() {
         return personDao.findAll();
     }
 
-    private List<Person> emptyPersonList(Throwable e) {
+    private List<Person> emptyPersonList(final Throwable e) {
         log.error("Unable to retrieve person list", e);
         return Collections.emptyList();
     }
