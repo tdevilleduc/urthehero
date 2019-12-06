@@ -5,19 +5,24 @@ import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
+import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_PROGRESSION_SERVICE;
 
 @Slf4j
 @Service
@@ -32,7 +37,7 @@ public class ProgressionService implements IProgressionService {
     @Autowired
     private ProgressionDao progressionDao;
 
-    public Progression doProgressionAction(Integer personId, Integer storyId, Integer pageId) {
+    public Progression doProgressionAction(final Integer personId, final Integer storyId, final Integer pageId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         Assert.notNull(pageId, "The pageId parameter is mandatory !");
@@ -60,7 +65,8 @@ public class ProgressionService implements IProgressionService {
         return progressionDao.save(progression);
     }
 
-    public List<Progression> findByPersonId(Integer personId) {
+    @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgressionList")
+    public List<Progression> findByPersonId(final Integer personId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         if (personService.notExists(personId)) {
             throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
@@ -69,7 +75,12 @@ public class ProgressionService implements IProgressionService {
         return progressionDao.findByPersonId(personId);
     }
 
-    public Optional<Progression> findByPersonIdAndStoryId(Integer personId, Integer storyId) {
+    private List<Progression> emptyProgressionList(final Integer personId, final Throwable e) {
+        return Collections.emptyList();
+    }
+
+    @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgression")
+    public Optional<Progression> findByPersonIdAndStoryId(final Integer personId, final Integer storyId) {
         Assert.notNull(personId, "The personId parameter is mandatory !");
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         if (personService.notExists(personId)) {
@@ -82,12 +93,21 @@ public class ProgressionService implements IProgressionService {
         return progressionDao.findByPersonIdAndStoryId(personId, storyId);
     }
 
-    public Long countByStoryId(Integer storyId) {
+    private Optional<Page> emptyProgression(final Integer personId, final Integer storyId, final Throwable e) {
+        return Optional.empty();
+    }
+
+    @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgressionCount")
+    public Long countByStoryId(final Integer storyId) {
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         if (storyService.notExists(storyId)) {
             throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
         }
 
         return progressionDao.countByStoryId(storyId);
+    }
+
+    private Long emptyProgressionCount(final Integer storyId, final Throwable e) {
+        return 0L;
     }
 }
