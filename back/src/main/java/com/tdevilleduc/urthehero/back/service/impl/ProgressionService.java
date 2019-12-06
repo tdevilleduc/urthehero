@@ -29,7 +29,6 @@ public class ProgressionService implements IProgressionService {
     private IPersonService personService;
     @Autowired
     private IPageService pageService;
-
     @Autowired
     private ProgressionDao progressionDao;
 

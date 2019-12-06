@@ -23,7 +23,6 @@ public class PageService implements IPageService {
 
     @Autowired
     private INextPageService nextPageService;
-
     @Autowired
     private PageDao pageDao;
 
