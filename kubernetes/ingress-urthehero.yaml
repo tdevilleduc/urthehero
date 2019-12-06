@@ -1,0 +1,8 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-urthehero
+spec:
+  backend:
+    serviceName: urthehero-back
+    servicePort: 8083
