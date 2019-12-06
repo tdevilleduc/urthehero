@@ -1,7 +1,7 @@
 apiVersion: apps/v1           # API version
 kind: Deployment              # Type of kubernetes resource
 metadata:
-  name: urthehero        # Name of the kubernetes resource
+  name: urthehero-back        # Name of the kubernetes resource
   labels:                     # Labels that will be applied to this resource
     app: urthehero
 spec:
@@ -21,25 +21,18 @@ spec:
           ports:
             - name: http
               containerPort: 8083 # The port that the container exposes
-#          env:                  # Environment variables supplied to the Pod
-#            - name: SPRING_DATASOURCE_URL
-#              value: jdbc:mysql://urthehero-mysql:3306/test?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-#            - name: SPRING_DATASOURCE_USERNAME
-#              value: root
-#            - name: SPRING_DATASOURCE_PASSWORD
-#              value: tdevilleduc
+
 ---
 apiVersion: v1                # API version
 kind: Service                 # Type of the kubernetes resource
 metadata:
-  name: urthehero        # Name of the kubernetes resource
+  name: urthehero-back        # Name of the kubernetes resource
   labels:                     # Labels that will be applied to this resource
     app: urthehero
 spec:
   type: NodePort              # The service will be exposed by opening a Port on each node and proxying it.
   selector:
-    app: urthehero       # The service exposes Pods with label `app=polling-app-server`
+    app: urthehero            # The service exposes Pods with label `app=polling-app-server`
   ports:                      # Forward incoming connections on port 8080 to the target port 8080
     - name: http
       port: 8083
-      targetPort: 8083
