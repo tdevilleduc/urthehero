@@ -1,7 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: urthehero
+  labels:
+    name: urthehero
+---
 apiVersion: apps/v1           # API version
 kind: Deployment              # Type of kubernetes resource
 metadata:
-  name: urthehero-back        # Name of the kubernetes resource
+  name: back                  # Name of the kubernetes resource
+  namespace: urthehero        # Name of the namespace used
   labels:                     # Labels that will be applied to this resource
     app: urthehero
 spec:
@@ -16,23 +24,25 @@ spec:
     spec:                     # Spec for the containers that will be run in the Pods
       containers:
         - name: urthehero
-          image: urthehero_back:0.1.1-SNAPSHOT
+          image: localhost:5000/urthehero/back:0.1.1-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 8083 # The port that the container exposes
+              containerPort: 8080 # The port that the container exposes
 
 ---
 apiVersion: v1                # API version
 kind: Service                 # Type of the kubernetes resource
 metadata:
-  name: urthehero-back        # Name of the kubernetes resource
+  name: back                  # Name of the kubernetes resource
+  namespace: urthehero        # Name of the namespace used
   labels:                     # Labels that will be applied to this resource
     app: urthehero
 spec:
   type: NodePort              # The service will be exposed by opening a Port on each node and proxying it.
   selector:
-    app: urthehero            # The service exposes Pods with label `app=polling-app-server`
-  ports:                      # Forward incoming connections on port 8080 to the target port 8080
+    app: urthehero            # The service exposes Pods with label `app=urthehero`
+  ports:                      # Forward incoming connections on port 8083 to the target port 8080
     - name: http
       port: 8083
+      targetPort: 8080

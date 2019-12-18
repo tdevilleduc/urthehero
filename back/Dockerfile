@@ -1,15 +1,12 @@
-FROM registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
-
-ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
-
-VOLUME /deployments
+FROM openjdk:11.0.4-jre-slim
 
 ARG JAR_FILE
 
-ADD target/${JAR_FILE} /deployments/app.jar
+ENV TZ "/usr/share/zoneinfo/Europe/Paris"
+ENV JAVA_OPTIONS "-Duser.home -Dspring.profiles.active=docker,chaos-monkey -Dfile.encoding=UTF8"
 
-EXPOSE 8083
+ADD ./target/${JAR_FILE} /opt/app.jar
 
-ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
+EXPOSE 8080
 
-ENV JAVA_APP_JAR /deployments/app.jar
+CMD ["sh", "-c", "java ${JAVA_OPTIONS} -jar /opt/app.jar"]
