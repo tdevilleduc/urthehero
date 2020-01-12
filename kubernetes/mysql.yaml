@@ -1,7 +1,15 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: urthehero
+  labels:
+    name: urthehero
+---
+apiVersion: v1
 kind: Service
 metadata:
-  name: urthehero-mysql
+  name: mysql
+  namespace: urthehero
   labels:
     app: urthehero
 spec:
@@ -16,6 +24,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mysql-secret
+  namespace: urthehero
 type: Opaque
 data:
   MYSQL_ROOT_PASSWORD: cGFzc3dvcmQ= #password
@@ -27,6 +36,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
+  namespace: urthehero
   labels:
     app: urthehero
 spec:
@@ -36,10 +46,11 @@ spec:
     requests:
       storage: 5Gi
 ---
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: urthehero-mysql
+  name: mysql
+  namespace: urthehero
   labels:
     app: urthehero
 spec:
