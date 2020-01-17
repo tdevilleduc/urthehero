@@ -6,7 +6,8 @@ services:
     image: mysql:8.0.19
     environment:
       MYSQL_DATABASE: test
-      MYSQL_USER: user
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: test123
       MYSQL_ROOT_PASSWORD: tdevilleduc
       MYSQL_ROOT_HOST: '%'
     ports:
@@ -16,14 +17,14 @@ services:
 
   back:
     container_name: urthehero-back
-    image: openjdk:11.0.4-jre-slim
+    image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
     volumes:
       - ./back/target:/deployments
     environment:
       JAVA_APP_JAR: back-0.1.1-SNAPSHOT.jar
-      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8
+      JAVA_OPTIONS: "-Dspring.profiles.active=docker -Dfile.encoding=UTF8"
     ports:
-      - "8083:8083"
+      - "8080:8080"
     restart: always
     networks:
       - urthehero
