@@ -13,7 +13,6 @@ class PageTest {
         String pageImage = "image de ouf";
         Story story = TestUtils.createRandomStory();
         Page page = new Page(pageId, pageText, pageImage);
-        page.setStory(story);
 
         Assertions.assertEquals(page.getId(), pageId);
         Assertions.assertEquals(page.getText(), pageText);
@@ -23,7 +22,6 @@ class PageTest {
         Page secondPage = new Page();
         secondPage.setId(pageId);
         secondPage.setText(pageText);
-        secondPage.setStory(story);
         secondPage.setImage(pageImage);
 
         Assertions.assertEquals(secondPage.toString(), page.toString());

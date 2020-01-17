@@ -53,7 +53,6 @@ public class StoryService implements IStoryService {
     public Optional<Story> findById(final Integer storyId) {
         Assert.notNull(storyId, "The storyId parameter is mandatory !");
         return storyDao.findById(storyId)
-                .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders);
     }
 
@@ -65,7 +64,6 @@ public class StoryService implements IStoryService {
     @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "emptyStoryList")
     public List<Story> findAll() {
         return storyDao.findAll().stream()
-                .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders)
                 .collect(Collectors.toList());
     }
@@ -83,7 +81,6 @@ public class StoryService implements IStoryService {
                 .map(this::getStoryFromProgression)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(this::fillStoryWithNumberOfPages)
                 .map(this::fillStoryWithNumberOfReaders)
                 .collect(Collectors.toList());
     }
@@ -97,11 +94,6 @@ public class StoryService implements IStoryService {
     private Story fillStoryWithNumberOfReaders(Story story) {
         Long numberOfReaders = progressionService.countByStoryId(story.getStoryId());
         story.setNumberOfReaders(numberOfReaders);
-        return story;
-    }
-
-    private Story fillStoryWithNumberOfPages(Story story) {
-        story.setNumberOfPages((long) story.getPages().size());
         return story;
     }
 

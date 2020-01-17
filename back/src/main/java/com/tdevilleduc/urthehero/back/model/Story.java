@@ -34,13 +34,7 @@ public class Story {
     @Transient
     private Integer currentPageId;
     @Transient
-    private Long numberOfPages;
-    @Transient
     private Long numberOfReaders;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "story", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Page> pages = Collections.emptyList();
 
 
 
