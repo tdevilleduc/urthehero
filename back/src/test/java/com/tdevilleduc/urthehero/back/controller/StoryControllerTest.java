@@ -59,7 +59,6 @@ class StoryControllerTest extends AbstractTest {
                 .andExpect(jsonPath("$.authorId", Matchers.is(2)))
                 .andExpect(jsonPath("$.firstPageId", Matchers.is(4)))
                 .andExpect(jsonPath("$.currentPageId", Matchers.is(Matchers.emptyOrNullString())))
-                .andExpect(jsonPath("$.numberOfPages", Matchers.is(3)))
                 .andExpect(jsonPath("$.numberOfReaders", Matchers.is(2)))
         ;
     }
@@ -92,14 +91,12 @@ class StoryControllerTest extends AbstractTest {
                 .andExpect(jsonPath("$[0].authorId", Matchers.is(2)))
                 .andExpect(jsonPath("$[0].firstPageId", Matchers.is(4)))
                 .andExpect(jsonPath("$[0].currentPageId", Matchers.is(3)))
-                .andExpect(jsonPath("$[0].numberOfPages", Matchers.is(3)))
                 .andExpect(jsonPath("$[0].numberOfReaders", Matchers.is(2)))
                 .andExpect(jsonPath("$[1].storyId", Matchers.is(1)))
                 .andExpect(jsonPath("$[1].title", Matchers.is("Ulysse")))
                 .andExpect(jsonPath("$[1].authorId", Matchers.is(1)))
                 .andExpect(jsonPath("$[1].firstPageId", Matchers.is(1)))
                 .andExpect(jsonPath("$[1].currentPageId", Matchers.is(2)))
-                .andExpect(jsonPath("$[1].numberOfPages", Matchers.is(4)))
                 .andExpect(jsonPath("$[1].numberOfReaders", Matchers.is(3)))
         ;
     }

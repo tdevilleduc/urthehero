@@ -37,10 +37,6 @@ class PageServiceTest extends AbstractTest {
         Assertions.assertEquals("image3", page.getImage());
         Assertions.assertEquals("Ulysse", page.getText());
 
-        Story story = page.getStory();
-        Assertions.assertNotNull(story);
-        Assertions.assertEquals(Integer.valueOf(1), story.getStoryId());
-
         List<NextPage> nextPageList = page.getNextPageList();
         Assertions.assertNotNull(nextPageList);
         Assertions.assertFalse(nextPageList.isEmpty());

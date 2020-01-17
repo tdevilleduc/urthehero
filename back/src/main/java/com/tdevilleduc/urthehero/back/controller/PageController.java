@@ -53,25 +53,6 @@ class PageController {
         };
     }
 
-    @GetMapping(value = "/all/story/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(
-            value = "${swagger.controller.page.get-all-by-story-id.value}",
-            notes = "${swagger.controller.page.get-all-by-story-id.notes}")
-    public @ResponseBody Callable<ResponseEntity<List<Page>>> getAllPagesByStoryId(HttpServletRequest request,
-                                                                                   @PathVariable Integer storyId) {
-        return () -> {
-            if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
-            }
-            Optional<Story> optional = storyService.findById(storyId);
-            return optional
-                    .map(Story::getPages)
-                    .map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
-        };
-    }
-
     @GetMapping(value = "/story/{storyId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(
