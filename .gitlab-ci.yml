@@ -24,7 +24,7 @@ build_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-  image: openjdk:11.0.4-jre-slim
+  image: adoptopenjdk/openjdk11:alpine-slim
 
 test_job:
   stage: test
@@ -41,7 +41,7 @@ test_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-  image: openjdk:11.0.4-jre-slim
+  image: adoptopenjdk/openjdk11:alpine-slim
 
 code_quality_job:
   stage: quality
@@ -77,4 +77,4 @@ package_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-  image: openjdk:11.0.4-jre-slim
+  image: adoptopenjdk/openjdk11:alpine-slim
