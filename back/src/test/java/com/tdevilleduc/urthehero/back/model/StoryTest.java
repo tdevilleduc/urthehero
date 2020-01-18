@@ -23,7 +23,6 @@ class StoryTest {
         Assertions.assertEquals(story.getDetailedText(), storyDetailedText);
         Assertions.assertEquals(story.getImage(), storyImage);
         Assertions.assertNull(story.getCurrentPageId());
-        Assertions.assertTrue(story.getPages().isEmpty());
 
         Story secondStory = new Story();
         secondStory.setStoryId(storyId);
@@ -32,7 +31,6 @@ class StoryTest {
         secondStory.setFirstPageId(storyFirstPageId);
         secondStory.setDetailedText(storyDetailedText);
         secondStory.setImage(storyImage);
-        secondStory.setPages(Collections.emptyList());
 
         Assertions.assertEquals(secondStory.toString(), story.toString());
         Assertions.assertEquals(secondStory, story);

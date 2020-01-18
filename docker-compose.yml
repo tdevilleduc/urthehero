@@ -3,10 +3,11 @@ version: '3.7'
 services:
   mysql:
     container_name: urthehero-mysql
-    image: mysql/mysql-server:5.7
+    image: mysql:8.0.19
     environment:
       MYSQL_DATABASE: test
-      MYSQL_USER: user
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: test123
       MYSQL_ROOT_PASSWORD: tdevilleduc
       MYSQL_ROOT_HOST: '%'
     ports:
@@ -21,9 +22,9 @@ services:
       - ./back/target:/deployments
     environment:
       JAVA_APP_JAR: back-0.1.1-SNAPSHOT.jar
-      JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8
+      JAVA_OPTIONS: "-Dspring.profiles.active=docker -Dfile.encoding=UTF8"
     ports:
-      - "8083:8083"
+      - "8080:8080"
     restart: always
     networks:
       - urthehero

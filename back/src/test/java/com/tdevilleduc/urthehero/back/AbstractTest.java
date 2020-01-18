@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class AbstractTest {
 
     @ClassRule
-    public static final MySQLContainer mySqlContainer = new MySQLContainer()
+    public static final MySQLContainer mySqlContainer = new MySQLContainer("mysql:8.0.19")
             .withDatabaseName("test")
             .withUsername("test")
             .withPassword("test");

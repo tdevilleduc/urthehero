@@ -127,9 +127,7 @@ public class ITStoryServiceTest extends AbstractTest {
             assertEquals("Ulysse", story.getTitle());
             assertEquals(Integer.valueOf(1), story.getAuthorId());
             assertEquals(Integer.valueOf(1), story.getFirstPageId());
-            assertEquals(Long.valueOf(4), story.getNumberOfPages());
             assertEquals(Long.valueOf(3), story.getNumberOfReaders());
-            assertEquals(4, story.getPages().size());
         });
 
         checkHealthStatus(INSTANCE_STORY_SERVICE, CircuitBreaker.State.CLOSED);

@@ -71,17 +71,4 @@ class PageControllerTest extends AbstractTest {
         ;
     }
 
-    @Test
-    void test_getAllPagesByStoryId() throws Exception {
-        MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.get(uriController + "/all/story/1"))
-                .andExpect(request().asyncStarted())
-                .andReturn();
-        mockMvc.perform(asyncDispatch(resultActions))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().string(is(notNullValue())))
-                .andExpect(jsonPath("$", hasSize(4)))
-        ;
-    }
-
 }

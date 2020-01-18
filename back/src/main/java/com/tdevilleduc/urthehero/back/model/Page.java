@@ -25,11 +25,6 @@ public class Page {
     @NonNull
     private String image;
 
-    @ManyToOne
-    @JoinColumn(name = "story_Id", insertable = false, updatable = false)
-    @JsonIgnore
-    private Story story;
-
     @Transient
     private List<NextPage> nextPageList = Collections.emptyList();
 
