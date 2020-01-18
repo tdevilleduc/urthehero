@@ -24,7 +24,7 @@ spec:
     spec:                     # Spec for the containers that will be run in the Pods
       containers:
         - name: urthehero
-          image: localhost:5000/urthehero/back:0.1.1-SNAPSHOT
+          image: docker.io/thomasdevilleduc/urthehero-back:0.1.1-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -39,10 +39,9 @@ metadata:
   labels:                     # Labels that will be applied to this resource
     app: urthehero
 spec:
-  type: NodePort              # The service will be exposed by opening a Port on each node and proxying it.
+  type: LoadBalancer          # The service will be exposed by opening a Port on each node and proxying it.
   selector:
     app: urthehero            # The service exposes Pods with label `app=urthehero`
   ports:                      # Forward incoming connections on port 8083 to the target port 8080
     - name: http
-      port: 8083
-      targetPort: 8080
+      port: 8080
