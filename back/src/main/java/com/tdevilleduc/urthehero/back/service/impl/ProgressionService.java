@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_PROGRESSION_SERVICE;
+import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_PROGRESSION_SERVICE;
 
 @Slf4j
 @Service
@@ -53,16 +53,16 @@ public class ProgressionService implements IProgressionService {
         }
 
         Optional<Progression> optionalProgression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
-        if (optionalProgression.isEmpty()) {
+        if (optionalProgression.isPresent()) {
+            Progression progression = optionalProgression.get();
+
+            // TODO: vérifier qu'on a le droit d'avancer sur cette page depuis la page précédente
+            progression.setActualPageId(pageId);
+
+            return progressionDao.save(progression);
+        } else {
             throw new ProgressionNotFoundException("Aucune progression avec le personId " + personId + " et le storyId " + storyId);
         }
-
-        Progression progression = optionalProgression.get();
-
-        // TODO: vérifier qu'on a le droit d'avancer sur cette page depuis la page précédente
-        progression.setActualPageId(pageId);
-
-        return progressionDao.save(progression);
     }
 
     @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgressionList")

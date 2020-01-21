@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.exceptions.PageInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Page;
+import com.tdevilleduc.urthehero.back.model.PageDTO;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.service.IPageService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -75,8 +75,8 @@ class PageController {
     }
 
     @PutMapping
-    public @ResponseBody Callable<ResponseEntity<Page>> createPage(HttpServletRequest request,
-                           @RequestBody @NotNull Page page) {
+    public @ResponseBody Callable<ResponseEntity<PageDTO>> createPage(HttpServletRequest request,
+                           @RequestBody @NotNull PageDTO page) {
         return () -> {
             if (log.isInfoEnabled()) {
                 log.info("call: {}", request.getRequestURI());
@@ -89,8 +89,8 @@ class PageController {
     }
 
     @PostMapping
-    public @ResponseBody Callable<ResponseEntity<Page>> updatePage(HttpServletRequest request,
-                           @RequestBody @NotNull Page page) {
+    public @ResponseBody Callable<ResponseEntity<PageDTO>> updatePage(HttpServletRequest request,
+                           @RequestBody @NotNull PageDTO page) {
         return () -> {
             if (log.isInfoEnabled()) {
                 log.info("call: {}", request.getRequestURI());
