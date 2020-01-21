@@ -1,5 +1,7 @@
 # urthehero
 
+[![Build Status](https://travis-ci.org/tdevilleduc/urthehero.svg)](https://travis-ci.org/tdevilleduc/urthehero)
+
 ```bash
 @FOR /f "tokens=*" %i IN ('minikube docker-env') DO @%i
 kubectl -n urthehero delete deployment back
