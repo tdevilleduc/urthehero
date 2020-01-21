@@ -3,19 +3,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.tdevilleduc.urthehero</groupId>
 	<artifactId>back</artifactId>
-	<packaging>jar</packaging>
+	<name>urthehero-back</name>
+	<description>Module de backend du projet URtheHero</description>
 
 	<parent>
 		<groupId>com.tdevilleduc.urthehero</groupId>
 		<artifactId>urthehero</artifactId>
 		<version>0.1.1-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<name>urthehero-back</name>
-	<description>Backend du projet URtheHero</description>
+	<properties>
+		<dockerfile.skip>false</dockerfile.skip>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -110,48 +110,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>buildDocker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<version>${docker.plugin.version}</version>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>localDocker</id>
-			<build>
-				<plugins>
-					<plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>dockerfile-maven-plugin</artifactId>
-                        <version>1.4.10</version>
-						<executions>
-							<execution>
-								<id>default</id>
-								<goals>
-									<goal>build</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<repository>urthehero_back</repository>
-							<tag>${project.version}</tag>
-							<dockerfile>Dockerfile</dockerfile>
-							<buildArgs>
-								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-							</buildArgs>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>
