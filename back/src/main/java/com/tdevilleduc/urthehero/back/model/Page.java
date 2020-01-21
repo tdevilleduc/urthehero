@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

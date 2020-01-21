@@ -4,6 +4,7 @@ import com.tdevilleduc.urthehero.back.dao.PageDao;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
 import com.tdevilleduc.urthehero.back.model.Page;
+import com.tdevilleduc.urthehero.back.model.PageDTO;
 import com.tdevilleduc.urthehero.back.service.INextPageService;
 import com.tdevilleduc.urthehero.back.service.IPageService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -17,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_PAGE_SERVICE;
+import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_PAGE_SERVICE;
 
 @Slf4j
 @Service
@@ -76,8 +77,17 @@ public class PageService implements IPageService {
         return page;
     }
 
-    public Page createOrUpdate(Page page) {
-        return pageDao.save(page);
+    public PageDTO createOrUpdate(PageDTO pageDTO) {
+        Page page = new Page();
+        page.setId(pageDTO.getId());
+        page.setImage(pageDTO.getImage());
+        page.setText(pageDTO.getText());
+        Page newPage = pageDao.save(page);
+        PageDTO newPageDTO = new PageDTO();
+        newPageDTO.setId(newPage.getId());
+        newPageDTO.setImage(newPage.getImage());
+        newPageDTO.setText(newPage.getText());
+        return newPageDTO;
     }
 
     public void delete(Integer pageId) {

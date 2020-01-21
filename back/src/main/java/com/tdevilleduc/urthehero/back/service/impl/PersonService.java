@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.tdevilleduc.urthehero.back.config.ResilienceConfig.INSTANCE_PERSON_SERVICE;
+import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_PERSON_SERVICE;
 
 @Slf4j
 @Service
