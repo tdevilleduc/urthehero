@@ -69,8 +69,8 @@ package_job:
     DOCKER_HOST: tcp://docker:2375
   script:
     - apk add --no-cache docker
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - ./mvnw install -PbuildDocker -DskipTests=true -DpushImage
+    - docker login docker.io -u thomasdevilleduc -p $DOCKER_HUB_PWD
+    - ./mvnw install dockerfile:build dockerfile:push -DskipTests=true
       -Dhttps.protocols=TLSv1.2
       -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
       -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
