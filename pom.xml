@@ -46,6 +46,18 @@
         <docker.image.prefix>urthehero</docker.image.prefix>
         <dockerfile.tag>${project.version}</dockerfile.tag>
         <dockerfile.skip>true</dockerfile.skip>
+
+        <sonar.projectKey>${project.artifactId}</sonar.projectKey>
+        <sonar.projectName>${project.name}</sonar.projectName>
+        <sonar.login>admin</sonar.login>
+        <sonar.password>admin</sonar.password>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.language>java</sonar.language>
     </properties>
 
     <dependencyManagement>
