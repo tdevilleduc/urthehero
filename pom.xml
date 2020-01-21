@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.3.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
     </parent>
 
     <properties>
@@ -26,14 +26,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring-boot.version>2.2.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <swagger.version>2.9.2</swagger.version>
-        <chaos-monkey-spring-boot.version>2.1.1</chaos-monkey-spring-boot.version>
-        <resilience4j.version>1.1.0</resilience4j.version>
+        <chaos-monkey-spring-boot.version>2.2.0</chaos-monkey-spring-boot.version>
+        <resilience4j.version>1.2.0</resilience4j.version>
         <junit.platform.version>1.2.0</junit.platform.version>
         <testcontainers.version>1.12.4</testcontainers.version>
 
-        <docker.plugin.version>1.2.0</docker.plugin.version>
+        <docker.plugin.version>1.2.2</docker.plugin.version>
         <docker.image.prefix>urthehero</docker.image.prefix>
         <docker.image.exposed.port>9090</docker.image.exposed.port>
         <docker.image.dockerfile.dir>./back</docker.image.dockerfile.dir>
