@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.CONTROLLER_CALL_LOG;
+
 @Slf4j
 @Api(value = "Progression", tags = { "Progression Controller" } )
 @RestController
@@ -42,7 +44,7 @@ class ProgressionController {
                                                                                       @PathVariable Integer personId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
@@ -62,7 +64,7 @@ class ProgressionController {
                                                                                           @PathVariable Integer storyId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
@@ -89,7 +91,7 @@ class ProgressionController {
                                                                        @PathVariable Integer newPageId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             return ResponseEntity.ok(progressionService.doProgressionAction(personId, storyId, newPageId));
         };

@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.CONTROLLER_CALL_LOG;
+
 @Slf4j
 @Api(value = "Page", tags = { "Page Controller" } )
 @RestController
@@ -44,7 +46,7 @@ class PageController {
                                                                     @PathVariable Integer pageId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             Optional<Page> optional = pageService.findById(pageId);
             return optional
@@ -62,7 +64,7 @@ class PageController {
                                                                               @PathVariable int storyId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             Optional<Story> optional = storyService.findById(storyId);
             return optional
@@ -79,7 +81,7 @@ class PageController {
                            @RequestBody @NotNull PageDTO page) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             if (page.getId() != null && pageService.exists(page.getId())) {
                 throw new PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.getId()).getMessage());
@@ -93,7 +95,7 @@ class PageController {
                            @RequestBody @NotNull PageDTO page) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             Assert.notNull(page.getId(), () -> {
                 throw new PageInternalErrorException("L'identifiant de la page passée en paramètre ne peut pas être null");
@@ -106,7 +108,7 @@ class PageController {
     public @ResponseBody void deletePage(HttpServletRequest request,
                            @PathVariable @NotNull Integer pageId) {
         if (log.isInfoEnabled()) {
-            log.info("call: {}", request.getRequestURI());
+            log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
         }
         pageService.delete(pageId);
     }

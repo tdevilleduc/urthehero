@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_STORY_SERVICE;
 import static org.hamcrest.Matchers.is;
@@ -113,7 +114,7 @@ public class ITStoryServiceTest extends AbstractTest {
             assertFalse(optional.isPresent());
         });
 
-        Thread.sleep(2000);
+        TimeUnit.MINUTES.sleep(2);
 
         checkHealthStatus(INSTANCE_STORY_SERVICE, CircuitBreaker.State.HALF_OPEN);
 

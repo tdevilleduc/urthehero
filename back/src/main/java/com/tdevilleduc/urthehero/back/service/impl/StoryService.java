@@ -1,10 +1,8 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
-import com.tdevilleduc.urthehero.back.convertor.PersonConvertor;
 import com.tdevilleduc.urthehero.back.convertor.StoryConvertor;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
-import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
 import com.tdevilleduc.urthehero.back.model.StoryDTO;
@@ -23,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_STORY_SERVICE;
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.*;
 
 @Slf4j
 @Service
@@ -41,7 +40,7 @@ public class StoryService implements IStoryService {
         Assert.notNull(storyId, "The story parameter is mandatory !");
         Optional<Story> story = storyDao.findById(storyId);
         if (story.isEmpty()) {
-            log.error("L'histoire avec l'id {} n'existe pas", storyId);
+            log.error(ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId);
             return false;
         }
         return true;
@@ -59,7 +58,7 @@ public class StoryService implements IStoryService {
 
     @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "emptyStory")
     public Optional<Story> findById(final Integer storyId) {
-        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        Assert.notNull(storyId, CHECK_STORYID_PARAMETER_MANDATORY);
         return storyDao.findById(storyId)
                 .map(this::fillStoryWithNumberOfReaders);
     }
@@ -85,7 +84,7 @@ public class StoryService implements IStoryService {
 
     @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "emptyStoryList")
     public List<Story> findByPersonId(final Integer personId) {
-        Assert.notNull(personId, "The personId parameter is mandatory !");
+        Assert.notNull(personId, CHECK_PERSONID_PARAMETER_MANDATORY);
         List<Progression> progressionList = progressionService.findByPersonId(personId);
         return progressionList.stream()
                 .map(this::getStoryFromProgression)
@@ -113,12 +112,12 @@ public class StoryService implements IStoryService {
     }
 
     public void delete(Integer storyId) {
-        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        Assert.notNull(storyId, CHECK_STORYID_PARAMETER_MANDATORY);
         Optional<Story> optional = findById(storyId);
         optional
             .ifPresentOrElse(story -> storyDao.delete(story),
                 () -> {
-                    throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+                    throw new StoryNotFoundException(MessageFormatter.format(ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).getMessage());
                 }
         );
     }

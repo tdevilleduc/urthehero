@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.*;
+
 @Slf4j
 @Api(value = "Dice", tags = { "Dice Controller" } )
 @RestController
@@ -38,9 +40,9 @@ class DiceController {
                                                                   @PathVariable Dice dice) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
-            Assert.notNull(dice, "The dice parameter is mandatory !");
+            Assert.notNull(dice, CHECK_DICE_PARAMETER_MANDATORY);
             return ResponseEntity.ok(diceService.roll(dice));
         };
     }
@@ -55,10 +57,10 @@ class DiceController {
                                                                         @PathVariable Integer count) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
-            Assert.notNull(dice, "The dice parameter is mandatory !");
-            Assert.notNull(count, "The dice parameter is mandatory !");
+            Assert.notNull(dice, CHECK_DICE_PARAMETER_MANDATORY);
+            Assert.notNull(count, CHECK_COUNT_PARAMETER_MANDATORY);
             List<DiceValue> diceValues = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 diceValues.add(diceService.roll(dice));
