@@ -2,7 +2,9 @@ package com.tdevilleduc.urthehero.back.service.impl;
 
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
+import com.tdevilleduc.urthehero.back.model.Page;
 import com.tdevilleduc.urthehero.back.model.Person;
+import com.tdevilleduc.urthehero.back.model.PersonDTO;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ public class PersonService implements IPersonService {
         return ! exists(personId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private boolean notExists(final Integer personId, final Throwable e) {
         return false;
     }
@@ -49,6 +52,7 @@ public class PersonService implements IPersonService {
         return personDao.findById(personId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private Optional<Person> emptyPerson(final Integer personId, final Throwable e) {
         log.error("Unable to retrieve person with id {}", personId, e);
         return Optional.empty();
@@ -59,6 +63,7 @@ public class PersonService implements IPersonService {
         return personDao.findAll();
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private List<Person> emptyPersonList(final Throwable e) {
         log.error("Unable to retrieve person list", e);
         return Collections.emptyList();

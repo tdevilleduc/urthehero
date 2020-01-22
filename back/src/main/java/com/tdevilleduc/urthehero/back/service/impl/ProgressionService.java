@@ -28,6 +28,8 @@ import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE
 @Service
 public class ProgressionService implements IProgressionService {
 
+    private static Long ZERO = 0L;
+
     @Autowired
     private IStoryService storyService;
     @Autowired
@@ -75,6 +77,7 @@ public class ProgressionService implements IProgressionService {
         return progressionDao.findByPersonId(personId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private List<Progression> emptyProgressionList(final Integer personId, final Throwable e) {
         return Collections.emptyList();
     }
@@ -93,6 +96,7 @@ public class ProgressionService implements IProgressionService {
         return progressionDao.findByPersonIdAndStoryId(personId, storyId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private Optional<Page> emptyProgression(final Integer personId, final Integer storyId, final Throwable e) {
         return Optional.empty();
     }
@@ -107,7 +111,8 @@ public class ProgressionService implements IProgressionService {
         return progressionDao.countByStoryId(storyId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private Long emptyProgressionCount(final Integer storyId, final Throwable e) {
-        return 0L;
+        return ZERO;
     }
 }

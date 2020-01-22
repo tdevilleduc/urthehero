@@ -45,6 +45,7 @@ public class StoryService implements IStoryService {
         return ! exists(storyId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private boolean notExists(final Integer storyId, final Throwable e) {
         return false;
     }
@@ -56,6 +57,7 @@ public class StoryService implements IStoryService {
                 .map(this::fillStoryWithNumberOfReaders);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private Optional<Story> emptyStory(final Integer storyId, final Throwable e) {
         log.error("Cannot retrieve story");
         return Optional.empty();
@@ -68,6 +70,7 @@ public class StoryService implements IStoryService {
                 .collect(Collectors.toList());
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private List<Story> emptyStoryList(final Throwable e) {
         log.error("Unable to retrieve story list");
         return Collections.emptyList();
