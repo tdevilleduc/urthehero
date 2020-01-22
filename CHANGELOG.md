@@ -25,6 +25,7 @@
 - Upgrade to docker.plugin 1.2.2
 - Fix exception on startup; table 'test.page' doesn't exist [#31][31]
 - Migration of application.properties to yaml [#52][52] 
+- Use constants for log messages
 
 [31]: https://github.com/tdevilleduc/urthehero/issues/31
 [52]: https://github.com/tdevilleduc/urthehero/issues/52

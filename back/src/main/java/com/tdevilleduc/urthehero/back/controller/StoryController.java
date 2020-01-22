@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.*;
+
 @Slf4j
 @Api(value = "Story", tags = { "Story Controller" } )
 @RestController
@@ -46,7 +48,7 @@ class StoryController {
     public @ResponseBody Callable<ResponseEntity<List<Story>>> getAllStories(HttpServletRequest request) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             return ResponseEntity.ok(storyService.findAll());
         };
@@ -61,7 +63,7 @@ class StoryController {
                                                                       @PathVariable Integer storyId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             Optional<Story> optional = this.storyService.findById(storyId);
             return optional
@@ -79,7 +81,7 @@ class StoryController {
                                                                                   @PathVariable Integer personId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             if (personService.notExists(personId)) {
                 return ResponseEntity.notFound().build();
@@ -93,7 +95,7 @@ class StoryController {
                                            @RequestBody StoryDTO storyDTO) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             //TODO: déplacer les controles dans le service ?
             Assert.notNull(storyDTO.getAuthorId(), () -> {
@@ -103,10 +105,10 @@ class StoryController {
                 throw new StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null");
             });
             if (personService.notExists(storyDTO.getAuthorId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", storyDTO.getAuthorId()).getMessage());
+                throw new StoryInternalErrorException(MessageFormatter.format(ERROR_MESSAGE_PERSON_DOESNOT_EXIST, storyDTO.getAuthorId()).getMessage());
             }
             if (pageService.notExists(storyDTO.getFirstPageId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", storyDTO.getFirstPageId()).getMessage());
+                throw new StoryInternalErrorException(MessageFormatter.format(ERROR_MESSAGE_PAGE_DOESNOT_EXIST, storyDTO.getFirstPageId()).getMessage());
             }
             if (storyDTO.getStoryId() != null && storyService.exists(storyDTO.getStoryId())) {
                 throw new StoryInternalErrorException(MessageFormatter.format("L'id {} existe déjà. Elle ne peut être créée", storyDTO.getStoryId()).getMessage());
@@ -120,7 +122,7 @@ class StoryController {
                                                                         @RequestBody StoryDTO storyDto) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             //TODO: déplacer les controles dans le service ?
             Assert.notNull(storyDto.getAuthorId(), () -> {
@@ -133,13 +135,13 @@ class StoryController {
                 throw new StoryInternalErrorException("L'identifiant de l'histoire passée en paramètre ne peut pas être null");
             });
             if (personService.notExists(storyDto.getAuthorId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("La personne avec l'id {} n'existe pas", storyDto.getAuthorId()).getMessage());
+                throw new StoryInternalErrorException(MessageFormatter.format(ERROR_MESSAGE_PERSON_DOESNOT_EXIST, storyDto.getAuthorId()).getMessage());
             }
             if (pageService.notExists(storyDto.getFirstPageId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("La page avec l'id {} n'existe pas", storyDto.getFirstPageId()).getMessage());
+                throw new StoryInternalErrorException(MessageFormatter.format(ERROR_MESSAGE_PAGE_DOESNOT_EXIST, storyDto.getFirstPageId()).getMessage());
             }
             if (storyService.notExists(storyDto.getStoryId())) {
-                throw new StoryInternalErrorException(MessageFormatter.format("L'id {} n'existe pas", storyDto.getStoryId()).getMessage());
+                throw new StoryInternalErrorException(MessageFormatter.format(ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyDto.getStoryId()).getMessage());
             }
             return ResponseEntity.ok(storyService.createOrUpdate(storyDto));
         };
@@ -149,7 +151,7 @@ class StoryController {
     public @ResponseBody void deleteStory(HttpServletRequest request,
                                           @PathVariable Integer storyId) {
         if (log.isInfoEnabled()) {
-            log.info("call: {}", request.getRequestURI());
+            log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
         }
         storyService.delete(storyId);
     }

@@ -13,12 +13,10 @@ public class PersonConvertor {
     private ModelMapper modelMapper;
 
     public PersonDTO convertToDto(Person person) {
-        PersonDTO personDto = modelMapper.map(person, PersonDTO.class);
-        return personDto;
+        return modelMapper.map(person, PersonDTO.class);
     }
 
     public Person convertToEntity(PersonDTO personDto) {
-        Person person = modelMapper.map(personDto, Person.class);
-        return person;
+        return modelMapper.map(personDto, Person.class);
     }
 }

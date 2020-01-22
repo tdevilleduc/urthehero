@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.CONTROLLER_CALL_LOG;
+
 @Slf4j
 @Api(value = "Person", tags = { "Person Controller" } )
 @RestController
@@ -40,7 +42,7 @@ class PersonController {
     public @ResponseBody Callable<ResponseEntity<List<Person>>> getPersons(HttpServletRequest request) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             return ResponseEntity.ok(personService.findAll());
         };
@@ -55,7 +57,7 @@ class PersonController {
                                                                         @PathVariable Integer personId) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             Optional<Person> optional = personService.findById(personId);
             return optional
@@ -69,7 +71,7 @@ class PersonController {
                                                          @RequestBody @NotNull PersonDTO personDto) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             if (personDto.getId() != null && personService.exists(personDto.getId())) {
                 throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", personDto.getId()).getMessage());
@@ -83,7 +85,7 @@ class PersonController {
                                @RequestBody @NotNull PersonDTO personDto) {
         return () -> {
             if (log.isInfoEnabled()) {
-                log.info("call: {}", request.getRequestURI());
+                log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
             }
             Assert.notNull(personDto.getId(), () -> {
                 throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
@@ -96,7 +98,7 @@ class PersonController {
     public @ResponseBody void deletePerson(HttpServletRequest request,
                              @PathVariable @NotNull Integer personId) {
         if (log.isInfoEnabled()) {
-            log.info("call: {}", request.getRequestURI());
+            log.info(CONTROLLER_CALL_LOG, request.getRequestURI());
         }
         personService.delete(personId);
     }

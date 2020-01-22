@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST;
+
 @Service
 public class NextPageService implements INextPageService {
 
@@ -21,7 +23,7 @@ public class NextPageService implements INextPageService {
 
     public List<NextPage> findByPageId(Integer pageId) {
         if (pageService.notExists(pageId)) {
-            throw new PageNotFoundException(MessageFormatter.format("La page avec l'id {} n'existe pas", pageId).getMessage());
+            throw new PageNotFoundException(MessageFormatter.format(ERROR_MESSAGE_PAGE_DOESNOT_EXIST, pageId).getMessage());
         }
 
         return nextPageDao.findByPageId(pageId);

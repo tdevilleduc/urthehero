@@ -23,12 +23,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_PROGRESSION_SERVICE;
+import static com.tdevilleduc.urthehero.back.constant.ApplicationConstants.*;
 
 @Slf4j
 @Service
 public class ProgressionService implements IProgressionService {
 
-    private static Long ZERO = 0L;
+    private static final Long ZERO = 0L;
 
     @Autowired
     private IStoryService storyService;
@@ -40,18 +41,18 @@ public class ProgressionService implements IProgressionService {
     private ProgressionDao progressionDao;
 
     public Progression doProgressionAction(final Integer personId, final Integer storyId, final Integer pageId) {
-        Assert.notNull(personId, "The personId parameter is mandatory !");
-        Assert.notNull(storyId, "The storyId parameter is mandatory !");
-        Assert.notNull(pageId, "The pageId parameter is mandatory !");
+        Assert.notNull(personId, CHECK_PERSONID_PARAMETER_MANDATORY);
+        Assert.notNull(storyId, CHECK_STORYID_PARAMETER_MANDATORY);
+        Assert.notNull(pageId, CHECK_PAGEID_PARAMETER_MANDATORY);
 
         if (personService.notExists(personId)) {
-            throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+            throw new PersonNotFoundException(MessageFormatter.format(ERROR_MESSAGE_PERSON_DOESNOT_EXIST, personId).getMessage());
         }
         if (storyService.notExists(storyId)) {
-            throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+            throw new StoryNotFoundException(MessageFormatter.format(ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).getMessage());
         }
         if (pageService.notExists(pageId)) {
-            throw new PageNotFoundException(MessageFormatter.format("La page avec l'id {} n'existe pas", pageId).getMessage());
+            throw new PageNotFoundException(MessageFormatter.format(ERROR_MESSAGE_PAGE_DOESNOT_EXIST, pageId).getMessage());
         }
 
         Optional<Progression> optionalProgression = progressionDao.findByPersonIdAndStoryId(personId, storyId);
@@ -69,9 +70,9 @@ public class ProgressionService implements IProgressionService {
 
     @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgressionList")
     public List<Progression> findByPersonId(final Integer personId) {
-        Assert.notNull(personId, "The personId parameter is mandatory !");
+        Assert.notNull(personId, CHECK_PERSONID_PARAMETER_MANDATORY);
         if (personService.notExists(personId)) {
-            throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+            throw new PersonNotFoundException(MessageFormatter.format(ERROR_MESSAGE_PERSON_DOESNOT_EXIST, personId).getMessage());
         }
 
         return progressionDao.findByPersonId(personId);
@@ -84,13 +85,13 @@ public class ProgressionService implements IProgressionService {
 
     @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgression")
     public Optional<Progression> findByPersonIdAndStoryId(final Integer personId, final Integer storyId) {
-        Assert.notNull(personId, "The personId parameter is mandatory !");
-        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        Assert.notNull(personId, CHECK_PERSONID_PARAMETER_MANDATORY);
+        Assert.notNull(storyId, CHECK_STORYID_PARAMETER_MANDATORY);
         if (personService.notExists(personId)) {
-            throw new PersonNotFoundException(MessageFormatter.format("La personne avec l'id {} n'existe pas", personId).getMessage());
+            throw new PersonNotFoundException(MessageFormatter.format(ERROR_MESSAGE_PERSON_DOESNOT_EXIST, personId).getMessage());
         }
         if (storyService.notExists(storyId)) {
-            throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+            throw new StoryNotFoundException(MessageFormatter.format(ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).getMessage());
         }
 
         return progressionDao.findByPersonIdAndStoryId(personId, storyId);
@@ -103,9 +104,9 @@ public class ProgressionService implements IProgressionService {
 
     @CircuitBreaker(name = INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyProgressionCount")
     public Long countByStoryId(final Integer storyId) {
-        Assert.notNull(storyId, "The storyId parameter is mandatory !");
+        Assert.notNull(storyId, CHECK_STORYID_PARAMETER_MANDATORY);
         if (storyService.notExists(storyId)) {
-            throw new StoryNotFoundException(MessageFormatter.format("L'histoire avec l'id {} n'existe pas", storyId).getMessage());
+            throw new StoryNotFoundException(MessageFormatter.format(ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).getMessage());
         }
 
         return progressionDao.countByStoryId(storyId);

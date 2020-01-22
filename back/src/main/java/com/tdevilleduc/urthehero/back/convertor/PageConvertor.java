@@ -13,12 +13,10 @@ public class PageConvertor {
     private ModelMapper modelMapper;
 
     public PageDTO convertToDto(Page page) {
-        PageDTO pageDto = modelMapper.map(page, PageDTO.class);
-        return pageDto;
+        return modelMapper.map(page, PageDTO.class);
     }
 
     public Page convertToEntity(PageDTO pageDto) {
-        Page page = modelMapper.map(pageDto, Page.class);
-        return page;
+        return modelMapper.map(pageDto, Page.class);
     }
 }
