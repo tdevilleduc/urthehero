@@ -49,6 +49,7 @@ public class PageService implements IPageService {
         return ! exists(pageId);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private boolean notExists(final Integer pageId, final Throwable e) {
         return false;
     }
@@ -60,6 +61,7 @@ public class PageService implements IPageService {
                 .map(this::fillPageWithNextPages);
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private Optional<Page> emptyPage(final Integer pageId, final Throwable e) {
         log.error("Unable to retrieve page with id {}", pageId, e);
         return Optional.empty();
@@ -70,6 +72,7 @@ public class PageService implements IPageService {
         return pageDao.findAll();
     }
 
+    @SuppressWarnings({"squid:UnusedPrivateMethod", "squid:S1172"})
     private List<Page> emptyPageList(final Throwable e) {
         log.error("Unable to retrieve page list", e);
         return Collections.emptyList();
