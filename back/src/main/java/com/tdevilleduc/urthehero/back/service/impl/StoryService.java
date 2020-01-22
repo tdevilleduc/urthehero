@@ -1,9 +1,13 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
+import com.tdevilleduc.urthehero.back.convertor.PersonConvertor;
+import com.tdevilleduc.urthehero.back.convertor.StoryConvertor;
 import com.tdevilleduc.urthehero.back.dao.StoryDao;
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException;
+import com.tdevilleduc.urthehero.back.model.Person;
 import com.tdevilleduc.urthehero.back.model.Progression;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.model.StoryDTO;
 import com.tdevilleduc.urthehero.back.service.IProgressionService;
 import com.tdevilleduc.urthehero.back.service.IStoryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -28,6 +32,9 @@ public class StoryService implements IStoryService {
     private IProgressionService progressionService;
     @Autowired
     private StoryDao storyDao;
+
+    @Autowired
+    private StoryConvertor storyConvertor;
 
     @CircuitBreaker(name = INSTANCE_STORY_SERVICE, fallbackMethod = "notExists")
     public boolean exists(final Integer storyId) {
@@ -97,8 +104,9 @@ public class StoryService implements IStoryService {
         return story;
     }
 
-    public Story createOrUpdate(Story story) {
-        return storyDao.save(story);
+    public StoryDTO createOrUpdate(StoryDTO storyDto) {
+        Story story = storyConvertor.convertToEntity(storyDto);
+        return storyConvertor.convertToDto(storyDao.save(story));
     }
 
     public void delete(Integer storyId) {

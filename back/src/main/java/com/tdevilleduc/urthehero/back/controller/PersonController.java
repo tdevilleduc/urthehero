@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.controller;
 
 import com.tdevilleduc.urthehero.back.exceptions.PersonInternalErrorException;
 import com.tdevilleduc.urthehero.back.model.Person;
+import com.tdevilleduc.urthehero.back.model.PersonDTO;
 import com.tdevilleduc.urthehero.back.service.IPersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -64,30 +65,30 @@ class PersonController {
     }
   
     @PutMapping
-    public @ResponseBody Callable<ResponseEntity<Person>> createPerson(HttpServletRequest request,
-                                                         @RequestBody @NotNull Person person) {
+    public @ResponseBody Callable<ResponseEntity<PersonDTO>> createPerson(HttpServletRequest request,
+                                                         @RequestBody @NotNull PersonDTO personDto) {
         return () -> {
             if (log.isInfoEnabled()) {
                 log.info("call: {}", request.getRequestURI());
             }
-            if (person.getId() != null && personService.exists(person.getId())) {
-                throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", person.getId()).getMessage());
+            if (personDto.getId() != null && personService.exists(personDto.getId())) {
+                throw new PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", personDto.getId()).getMessage());
             }
-            return ResponseEntity.ok(personService.createOrUpdate(person));
+            return ResponseEntity.ok(personService.createOrUpdate(personDto));
         };
     }
 
     @PostMapping
-    public @ResponseBody Callable<ResponseEntity<Person>> updatePerson(HttpServletRequest request,
-                               @RequestBody @NotNull Person person) {
+    public @ResponseBody Callable<ResponseEntity<PersonDTO>> updatePerson(HttpServletRequest request,
+                               @RequestBody @NotNull PersonDTO personDto) {
         return () -> {
             if (log.isInfoEnabled()) {
                 log.info("call: {}", request.getRequestURI());
             }
-            Assert.notNull(person.getId(), () -> {
+            Assert.notNull(personDto.getId(), () -> {
                 throw new PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null");
             });
-            return ResponseEntity.ok(personService.createOrUpdate(person));
+            return ResponseEntity.ok(personService.createOrUpdate(personDto));
         };
     }
 

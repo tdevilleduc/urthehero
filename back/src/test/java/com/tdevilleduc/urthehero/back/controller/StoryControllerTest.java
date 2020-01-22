@@ -3,6 +3,7 @@ package com.tdevilleduc.urthehero.back.controller;
 import com.tdevilleduc.urthehero.back.AbstractTest;
 import com.tdevilleduc.urthehero.back.BackApplication;
 import com.tdevilleduc.urthehero.back.model.Story;
+import com.tdevilleduc.urthehero.back.model.StoryDTO;
 import com.tdevilleduc.urthehero.back.utils.TestUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,9 +106,9 @@ class StoryControllerTest extends AbstractTest {
     void test_createStory() throws Exception {
         Integer authorId = 1;
         Integer firstPageId = 1;
-        Story story = TestUtils.createStory(authorId, firstPageId);
+        StoryDTO storyDto = TestUtils.createStory(authorId, firstPageId);
         MvcResult resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
-                .content(objectMapper.writeValueAsString(story))
+                .content(objectMapper.writeValueAsString(storyDto))
                 .contentType(MediaType.APPLICATION_JSON))
 				.andExpect(request().asyncStarted())
                 .andReturn();
