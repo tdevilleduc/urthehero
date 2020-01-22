@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
+import com.tdevilleduc.urthehero.back.convertor.PersonConvertor;
 import com.tdevilleduc.urthehero.back.dao.PersonDao;
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException;
 import com.tdevilleduc.urthehero.back.model.Page;
@@ -25,6 +26,9 @@ public class PersonService implements IPersonService {
 
     @Autowired
     private PersonDao personDao;
+
+    @Autowired
+    private PersonConvertor personConvertor;
 
     @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "notExists")
     public boolean exists(final Integer personId) {
@@ -69,8 +73,9 @@ public class PersonService implements IPersonService {
         return Collections.emptyList();
     }
 
-    public Person createOrUpdate(Person person) {
-        return personDao.save(person);
+    public PersonDTO createOrUpdate(PersonDTO personDto) {
+        Person person = personConvertor.convertToEntity(personDto);
+        return personConvertor.convertToDto(personDao.save(person));
     }
 
     public void delete(Integer personId) {

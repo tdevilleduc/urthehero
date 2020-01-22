@@ -32,6 +32,7 @@
         <resilience4j.version>1.2.0</resilience4j.version>
         <junit.platform.version>1.2.0</junit.platform.version>
         <testcontainers.version>1.12.4</testcontainers.version>
+        <modelmapper.version>2.3.6</modelmapper.version>
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 
         <docker.plugin.version>1.2.2</docker.plugin.version>
@@ -180,6 +181,11 @@
                 <groupId>io.github.resilience4j</groupId>
                 <artifactId>resilience4j-spring-boot2</artifactId>
                 <version>${resilience4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${modelmapper.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

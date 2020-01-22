@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.service.impl;
 
+import com.tdevilleduc.urthehero.back.convertor.PageConvertor;
 import com.tdevilleduc.urthehero.back.dao.PageDao;
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException;
 import com.tdevilleduc.urthehero.back.model.NextPage;
@@ -28,6 +29,9 @@ public class PageService implements IPageService {
     private INextPageService nextPageService;
     @Autowired
     private PageDao pageDao;
+
+    @Autowired
+    private PageConvertor pageConvertor;
 
     @CircuitBreaker(name = INSTANCE_PAGE_SERVICE, fallbackMethod = "notExists")
     public boolean exists(final Integer pageId) {
@@ -81,16 +85,8 @@ public class PageService implements IPageService {
     }
 
     public PageDTO createOrUpdate(PageDTO pageDTO) {
-        Page page = new Page();
-        page.setId(pageDTO.getId());
-        page.setImage(pageDTO.getImage());
-        page.setText(pageDTO.getText());
-        Page newPage = pageDao.save(page);
-        PageDTO newPageDTO = new PageDTO();
-        newPageDTO.setId(newPage.getId());
-        newPageDTO.setImage(newPage.getImage());
-        newPageDTO.setText(newPage.getText());
-        return newPageDTO;
+        Page page = pageConvertor.convertToEntity(pageDTO);
+        return pageConvertor.convertToDto(pageDao.save(page));
     }
 
     public void delete(Integer pageId) {
