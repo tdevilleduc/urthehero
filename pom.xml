@@ -50,8 +50,7 @@
 
         <sonar.projectKey>${project.artifactId}</sonar.projectKey>
         <sonar.projectName>${project.name}</sonar.projectName>
-        <sonar.login>admin</sonar.login>
-        <sonar.password>admin</sonar.password>
+        <sonar.login>ccabfb6ac82b8a39a70396863d26a8466664a299</sonar.login>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>
