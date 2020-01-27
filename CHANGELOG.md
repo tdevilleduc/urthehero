@@ -19,7 +19,7 @@
 ### Changed
 
 - Upgrade to Spring Boot 2.2.4
-- Upgrade to TestContainers 1.12.4
+- Upgrade to TestContainers 1.12.5
 - Upgrade to chaos-monkey 2.2.0
 - Upgrade to resilience4j 1.2.0
 - Upgrade to docker.plugin 1.2.2
