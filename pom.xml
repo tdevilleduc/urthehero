@@ -48,10 +48,6 @@
         <dockerfile.tag>${project.version}</dockerfile.tag>
         <dockerfile.skip>true</dockerfile.skip>
 
-        <sonar.projectKey>${project.artifactId}</sonar.projectKey>
-        <sonar.projectName>${project.name}</sonar.projectName>
-        <sonar.login>24ac85ebcc8ddddfdc76c6ee57c1959ce848a48e</sonar.login>
-        <sonar.host.url>http://localhost:9000</sonar.host.url>
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
