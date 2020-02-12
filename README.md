@@ -1,6 +1,8 @@
 # urthehero
 
 [![Build Status](https://travis-ci.org/tdevilleduc/urthehero.svg)](https://travis-ci.org/tdevilleduc/urthehero)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.tdevilleduc.urthehero%3Aurthehero&metric=coverage)](https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=com.tdevilleduc.urthehero%3Aurthehero&metric=sqale_index)](https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero)
 
 ```bash
 @FOR /f "tokens=*" %i IN ('minikube docker-env') DO @%i
