@@ -1,6 +1,7 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
+import com.tdevilleduc.urthehero.back.config.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
@@ -8,6 +9,7 @@ import com.tdevilleduc.urthehero.back.model.Page
 import com.tdevilleduc.urthehero.back.model.PageDTO
 import com.tdevilleduc.urthehero.back.service.INextPageService
 import com.tdevilleduc.urthehero.back.service.IPageService
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -48,12 +50,14 @@ class PageService : IPageService {
         }
     }
 
+    @CircuitBreaker(name = ResilienceConstants.INSTANCE_PAGE_SERVICE, fallbackMethod = "emptyList")
     fun findAll(): MutableList<Page> {
         return pageDao.findAll()
     }
 
-    private fun emptyPageList(e: Throwable?): MutableList<Page> {
-        logger.error("Unable to retrieve page list", e)
+    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
+    private fun emptyList(e: Throwable): MutableList<Page> {
+        logger.error("Unable to retrieve list", e)
         return emptyList<Page>().toMutableList()
     }
 
