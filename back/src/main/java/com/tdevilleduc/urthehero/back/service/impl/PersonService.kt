@@ -46,13 +46,14 @@ class PersonService : IPersonService {
         }
     }
 
-    @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "emptyPersonList")
+    @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "emptyList")
     override fun findAll(): MutableList<Person> {
         return personDao.findAll()
     }
 
-    private fun emptyPersonList(e: Throwable?): MutableList<Person> {
-        logger.error("Unable to retrieve person list", e)
+    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
+    private fun emptyList(e: Throwable): MutableList<Person> {
+        logger.error("Unable to retrieve list", e)
         return emptyList<Person>().toMutableList()
     }
 

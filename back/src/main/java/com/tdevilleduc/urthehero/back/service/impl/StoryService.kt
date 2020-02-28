@@ -1,14 +1,17 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
+import com.tdevilleduc.urthehero.back.config.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
+import com.tdevilleduc.urthehero.back.model.Person
 import com.tdevilleduc.urthehero.back.model.Progression
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -50,10 +53,17 @@ class StoryService : IStoryService {
         }
     }
 
+    @CircuitBreaker(name = ResilienceConstants.INSTANCE_STORY_SERVICE, fallbackMethod = "emptyList")
     override fun findAll(): MutableList<Story> {
         return storyDao.findAll().stream()
                 .map { story: Story -> fillStoryWithNumberOfReaders(story) }
                 .collect(Collectors.toList())
+    }
+
+    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
+    private fun emptyList(e: Throwable): MutableList<Person> {
+        logger.error("Unable to retrieve list", e)
+        return emptyList<Person>().toMutableList()
     }
 
     override fun findByPersonId(personId: Int): MutableList<Story> {

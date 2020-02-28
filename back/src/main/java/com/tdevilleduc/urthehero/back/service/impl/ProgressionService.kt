@@ -1,16 +1,19 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
+import com.tdevilleduc.urthehero.back.config.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException
 import com.tdevilleduc.urthehero.back.exceptions.ProgressionNotFoundException
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
+import com.tdevilleduc.urthehero.back.model.Person
 import com.tdevilleduc.urthehero.back.model.Progression
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IPersonService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -56,6 +59,7 @@ class ProgressionService : IProgressionService {
         }
     }
 
+    @CircuitBreaker(name = ResilienceConstants.INSTANCE_PROGRESSION_SERVICE, fallbackMethod = "emptyList")
     override fun findByPersonId(personId: Int): MutableList<Progression> {
         logger.info("ProgressionService findByPersonId person {}", personId)
         Assert.notNull(personId, ApplicationConstants.CHECK_PERSONID_PARAMETER_MANDATORY!!)
@@ -65,6 +69,12 @@ class ProgressionService : IProgressionService {
         }
         logger.info("exists person {}", personId)
         return progressionDao.findByPersonId(personId)
+    }
+
+    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
+    private fun emptyList(e: Throwable): MutableList<Person> {
+        logger.error("Unable to retrieve list", e)
+        return emptyList<Person>().toMutableList()
     }
 
     override fun findByPersonIdAndStoryId(personId: Int, storyId: Int): Optional<Progression> {
