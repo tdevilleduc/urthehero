@@ -96,6 +96,7 @@ sonar_job:
 
 sonar_job:
   stage: analysis
+  image: adoptopenjdk/openjdk11:alpine-slim
   allow_failure: true
   services:
     - docker:stable-dind
