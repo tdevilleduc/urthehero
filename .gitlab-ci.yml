@@ -97,13 +97,15 @@ sonar_job:
 sonar_job:
   stage: sonar
   image: maven:latest
+  allow_failure: true
+  services:
+    - docker:stable-dind
   variables:
     SONAR_TOKEN: "c1167daa845e840a0b76c7799926d8da84acec37"
     SONAR_HOST_URL: "https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero"
     GIT_DEPTH: 0
   script:
-    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
-  allow_failure: true
+    - ./mvnw verify sonar:sonar -Dsonar.qualitygate.wait=true
   only:
     - merge_requests
     - master
