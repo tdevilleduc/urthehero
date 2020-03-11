@@ -105,8 +105,7 @@ sonar_job:
     SONAR_HOST_URL: "https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero"
     GIT_DEPTH: 0
   script:
-    - ./mvnw jacoco:prepare-agent install
-    - ./mvnw verify sonar:sonar
+    - ./mvnw sonar:sonar
   only:
     - merge_requests
     - master
