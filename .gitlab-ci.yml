@@ -107,7 +107,8 @@ sonar_job:
   variables:
     GIT_DEPTH: 0
   script:
-    - ./mvnw sonar:sonar
+    - ./mvnw jacoco:prepare-agent install
+    - ./mvnw verify sonar:sonar
   only:
     - merge_requests
     - master
