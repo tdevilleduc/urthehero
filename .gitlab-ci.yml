@@ -111,6 +111,7 @@ sonar_job:
   only:
     - merge_requests
     - master
+    - develop
 
 
 package_job:

@@ -43,21 +43,26 @@
         <docker.image.dockerfile.dir>./back</docker.image.dockerfile.dir>
         <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
 
+        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
+        <dependency-check.version>5.3.0</dependency-check.version>
+
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <docker.registry>docker.io/thomasdevilleduc</docker.registry>
         <docker.image.prefix>urthehero</docker.image.prefix>
         <dockerfile.tag>${project.version}</dockerfile.tag>
         <dockerfile.skip>true</dockerfile.skip>
 
-        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
+        <sonar.projectKey>urthehero</sonar.projectKey>
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+        <sonar.organization>tdevilleduc</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>d8363e498a11c57a4a5402e11c42dcab669c767b</sonar.login>
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.language>kotlin</sonar.language>
-        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-        <sonar.login>2eaa7242c8a258a69e32783194c783e63d6e7793</sonar.login>
     </properties>
 
     <dependencyManagement>
