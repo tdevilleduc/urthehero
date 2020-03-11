@@ -2,7 +2,7 @@ stages:
   - build
   - test
   - quality
-  - sonar
+  - analysis
   - package
 
 cache:
@@ -95,20 +95,21 @@ sonar_job:
 
 
 sonar_job:
-  stage: sonar
-  image: maven:latest
+  stage: analysis
   allow_failure: true
   services:
     - docker:stable-dind
   variables:
-    SONAR_TOKEN: "c1167daa845e840a0b76c7799926d8da84acec37"
+    SONAR_TOKEN: "d8363e498a11c57a4a5402e11c42dcab669c767b"
     SONAR_HOST_URL: "https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero"
     GIT_DEPTH: 0
   script:
-    - ./mvnw verify sonar:sonar -Dsonar.qualitygate.wait=true
+    - ./mvnw jacoco:prepare-agent install
+    - ./mvnw verify sonar:sonar
   only:
     - merge_requests
     - master
+    - develop
 
 
 package_job:
