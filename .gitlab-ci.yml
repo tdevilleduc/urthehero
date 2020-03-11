@@ -103,13 +103,15 @@ sonar_job:
   variables:
     SONAR_TOKEN: "d8363e498a11c57a4a5402e11c42dcab669c767b"
     SONAR_HOST_URL: "https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero"
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
     GIT_DEPTH: 0
   script:
-    - ./mvnw sonar:sonar
+    - ./mvnw jacoco:prepare-agent install
+    - ./mvnw verify sonar:sonar
+
   only:
     - merge_requests
     - master
-    - develop
 
 
 package_job:
