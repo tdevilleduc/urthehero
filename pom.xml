@@ -28,7 +28,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
-        <swagger.version>2.9.2</swagger.version>
+        <springdoc.version>1.2.33</springdoc.version>
         <chaos-monkey-spring-boot.version>2.2.0</chaos-monkey-spring-boot.version>
         <resilience4j.version>1.2.0</resilience4j.version>
         <junit.platform.version>1.2.0</junit.platform.version>
@@ -96,14 +96,9 @@
             </dependency>
 
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.version}</version>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
 
             <dependency>
@@ -195,7 +190,7 @@
                 <version>${kotlin.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect -->
+
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-reflect</artifactId>

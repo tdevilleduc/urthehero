@@ -5,8 +5,8 @@ import com.tdevilleduc.urthehero.back.model.Progression
 import com.tdevilleduc.urthehero.back.service.IPersonService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
 import javax.servlet.http.HttpServletRequest
 
-@Api(value = "Progression", tags = ["Progression Controller"])
+@Tag(name = "Progression", description = "Progression Controller")
 @RestController
 @RequestMapping("/api/progression")
 internal class ProgressionController() {
@@ -33,7 +33,7 @@ internal class ProgressionController() {
 
     @GetMapping(value = ["/person/{personId}/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.progression.get-all-by-person-id.value}", notes = "\${swagger.controller.progression.get-all-by-person-id.notes}")
+    @Operation(summary = "\${swagger.controller.progression.get-all-by-person-id.value}", description = "\${swagger.controller.progression.get-all-by-person-id.notes}")
     @ResponseBody
     fun getAllByPersonId(request: HttpServletRequest,
                          @PathVariable personId: Int): Callable<ResponseEntity<MutableList<Progression>>> = Callable {
@@ -45,7 +45,7 @@ internal class ProgressionController() {
 
     @GetMapping(value = ["/person/{personId}/story/{storyId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.progression.get-by-person-id-and-story-id.value}", notes = "\${swagger.controller.progression.get-by-person-id-and-story-id.notes}")
+    @Operation(summary = "\${swagger.controller.progression.get-by-person-id-and-story-id.value}", description = "\${swagger.controller.progression.get-by-person-id-and-story-id.notes}")
     @ResponseBody
     fun getOneByPersonIdAndStoryId(request: HttpServletRequest,
                                    @PathVariable personId: Int,
@@ -66,7 +66,7 @@ internal class ProgressionController() {
         ResponseEntity.ok(progression.get())
     }
 
-    @ApiOperation(value = "Met à jour la progression d'une personne sur une histoire avec une page définie")
+    @Operation(summary = "Met à jour la progression d'une personne sur une histoire avec une page définie")
     @PostMapping(value = ["/person/{personId}/story/{storyId}/page/{newPageId}"])
     @ResponseBody
     fun postProgressionAction(request: HttpServletRequest,

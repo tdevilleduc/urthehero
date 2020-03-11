@@ -4,8 +4,8 @@ import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.model.Dice
 import com.tdevilleduc.urthehero.back.model.DiceValue
 import com.tdevilleduc.urthehero.back.service.IDiceService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -17,7 +17,7 @@ import java.util.*
 import java.util.concurrent.Callable
 import javax.servlet.http.HttpServletRequest
 
-@Api(value = "Dice", tags = ["Dice Controller"])
+@Tag(name = "Dice", description = "Dice Controller")
 @RestController
 @RequestMapping("/api/dice")
 internal class DiceController(private val diceService: IDiceService) {
@@ -25,7 +25,7 @@ internal class DiceController(private val diceService: IDiceService) {
 
     @GetMapping(value = ["/roll/{dice}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.dice.roll.value}", notes = "\${swagger.controller.dice.roll.notes}")
+    @Operation(summary = "\${swagger.controller.dice.roll.value}", description = "\${swagger.controller.dice.roll.notes}")
     @ResponseBody
     fun roll(request: HttpServletRequest,
              @PathVariable dice: Dice): Callable<ResponseEntity<DiceValue>> = Callable {
@@ -38,7 +38,7 @@ internal class DiceController(private val diceService: IDiceService) {
 
     @GetMapping(value = ["/roll/{dice}/{count}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.dice.roll-many.value}", notes = "\${swagger.controller.dice.roll-many.notes}")
+    @Operation(summary = "\${swagger.controller.dice.roll-many.value}", description = "\${swagger.controller.dice.roll-many.notes}")
     @ResponseBody
     fun roll(request: HttpServletRequest,
              @PathVariable dice: Dice,

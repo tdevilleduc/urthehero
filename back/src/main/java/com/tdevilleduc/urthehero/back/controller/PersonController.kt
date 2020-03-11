@@ -5,8 +5,8 @@ import com.tdevilleduc.urthehero.back.exceptions.PersonInternalErrorException
 import com.tdevilleduc.urthehero.back.model.Person
 import com.tdevilleduc.urthehero.back.model.PersonDTO
 import com.tdevilleduc.urthehero.back.service.IPersonService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
 import javax.servlet.http.HttpServletRequest
 
-@Api(value = "Person", tags = ["Person Controller"])
+@Tag(name = "Person", description = "Person Controller")
 @RestController
 @RequestMapping("/api/person")
 internal class PersonController(private val personService: IPersonService) {
@@ -26,7 +26,7 @@ internal class PersonController(private val personService: IPersonService) {
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.person.get-all.value}", notes = "\${swagger.controller.person.get-all.notes}")
+    @Operation(summary = "\${swagger.controller.person.get-all.value}", description = "\${swagger.controller.person.get-all.notes}")
     @ResponseBody
     fun getPersons(request: HttpServletRequest): Callable<ResponseEntity<MutableList<Person>>> = Callable {
         if (logger.isInfoEnabled) {
@@ -37,7 +37,7 @@ internal class PersonController(private val personService: IPersonService) {
 
     @GetMapping(value = ["/{personId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.person.get-by-id.value}", notes = "\${swagger.controller.person.get-by-id.notes}")
+    @Operation(summary = "\${swagger.controller.person.get-by-id.value}", description = "\${swagger.controller.person.get-by-id.notes}")
     @ResponseBody
     fun getPersonById(request: HttpServletRequest,
                       @PathVariable personId: Int): Callable<ResponseEntity<Person>> = Callable {
