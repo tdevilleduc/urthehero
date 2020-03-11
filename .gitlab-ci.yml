@@ -34,6 +34,7 @@ build_job:
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
 
+
 test_job:
   stage: test
   image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
@@ -47,6 +48,7 @@ test_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
+
 
 code_quality_job:
   stage: quality
@@ -90,6 +92,22 @@ sonar_job:
     - merge_requests
     - master
     - develop
+
+
+sonar_job:
+  stage: sonar
+  image: maven:latest
+  variables:
+    SONAR_TOKEN: "c1167daa845e840a0b76c7799926d8da84acec37"
+    SONAR_HOST_URL: "https://sonarcloud.io/dashboard?id=com.tdevilleduc.urthehero%3Aurthehero"
+    GIT_DEPTH: 0
+  script:
+    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+
 
 package_job:
   stage: package
