@@ -6,8 +6,8 @@ import com.tdevilleduc.urthehero.back.model.Page
 import com.tdevilleduc.urthehero.back.model.PageDTO
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IStoryService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
 import javax.servlet.http.HttpServletRequest
 
-@Api(value = "Page", tags = ["Page Controller"])
+@Tag(name = "Page", description = "Page Controller")
 @RestController
 @RequestMapping("/api/page")
 internal class PageController(private val storyService: IStoryService, private val pageService: IPageService) {
@@ -27,7 +27,7 @@ internal class PageController(private val storyService: IStoryService, private v
 
     @GetMapping(value = ["/{pageId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.page.get-by-id.value}", notes = "\${swagger.controller.page.get-by-id.notes}")
+    @Operation(summary = "\${swagger.controller.page.get-by-id.value}", description = "\${swagger.controller.page.get-by-id.notes}")
     @ResponseBody
     fun getPageById(request: HttpServletRequest,
                     @PathVariable pageId: Int): Callable<ResponseEntity<Page>> = Callable {
@@ -40,7 +40,7 @@ internal class PageController(private val storyService: IStoryService, private v
 
     @GetMapping(value = ["/story/{storyId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.page.get-first-by-story-id.value}", notes = "\${swagger.controller.page.get-first-by-story-id.notes}")
+    @Operation(summary = "\${swagger.controller.page.get-first-by-story-id.value}", description = "\${swagger.controller.page.get-first-by-story-id.notes}")
     @ResponseBody
     fun getFirstPageByStoryId(request: HttpServletRequest,
                               @PathVariable storyId: Int): Callable<ResponseEntity<Page>> = Callable {

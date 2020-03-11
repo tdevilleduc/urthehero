@@ -7,8 +7,8 @@ import com.tdevilleduc.urthehero.back.model.StoryDTO
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IPersonService
 import com.tdevilleduc.urthehero.back.service.IStoryService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
 import javax.servlet.http.HttpServletRequest
 
-@Api(value = "Story", tags = ["Story Controller"])
+@Tag(name = "Story", description = "Story Controller")
 @RestController
 @RequestMapping("/api/story")
 internal class StoryController(private val storyService: IStoryService, private val personService: IPersonService, private val pageService: IPageService) {
@@ -28,7 +28,7 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.story.get-all.value}", notes = "\${swagger.controller.story.get-all.notes}")
+    @Operation(summary = "\${swagger.controller.story.get-all.value}", description = "\${swagger.controller.story.get-all.notes}")
     @ResponseBody
     fun getAllStories(request: HttpServletRequest): Callable<ResponseEntity<MutableList<Story>>> = Callable {
         if (logger.isInfoEnabled) {
@@ -39,7 +39,7 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @GetMapping(value = ["/{storyId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.story.get-by-id.value}", notes = "\${swagger.controller.story.get-by-id.notes}")
+    @Operation(summary = "\${swagger.controller.story.get-by-id.value}", description = "\${swagger.controller.story.get-by-id.notes}")
     @ResponseBody
     fun getStoryById(request: HttpServletRequest,
                      @PathVariable storyId: Int): Callable<ResponseEntity<Story>> = Callable {
@@ -51,7 +51,7 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @GetMapping(value = ["/all/person/{personId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "\${swagger.controller.story.get-by-person-id.value}", notes = "\${swagger.controller.story.get-by-person-id.notes}")
+    @Operation(summary = "\${swagger.controller.story.get-by-person-id.value}", description = "\${swagger.controller.story.get-by-person-id.notes}")
     @ResponseBody
     fun getStoryByPersonId(request: HttpServletRequest,
                            @PathVariable personId: Int): Callable<ResponseEntity<MutableList<Story>>> = Callable {
