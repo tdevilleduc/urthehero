@@ -18,10 +18,12 @@
 
 ### Changed
 
-- Upgrade to Spring Boot 2.2.4
-- Upgrade to TestContainers 1.12.5
+- Upgrade to spring-boot 2.2.5
+- Upgrade to kotlin 1.3.70
+- Upgrade to test-containers 1.13.0
 - Upgrade to chaos-monkey 2.2.0
-- Upgrade to resilience4j 1.2.0
+- Upgrade to resilience4j 1.3.1
+- Upgrade to spring-cloud Hoxton.SR3
 - Upgrade to docker.plugin 1.2.2
 - Fix exception on startup; table 'test.page' doesn't exist [#31][31]
 - Migration of application.properties to yaml [#52][52] 
