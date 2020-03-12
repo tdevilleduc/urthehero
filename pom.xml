@@ -50,17 +50,15 @@
         <dockerfile.tag>${project.version}</dockerfile.tag>
         <dockerfile.skip>true</dockerfile.skip>
 
-        <sonar.projectKey>urthehero</sonar.projectKey>
-        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-        <sonar.organization>tdevilleduc</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login>d8363e498a11c57a4a5402e11c42dcab669c767b</sonar.login>
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.language>kotlin</sonar.language>
+
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+        <sonar.login>2eaa7242c8a258a69e32783194c783e63d6e7793</sonar.login>
     </properties>
 
     <dependencyManagement>
@@ -203,11 +201,6 @@
                 <version>${kotlin.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check.version}</version>
-            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -298,18 +291,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.owasp</groupId>-->
-<!--                <artifactId>dependency-check-maven</artifactId>-->
-<!--                <version>${dependency-check.version}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
 
         <pluginManagement>
@@ -355,4 +336,38 @@
         </pluginManagement>
     </build>
 
+    <profiles>
+        <profile>
+            <id>gitlab</id>
+            <properties>
+                <sonar.projectKey>urthehero</sonar.projectKey>
+                <sonar.organization>tdevilleduc</sonar.organization>
+                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+                <sonar.login>225e18cb9b436e243e173365fef834e82cae6f14</sonar.login>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${dependency-check.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>${dependency-check.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

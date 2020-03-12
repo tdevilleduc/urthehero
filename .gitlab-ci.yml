@@ -75,7 +75,7 @@ sonar_job:
   services:
     - docker:stable-dind
   script:
-    - ./mvnw verify sonar:sonar -Dsonar.qualitygate.wait=true
+    - ./mvnw verify sonar:sonar -Dsonar.qualitygate.wait=true -P gitlab
   only:
     - merge_requests
     - master
