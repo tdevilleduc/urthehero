@@ -23,7 +23,7 @@ variables:
 
 build_job:
   stage: build
-  image: adoptopenjdk/openjdk11:alpine-slim
+#  image: adoptopenjdk/openjdk11:alpine-slim
   allow_failure: false
   script:
     - ./mvnw compile
@@ -36,7 +36,7 @@ build_job:
 
 test_job:
   stage: test
-  image: adoptopenjdk/openjdk11:alpine-slim
+#  image: adoptopenjdk/openjdk11:alpine-slim
   services:
     - docker:stable-dind
   script:
@@ -72,7 +72,7 @@ test_job:
 
 sonar_job:
   stage: analysis
-  image: adoptopenjdk/openjdk11:alpine-slim
+#  image: adoptopenjdk/openjdk11:alpine-slim
   allow_failure: true
   services:
     - docker:stable-dind
