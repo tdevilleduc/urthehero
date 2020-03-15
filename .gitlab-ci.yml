@@ -1,8 +1,8 @@
 stages:
   - build
   - test
-#  - quality
-  - analysis
+  - quality
+  - sonar
   - package
 
 cache:
@@ -47,37 +47,37 @@ test_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-      -P gitlab
+
+code_quality_job:
+  stage: quality
+  image: docker:stable
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - mkdir codequality-results
+    - docker run
+        --env CODECLIMATE_CODE="$PWD"
+        --volume "$PWD":/code
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        --volume /tmp/cc:/tmp/cc
+        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
   artifacts:
     paths:
-      - test-results/
-
-#code_quality_job:
-#  stage: quality
-#  image: docker:stable
-#  allow_failure: true
-#  services:
-#    - docker:stable-dind
-#  script:
-#    - mkdir codequality-results
-#    - docker run
-#        --env CODECLIMATE_CODE="$PWD"
-#        --volume "$PWD":/code
-#        --volume /var/run/docker.sock:/var/run/docker.sock
-#        --volume /tmp/cc:/tmp/cc
-#        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
-#  artifacts:
-#    paths:
-#      - codequality-results/
+      - codequality-results/
+  only:
+    - merge_requests
+    - master
+    - develop
 
 sonar_job:
-  stage: analysis
+  stage: sonar
   image: adoptopenjdk/openjdk11:alpine-slim
   allow_failure: true
   services:
     - docker:stable-dind
   script:
-    - ./mvnw sonar:sonar
+    - ./mvnw jacoco:prepare-agent test sonar:sonar
       -Dhttps.protocols=TLSv1.2
       -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
       -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
@@ -90,9 +90,6 @@ sonar_job:
     - merge_requests
     - master
     - develop
-  artifacts:
-    paths:
-      - sonar-results/
 
 package_job:
   stage: package
@@ -101,7 +98,6 @@ package_job:
   services:
     - docker:stable-dind
   script:
-    - apk add --no-cache docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - ./mvnw install dockerfile:build dockerfile:push -DskipTests=true
       -Ddocker.registry=$CI_REGISTRY_IMAGE
@@ -111,4 +107,6 @@ package_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-
+  only:
+    - master
+    - develop
