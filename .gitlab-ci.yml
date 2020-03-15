@@ -48,6 +48,9 @@ test_job:
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
       -P gitlab
+  artifacts:
+    paths:
+      - test-results/
 
 code_quality_job:
   stage: quality
@@ -87,7 +90,9 @@ sonar_job:
     - merge_requests
     - master
     - develop
-
+  artifacts:
+    paths:
+      - sonar-results/
 
 package_job:
   stage: package
