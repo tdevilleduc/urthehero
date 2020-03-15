@@ -1,8 +1,7 @@
 stages:
   - build
   - test
-#  - quality
-  - analysis
+  - quality
   - package
 
 cache:
@@ -23,7 +22,7 @@ variables:
 
 build_job:
   stage: build
-#  image: adoptopenjdk/openjdk11:alpine-slim
+  image: adoptopenjdk/openjdk11:alpine-slim
   allow_failure: false
   script:
     - ./mvnw compile
@@ -36,7 +35,7 @@ build_job:
 
 test_job:
   stage: test
-#  image: adoptopenjdk/openjdk11:alpine-slim
+  image: adoptopenjdk/openjdk11:alpine-slim
   services:
     - docker:stable-dind
   script:
@@ -47,37 +46,22 @@ test_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-      -P gitlab
-  artifacts:
-    paths:
-      - test-results/
 
-#code_quality_job:
-#  stage: quality
-#  image: docker:stable
-#  allow_failure: true
-#  services:
-#    - docker:stable-dind
-#  script:
-#    - mkdir codequality-results
-#    - docker run
-#        --env CODECLIMATE_CODE="$PWD"
-#        --volume "$PWD":/code
-#        --volume /var/run/docker.sock:/var/run/docker.sock
-#        --volume /tmp/cc:/tmp/cc
-#        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
-#  artifacts:
-#    paths:
-#      - codequality-results/
-
-sonar_job:
-  stage: analysis
-#  image: adoptopenjdk/openjdk11:alpine-slim
+code_quality_job:
+  stage: quality
+  image: docker:stable
   allow_failure: true
   services:
     - docker:stable-dind
   script:
-    - ./mvnw sonar:sonar
+    - mkdir codequality-results
+    - docker run
+        --env CODECLIMATE_CODE="$PWD"
+        --volume "$PWD":/code
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        --volume /tmp/cc:/tmp/cc
+        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
+    - ./mvnw jacoco:prepare-agent test sonar:sonar
       -Dhttps.protocols=TLSv1.2
       -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
       -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN
@@ -86,13 +70,13 @@ sonar_job:
       -Dsonar.qualitygate.wait=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
       -P gitlab
+  artifacts:
+    paths:
+      - codequality-results/
   only:
     - merge_requests
     - master
     - develop
-  artifacts:
-    paths:
-      - sonar-results/
 
 package_job:
   stage: package
@@ -111,4 +95,6 @@ package_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-
+  only:
+    - master
+    - develop
