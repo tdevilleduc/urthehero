@@ -52,9 +52,6 @@
 
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-<!--        <sonar.coverage.jacoco.xmlReportPaths>-->
-<!--            ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml-->
-<!--        </sonar.coverage.jacoco.xmlReportPaths>-->
         <sonar.jacoco.reportPath>${project.basedir}/../target/site/jacoco/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>kotlin</sonar.language>
 
@@ -283,7 +280,6 @@
         </plugins>
         <pluginManagement>
             <plugins>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -291,7 +287,6 @@
                         <argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -302,10 +297,6 @@
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
-<!--                            <configuration>-->
-<!--                                <append>true</append>-->
-<!--                                <destFile>${sonar.jacoco.reportPath}</destFile>-->
-<!--                            </configuration>-->
                         </execution>
                         <execution>
                             <id>report</id>
@@ -316,43 +307,6 @@
                         </execution>
                     </executions>
                 </plugin>
-<!--                <plugin>-->
-<!--                    <groupId>org.jacoco</groupId>-->
-<!--                    <artifactId>jacoco-maven-plugin</artifactId>-->
-<!--                    <version>${jacoco.maven.plugin.version}</version>-->
-<!--                    <executions>-->
-<!--                        <execution>-->
-<!--                            <goals>-->
-<!--                                <goal>prepare-agent</goal>-->
-<!--                            </goals>-->
-<!--                            <configuration>-->
-<!--                                <append>true</append>-->
-<!--                                <destFile>${sonar.jacoco.reportPath}</destFile>-->
-<!--                            </configuration>-->
-<!--                        </execution>-->
-<!--                        <execution>-->
-<!--                            <id>jacoco-check</id>-->
-<!--                            <goals>-->
-<!--                                <goal>check</goal>-->
-<!--                            </goals>-->
-<!--                            <configuration>-->
-<!--                                <rules>-->
-<!--                                    <rule>-->
-<!--                                        <element>PACKAGE</element>-->
-<!--                                        <limits>-->
-<!--                                            <limit>-->
-<!--                                                <counter>LINE</counter>-->
-<!--                                                <value>COVEREDRATIO</value>-->
-<!--                                                &lt;!&ndash; TODO: on a next version, change this value &ndash;&gt;-->
-<!--                                                <minimum>0.00</minimum>-->
-<!--                                            </limit>-->
-<!--                                        </limits>-->
-<!--                                    </rule>-->
-<!--                                </rules>-->
-<!--                            </configuration>-->
-<!--                        </execution>-->
-<!--                    </executions>-->
-<!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>
