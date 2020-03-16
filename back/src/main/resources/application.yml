@@ -8,6 +8,10 @@ info:
     description: @project.description@
     version: @project.version@
 
+spring:
+  main:
+    banner-mode: "off"
+
   # Actuator
 management.endpoints:
   web.base-path: /
