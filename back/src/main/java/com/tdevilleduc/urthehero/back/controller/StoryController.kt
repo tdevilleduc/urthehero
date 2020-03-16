@@ -15,10 +15,10 @@ import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.util.Assert
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
-import javax.servlet.http.HttpServletRequest
 
 @Tag(name = "Story", description = "Story Controller")
 @RestController
@@ -30,9 +30,9 @@ internal class StoryController(private val storyService: IStoryService, private 
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.story.get-all.value}", description = "\${swagger.controller.story.get-all.notes}")
     @ResponseBody
-    fun getAllStories(request: HttpServletRequest): Callable<ResponseEntity<MutableList<Story>>> = Callable {
+    fun getAllStories(request: ServerHttpRequest): Callable<ResponseEntity<MutableList<Story>>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         ResponseEntity.ok(storyService.findAll())
     }
@@ -41,10 +41,10 @@ internal class StoryController(private val storyService: IStoryService, private 
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.story.get-by-id.value}", description = "\${swagger.controller.story.get-by-id.notes}")
     @ResponseBody
-    fun getStoryById(request: HttpServletRequest,
+    fun getStoryById(request: ServerHttpRequest,
                      @PathVariable storyId: Int): Callable<ResponseEntity<Story>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         ResponseEntity.ok(storyService.findById(storyId))
     }
@@ -53,24 +53,24 @@ internal class StoryController(private val storyService: IStoryService, private 
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.story.get-by-person-id.value}", description = "\${swagger.controller.story.get-by-person-id.notes}")
     @ResponseBody
-    fun getStoryByPersonId(request: HttpServletRequest,
+    fun getStoryByPersonId(request: ServerHttpRequest,
                            @PathVariable personId: Int): Callable<ResponseEntity<MutableList<Story>>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         if (personService.notExists(personId)) {
             ResponseEntity.notFound().build<MutableList<Story>>()
         }
-        logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+        logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         ResponseEntity.ok(storyService.findByPersonId(personId))
     }
 
     @PutMapping
     @ResponseBody
-    fun createStory(request: HttpServletRequest,
+    fun createStory(request: ServerHttpRequest,
                     @RequestBody storyDTO: StoryDTO): Callable<ResponseEntity<StoryDTO>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         //TODO: déplacer les controles dans le service ?
         Assert.notNull(storyDTO.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
@@ -89,10 +89,10 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @PostMapping
     @ResponseBody
-    fun updateStory(request: HttpServletRequest,
+    fun updateStory(request: ServerHttpRequest,
                     @RequestBody storyDto: StoryDTO): Callable<ResponseEntity<StoryDTO>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         //TODO: déplacer les controles dans le service ?
         Assert.notNull(storyDto.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
@@ -112,10 +112,10 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @DeleteMapping(value = ["/{storyId}"])
     @ResponseBody
-    fun deleteStory(request: HttpServletRequest?,
+    fun deleteStory(request: ServerHttpRequest,
                     @PathVariable storyId: Int) {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request?.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         storyService.delete(storyId)
     }

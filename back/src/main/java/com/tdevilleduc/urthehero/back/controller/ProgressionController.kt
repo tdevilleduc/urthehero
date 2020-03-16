@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
-import javax.servlet.http.HttpServletRequest
 
 @Tag(name = "Progression", description = "Progression Controller")
 @RestController
@@ -35,7 +35,7 @@ internal class ProgressionController() {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.progression.get-all-by-person-id.value}", description = "\${swagger.controller.progression.get-all-by-person-id.notes}")
     @ResponseBody
-    fun getAllByPersonId(request: HttpServletRequest,
+    fun getAllByPersonId(request: ServerHttpRequest,
                          @PathVariable personId: Int): Callable<ResponseEntity<MutableList<Progression>>> = Callable {
         if (personService.notExists(personId))
             ResponseEntity.notFound().build<MutableList<Progression>>()
@@ -47,11 +47,11 @@ internal class ProgressionController() {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.progression.get-by-person-id-and-story-id.value}", description = "\${swagger.controller.progression.get-by-person-id-and-story-id.notes}")
     @ResponseBody
-    fun getOneByPersonIdAndStoryId(request: HttpServletRequest,
+    fun getOneByPersonIdAndStoryId(request: ServerHttpRequest,
                                    @PathVariable personId: Int,
                                    @PathVariable storyId: Int): Callable<ResponseEntity<Progression>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         if (personService.notExists(personId)) {
             ResponseEntity.notFound().build<Progression>()
@@ -69,12 +69,12 @@ internal class ProgressionController() {
     @Operation(summary = "Met à jour la progression d'une personne sur une histoire avec une page définie")
     @PostMapping(value = ["/person/{personId}/story/{storyId}/page/{newPageId}"])
     @ResponseBody
-    fun postProgressionAction(request: HttpServletRequest,
+    fun postProgressionAction(request: ServerHttpRequest,
                               @PathVariable personId: Int,
                               @PathVariable storyId: Int,
                               @PathVariable newPageId: Int): Callable<ResponseEntity<Progression>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         ResponseEntity.ok(progressionService.doProgressionAction(personId, storyId, newPageId))
     }

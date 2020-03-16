@@ -13,10 +13,10 @@ import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.util.Assert
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
-import javax.servlet.http.HttpServletRequest
 
 @Tag(name = "Person", description = "Person Controller")
 @RestController
@@ -28,9 +28,9 @@ internal class PersonController(private val personService: IPersonService) {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.person.get-all.value}", description = "\${swagger.controller.person.get-all.notes}")
     @ResponseBody
-    fun getPersons(request: HttpServletRequest): Callable<ResponseEntity<MutableList<Person>>> = Callable {
+    fun getPersons(request: ServerHttpRequest): Callable<ResponseEntity<MutableList<Person>>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         ResponseEntity.ok(personService.findAll())
     }
@@ -39,20 +39,20 @@ internal class PersonController(private val personService: IPersonService) {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.person.get-by-id.value}", description = "\${swagger.controller.person.get-by-id.notes}")
     @ResponseBody
-    fun getPersonById(request: HttpServletRequest,
+    fun getPersonById(request: ServerHttpRequest,
                       @PathVariable personId: Int): Callable<ResponseEntity<Person>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         ResponseEntity.ok(personService.findById(personId))
     }
 
     @PutMapping
     @ResponseBody
-    fun createPerson(request: HttpServletRequest,
+    fun createPerson(request: ServerHttpRequest,
                      @RequestBody personDto: PersonDTO): Callable<ResponseEntity<PersonDTO>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         if (personService.exists(personDto.id)) {
             throw PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", personDto.id).message)
@@ -62,10 +62,10 @@ internal class PersonController(private val personService: IPersonService) {
 
     @PostMapping
     @ResponseBody
-    fun updatePerson(request: HttpServletRequest,
+    fun updatePerson(request: ServerHttpRequest,
                      @RequestBody personDto: PersonDTO): Callable<ResponseEntity<PersonDTO>> = Callable {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         Assert.notNull(personDto.id) { throw PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null") }
         ResponseEntity.ok(personService.createOrUpdate(personDto))
@@ -73,10 +73,10 @@ internal class PersonController(private val personService: IPersonService) {
 
     @DeleteMapping(value = ["/{personId}"])
     @ResponseBody
-    fun deletePerson(request: HttpServletRequest,
+    fun deletePerson(request: ServerHttpRequest,
                      @PathVariable personId: Int) {
         if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
+            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.uri.toString())
         }
         personService.delete(personId)
     }
