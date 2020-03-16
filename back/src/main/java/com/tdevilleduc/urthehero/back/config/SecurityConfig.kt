@@ -11,8 +11,9 @@ internal class SecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
-                .antMatchers(*AUTH_WHITELIST).permitAll()
-                .antMatchers("/**/*").denyAll()
+//                .antMatchers(*AUTH_WHITELIST).permitAll()
+//                .antMatchers("/**/*").denyAll()
+                .antMatchers("/**/*").permitAll()
                 .and().csrf().disable()
     }
 
