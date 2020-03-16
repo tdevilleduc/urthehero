@@ -23,6 +23,14 @@ management.endpoint:
     show-details: ALWAYS
   info.enabled: true
 
+# Swagger
+springdoc:
+  swagger-ui:
+    operationsSorter: alpha
+    tagsSorter: alpha
+  packagesToScan: com.tdevilleduc.urthehero.back.controller
+#  pathsToMatch: /api/dice/**, /api/page/**, /api/person/**, /api/progression/**, /api/story/**
+
   # MySQL DataSource settings
 spring.datasource:
   url: jdbc:mysql://localhost:3306/test?allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
