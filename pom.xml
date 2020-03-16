@@ -55,6 +55,7 @@
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>kotlin</sonar.language>
 
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
@@ -220,13 +221,10 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
+                        <configuration>
+                            <append>true</append>
+                            <destFile>${sonar.jacoco.reportPath}</destFile>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>jacoco-check</id>
@@ -250,43 +248,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- A quoi sert ce plugin ? -->
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <args>
-                        <arg>-Xjsr305=strict</arg>
-                    </args>
-                    <compilerPlugins>
-                        <plugin>spring</plugin>
-                    </compilerPlugins>
-                    <jvmTarget>1.8</jvmTarget>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-allopen</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>
@@ -328,6 +289,52 @@
                 </dependencies>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!-- A quoi sert ce plugin ? -->
+                <plugin>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>test-compile</id>
+                            <phase>test-compile</phase>
+                            <goals>
+                                <goal>test-compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <args>
+                            <arg>-Xjsr305=strict</arg>
+                        </args>
+                        <compilerPlugins>
+                            <plugin>spring</plugin>
+                        </compilerPlugins>
+                        <jvmTarget>1.8</jvmTarget>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-allopen</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.maven.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
