@@ -347,28 +347,23 @@
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
                 <sonar.login>225e18cb9b436e243e173365fef834e82cae6f14</sonar.login>
             </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.owasp</groupId>
-                    <artifactId>dependency-check-maven</artifactId>
-                    <version>${dependency-check.version}</version>
-                </dependency>
-            </dependencies>
             <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.owasp</groupId>
-                        <artifactId>dependency-check-maven</artifactId>
-                        <version>${dependency-check.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.owasp</groupId>
+                            <artifactId>dependency-check-maven</artifactId>
+                            <version>${dependency-check.version}</version>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>check</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
             </build>
         </profile>
     </profiles>
