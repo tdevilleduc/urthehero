@@ -35,14 +35,12 @@
         <testcontainers.version>1.12.5</testcontainers.version>
         <modelmapper.version>2.3.6</modelmapper.version>
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+        <dependency-check.version>5.3.0</dependency-check.version>
 
         <docker.plugin.version>1.2.2</docker.plugin.version>
         <docker.image.exposed.port>9090</docker.image.exposed.port>
         <docker.image.dockerfile.dir>./back</docker.image.dockerfile.dir>
         <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
-
-        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
-        <dependency-check.version>5.3.0</dependency-check.version>
 
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <docker.registry>docker.io/thomasdevilleduc</docker.registry>
@@ -50,15 +48,13 @@
         <dockerfile.tag>${project.version}</dockerfile.tag>
         <dockerfile.skip>true</dockerfile.skip>
 
+        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-<!--        <sonar.jacoco.reportPath>${project.basedir}/../target/site/jacoco/jacoco.exec</sonar.jacoco.reportPath>-->
         <sonar.language>kotlin</sonar.language>
-
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.login>2eaa7242c8a258a69e32783194c783e63d6e7793</sonar.login>
     </properties>
@@ -204,7 +200,6 @@
 
     <build>
         <plugins>
-            <!-- A quoi sert ce plugin ? -->
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -241,26 +236,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!-- Add maven compiler plugin -->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <release>${java.version}</release>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-release-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <autoVersionSubmodules>true</autoVersionSubmodules>-->
-<!--                    <tagNameFormat>v@{project.version}</tagNameFormat>-->
-<!--                    <useReleaseProfile>false</useReleaseProfile>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
