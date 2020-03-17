@@ -51,8 +51,12 @@
         <dockerfile.skip>true</dockerfile.skip>
 
         <sonar.exclusions>**/generated-sources, **/pom.xml</sonar.exclusions>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/site/jacoco/jacoco.exec</sonar.jacoco.reportPath>
+<!--        <sonar.jacoco.reportPath>${project.basedir}/../target/site/jacoco/jacoco.exec</sonar.jacoco.reportPath>-->
         <sonar.language>kotlin</sonar.language>
 
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
@@ -293,13 +297,13 @@
                     <version>${jacoco.maven.plugin.version}</version>
                     <executions>
                         <execution>
-                            <id>prepare-agent</id>
+                            <id>pre-unit-agent</id>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
                         </execution>
                         <execution>
-                            <id>report</id>
+                            <id>post-unit-test</id>
                             <phase>test</phase>
                             <goals>
                                 <goal>report</goal>
