@@ -1,4 +1,4 @@
-FROM openjdk:11.0.4-jre-slim
+FROM adoptopenjdk/openjdk11:alpine-slim
 
 ARG JAR_FILE
 
