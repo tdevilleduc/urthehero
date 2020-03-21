@@ -17,14 +17,14 @@ services:
 
   back:
     container_name: urthehero-back
-    build:
-      context: ./back
-    #image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
-    #image: openjdk:11.0.4-jre-slim
-      args:
-        JAR_FILE: back-0.1.1-SNAPSHOT.jar
-    #volumes:
-    #  - ./back/target:/deployments
+#    build:
+#      context: ./back
+    image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
+    #image: adoptopenjdk/openjdk11:alpine-slim
+#      args:
+#        JAR_FILE: back-0.1.1-SNAPSHOT.jar
+    volumes:
+      - ./back/target:/deployments
     environment:
       JAVA_APP_JAR: back-0.1.1-SNAPSHOT.jar
       JAVA_OPTIONS: "-Dspring.profiles.active=docker -Dfile.encoding=UTF8"
