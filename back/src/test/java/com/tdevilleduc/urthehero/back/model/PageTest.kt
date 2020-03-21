@@ -10,7 +10,6 @@ internal class PageTest {
         val pageId = 46
         val pageText = "test de titre"
         val pageImage = "image de ouf"
-        val story = TestUtils.createRandomStory()
         val page = Page(pageText, pageImage)
         page.id = pageId
         Assertions.assertEquals(page.id!!, pageId)
