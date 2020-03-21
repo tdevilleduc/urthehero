@@ -93,7 +93,7 @@ sonar_job:
 
 package_job:
   stage: package
-  image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
+  image: docker:stable
   allow_failure: false
   services:
     - docker:stable-dind
