@@ -10,9 +10,9 @@ cache:
     - .m2/repository
   key: "$CI_JOB_NAME"
 
-#default:
-#  before_script:
-#    - chmod +x mvnw
+default:
+  before_script:
+    - chmod +x ./mvnw
 
 variables:
   DOCKER_HOST: "tcp://docker:2375"
