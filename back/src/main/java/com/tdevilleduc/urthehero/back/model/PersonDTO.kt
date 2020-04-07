@@ -1,8 +1,8 @@
 package com.tdevilleduc.urthehero.back.model
 
-class PersonDTO(var id: Int,
-                var login: String,
-                var displayName: String,
-                var email: String,
-                var password: String) {
+class PersonDTO(var id: Int? = null,
+                var login: String = "",
+                var displayName: String = "",
+                var email: String = "",
+                var password: String = "") {
 }

@@ -54,7 +54,7 @@ internal class PersonController(private val personService: IPersonService) {
         if (logger.isInfoEnabled) {
             logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
         }
-        if (personService.exists(personDto.id)) {
+        if (personService.exists(personDto.id!!)) {
             throw PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", personDto.id).message)
         }
         ResponseEntity.ok(personService.createOrUpdate(personDto))

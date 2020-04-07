@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.model
 
-class PageDTO(var id: Int,
-              var text: String,
-              var image: String) {
+class PageDTO(var id: Int? = null,
+              var text: String = "",
+              var image: String = "") {
 }
