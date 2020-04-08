@@ -19,17 +19,6 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: 0
 
-
-variables:
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-
-variables:
-  DOCKER_HOST: "tcp://docker:2375"
-  DOCKER_DRIVER: overlay2
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-  GIT_DEPTH: 0
-
-
 build_job:
   stage: build
   image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
@@ -42,7 +31,6 @@ build_job:
       -Dorg.slf4j.simpleLogger.showDateTime=true
       -Djava.awt.headless=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
-
 
 
 test_job:
@@ -60,7 +48,6 @@ test_job:
       -Dsonar.qualitygate.wait=true
       --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true
       -P gitlab
-
 
 
 code_quality_job:
@@ -84,6 +71,7 @@ code_quality_job:
     - merge_requests
     - master
     - develop
+
 
 package_job:
   stage: package
