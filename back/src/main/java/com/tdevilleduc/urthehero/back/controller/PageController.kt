@@ -59,7 +59,7 @@ internal class PageController(private val storyService: IStoryService, private v
         if (logger.isInfoEnabled) {
             logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
         }
-        if (pageService.exists(page.id)) {
+        if (pageService.exists(page.id!!)) {
             throw PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.id).message)
         }
         ResponseEntity.ok(pageService.createOrUpdate(page))

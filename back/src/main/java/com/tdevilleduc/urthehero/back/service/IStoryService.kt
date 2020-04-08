@@ -8,7 +8,6 @@ interface IStoryService {
     fun notExists(storyId: Int): Boolean
     fun findById(storyId: Int): Story
     fun findAll(): MutableList<Story>
-    fun findByPersonId(personId: Int): MutableList<Story>
     fun createOrUpdate(storyDto: StoryDTO): StoryDTO
     fun delete(storyId: Int)
 }

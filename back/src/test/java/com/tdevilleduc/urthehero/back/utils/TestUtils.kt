@@ -1,5 +1,7 @@
 package com.tdevilleduc.urthehero.back.utils
 
+import com.tdevilleduc.urthehero.back.model.PageDTO
+import com.tdevilleduc.urthehero.back.model.PersonDTO
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
 import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils
@@ -8,20 +10,36 @@ import java.util.*
 object TestUtils {
     private val random: Random = Random()
     fun createRandomStory(): Story {
-        val storyId = random.nextInt()
-        val storyTitle = RandomStringUtils.random(20)
+        val id = random.nextInt()
         val storyAuthorId = random.nextInt()
         val storyFirstPageId = random.nextInt()
-        val storyDetailedText = RandomStringUtils.random(20)
-        val storyImage = RandomStringUtils.random(20)
-        return Story(storyId, storyAuthorId, storyFirstPageId, storyTitle, storyDetailedText, storyImage)
+        val title = RandomStringUtils.random(20)
+        val detailedText = RandomStringUtils.random(20)
+        val image = RandomStringUtils.random(20)
+        return Story(id, storyAuthorId, storyFirstPageId, title, detailedText, image)
     }
 
     fun createStory(authorId: Int, firstPageId: Int): StoryDTO {
-        val storyId = random.nextInt()
-        val storyTitle = RandomStringUtils.random(20)
-        val storyDetailedText = RandomStringUtils.random(20)
-        val storyImage = RandomStringUtils.random(20)
-        return StoryDTO(storyId, storyTitle, authorId, firstPageId, storyDetailedText, storyImage)
+        val id = random.nextInt()
+        val title = RandomStringUtils.random(20)
+        val detailedText = RandomStringUtils.random(20)
+        val image = RandomStringUtils.random(20)
+        return StoryDTO(id, title, authorId, firstPageId, detailedText, image)
+    }
+
+    fun createPerson(): PersonDTO {
+        val id = random.nextInt()
+        val login = RandomStringUtils.random(20)
+        val displayName = RandomStringUtils.random(20)
+        val email = RandomStringUtils.random(20)
+        val password = RandomStringUtils.random(20)
+        return PersonDTO(id, login, displayName, email, password)
+    }
+
+    fun createPage(): PageDTO {
+        val id = random.nextInt()
+        val text = RandomStringUtils.random(20)
+        val image = RandomStringUtils.random(20)
+        return PageDTO(id, text, image)
     }
 }

@@ -66,18 +66,6 @@ class StoryService : IStoryService {
         return emptyList<Person>().toMutableList()
     }
 
-    override fun findByPersonId(personId: Int): MutableList<Story> {
-        logger.info("findByPersonId person {}", personId)
-        Assert.notNull(personId, ApplicationConstants.CHECK_PERSONID_PARAMETER_MANDATORY!!)
-        val progressionList = progressionService.findByPersonId(personId)
-        logger.info("findByPersonId nbProgression {} person {}", progressionList.size, personId)
-
-        return progressionList.stream()
-                .map { progression: Progression -> getStoryFromProgression(progression) }
-                .map { story: Story -> fillStoryWithNumberOfReaders(story) }
-                .collect(Collectors.toList())
-    }
-
     private fun getStoryFromProgression(progression: Progression): Story {
         logger.info("getStoryFromProgression story {} person {}", progression.storyId, progression.personId)
         val optional = storyDao.findById(progression.storyId)

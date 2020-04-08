@@ -49,22 +49,6 @@ internal class StoryController(private val storyService: IStoryService, private 
         ResponseEntity.ok(storyService.findById(storyId))
     }
 
-    @GetMapping(value = ["/all/person/{personId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "\${swagger.controller.story.get-by-person-id.value}", description = "\${swagger.controller.story.get-by-person-id.notes}")
-    @ResponseBody
-    fun getStoryByPersonId(request: HttpServletRequest,
-                           @PathVariable personId: Int): Callable<ResponseEntity<MutableList<Story>>> = Callable {
-        if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
-        }
-        if (personService.notExists(personId)) {
-            ResponseEntity.notFound().build<MutableList<Story>>()
-        }
-        logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
-        ResponseEntity.ok(storyService.findByPersonId(personId))
-    }
-
     @PutMapping
     @ResponseBody
     fun createStory(request: HttpServletRequest,

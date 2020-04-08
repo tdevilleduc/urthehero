@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.controller
 
 import com.tdevilleduc.urthehero.back.AbstractTest
 import com.tdevilleduc.urthehero.back.BackApplication
+import com.tdevilleduc.urthehero.back.utils.TestUtils
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,16 +17,20 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 @WebAppConfiguration
 internal class PersonControllerTest : AbstractTest() {
+
     private lateinit var mockMvc: MockMvc
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
 
-    private val uriController: String? = "/api/person"
+    private val objectMapper: ObjectMapper = ObjectMapper()
+
+    private val uriController: String = "/api/person"
 
     @BeforeEach
     fun setup() {
@@ -33,7 +38,6 @@ internal class PersonControllerTest : AbstractTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetAllPersons() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/all"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -46,7 +50,6 @@ internal class PersonControllerTest : AbstractTest() {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetPersonById() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/2"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -59,5 +62,18 @@ internal class PersonControllerTest : AbstractTest() {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.login", Matchers.`is`("mgianesini")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.displayName", Matchers.`is`("Marion Gianesini")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.`is`("marion@gmail.com")))
+    }
+
+    @Test
+    fun test_createStory() {
+        val personDto = TestUtils.createPerson()
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(personDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.request().asyncStarted())
+                .andReturn()
+        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
     }
 }

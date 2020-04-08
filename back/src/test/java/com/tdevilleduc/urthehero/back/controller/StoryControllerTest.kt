@@ -23,10 +23,12 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 @SpringBootTest(classes = [BackApplication::class])
 @WebAppConfiguration
 internal class StoryControllerTest : AbstractTest() {
+
     private lateinit var mockMvc: MockMvc
-    private val objectMapper: ObjectMapper = ObjectMapper()
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
+
+    private val objectMapper: ObjectMapper = ObjectMapper()
 
     private val uriController: String = "/api/story"
 
@@ -38,7 +40,18 @@ internal class StoryControllerTest : AbstractTest() {
     }
 
     @Test
-    @Throws(Exception::class)
+    fun test_getAllStories() {
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/all"))
+                .andExpect(MockMvcResultMatchers.request().asyncStarted())
+                .andReturn()
+        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Any?>(3)))
+    }
+
+    @Test
     fun test_getStoryById() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/2"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -56,45 +69,6 @@ internal class StoryControllerTest : AbstractTest() {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun test_getAllStories() {
-        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/all"))
-                .andExpect(MockMvcResultMatchers.request().asyncStarted())
-                .andReturn()
-        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Any?>(3)))
-    }
-
-//    @Test
-//    @Throws(Exception::class)
-//    fun test_getStoryByPersonId() {
-//        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/all/person/1"))
-//                .andExpect(MockMvcResultMatchers.request().asyncStarted())
-//                .andReturn()
-//        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
-//                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-//                .andExpect(MockMvcResultMatchers.status().isOk)
-//                .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Any?>(2)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].storyId", Matchers.`is`(2)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title", Matchers.`is`("Voyage au bout de la nuit")))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].authorId", Matchers.`is`(2)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstPageId", Matchers.`is`(4)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].currentPageId", Matchers.`is`(3)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].numberOfReaders", Matchers.`is`(2)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].storyId", Matchers.`is`(1)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", Matchers.`is`("Ulysse")))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].authorId", Matchers.`is`(1)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].firstPageId", Matchers.`is`(1)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].currentPageId", Matchers.`is`(2)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].numberOfReaders", Matchers.`is`(3)))
-//    }
-
-    @Test
-    @Throws(Exception::class)
     fun test_createStory() {
         val authorId = 1
         val firstPageId = 1
