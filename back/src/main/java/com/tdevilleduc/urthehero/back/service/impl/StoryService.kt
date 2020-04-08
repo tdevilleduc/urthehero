@@ -6,7 +6,6 @@ import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.model.Person
-import com.tdevilleduc.urthehero.back.model.Progression
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
 import com.tdevilleduc.urthehero.back.service.IProgressionService
@@ -64,19 +63,6 @@ class StoryService : IStoryService {
     private fun emptyList(e: Throwable): MutableList<Person> {
         logger.error("Unable to retrieve list", e)
         return emptyList<Person>().toMutableList()
-    }
-
-    private fun getStoryFromProgression(progression: Progression): Story {
-        logger.info("getStoryFromProgression story {} person {}", progression.storyId, progression.personId)
-        val optional = storyDao.findById(progression.storyId)
-        if (optional.isPresent) {
-            val story = optional.get()
-            story.currentPageId = progression.actualPageId
-            logger.info("getStoryFromProgression actualPageId {}", progression.actualPageId)
-            return story
-        } else {
-            throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, progression.storyId).message)
-        }
     }
 
     private fun fillStoryWithNumberOfReaders(story: Story): Story {

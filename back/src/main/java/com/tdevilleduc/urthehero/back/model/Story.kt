@@ -20,9 +20,6 @@ data class Story(
     @Schema(description = "\${swagger.model.story.param.image}")
     var image: String = "",
     @Transient
-    // TODO : cette donnée est elle utile ?
-    var currentPageId: Int? = null,
-    @Transient
     @Schema(description = "\${swagger.model.story.param.numberOfReaders}")
     var numberOfReaders: Long? = null
 
