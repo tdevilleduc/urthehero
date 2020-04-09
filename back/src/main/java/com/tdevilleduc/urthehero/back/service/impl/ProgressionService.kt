@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
-import com.tdevilleduc.urthehero.back.config.ResilienceConstants
+import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException

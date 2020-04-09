@@ -2,12 +2,8 @@ package com.tdevilleduc.urthehero.back.service.chaos
 
 import com.tdevilleduc.urthehero.back.AbstractTest
 import com.tdevilleduc.urthehero.back.BackApplication
-import com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_STORY_SERVICE
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.service.IStoryService
-import io.github.resilience4j.circuitbreaker.CircuitBreaker
-import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
-import io.vavr.collection.Stream
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
@@ -25,8 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
-import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
