@@ -12,17 +12,18 @@ internal class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
                 .antMatchers(*AUTH_WHITELIST).permitAll()
-                .antMatchers("/**/*").denyAll()
+                .anyRequest().denyAll()
                 .and().csrf().disable()
     }
 
     companion object {
-        private val AUTH_WHITELIST = arrayOf( // -- api requests
-                "/api/**",  // -- swagger ui
-                "/swagger-resources/**",
+        private val AUTH_WHITELIST = arrayOf(
+                // -- api requests
+                "/api/**",
+                // -- springDoc requests
+                "/swagger-ui/**",
                 "/swagger-ui.html",
-                "/v2/api-docs",
-                "/webjars/**"
+                "/v3/api-docs/**"
         )
     }
 }
