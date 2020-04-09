@@ -1,7 +1,6 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
-import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
@@ -9,7 +8,6 @@ import com.tdevilleduc.urthehero.back.model.Page
 import com.tdevilleduc.urthehero.back.model.PageDTO
 import com.tdevilleduc.urthehero.back.service.INextPageService
 import com.tdevilleduc.urthehero.back.service.IPageService
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -48,17 +46,6 @@ class PageService : IPageService {
         } else {
             throw PageNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST, pageId).message)
         }
-    }
-
-    @CircuitBreaker(name = ResilienceConstants.INSTANCE_PAGE_SERVICE, fallbackMethod = "emptyList")
-    fun findAll(): MutableList<Page> {
-        return pageDao.findAll()
-    }
-
-    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
-    private fun emptyList(e: Throwable): MutableList<Page> {
-        logger.error("Unable to retrieve list", e)
-        return emptyList<Page>().toMutableList()
     }
 
     private fun fillPageWithNextPages(page: Page): Page {
