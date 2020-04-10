@@ -1,14 +1,11 @@
 package com.tdevilleduc.urthehero.back.controller
 
-import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.model.Progression
 import com.tdevilleduc.urthehero.back.service.IPersonService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -21,8 +18,6 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/api/progression")
 internal class ProgressionController() {
-
-    val logger: Logger = LoggerFactory.getLogger(ProgressionController::class.java)
 
     @Autowired
     private lateinit var progressionService: IProgressionService
@@ -50,9 +45,6 @@ internal class ProgressionController() {
     fun getOneByPersonIdAndStoryId(request: HttpServletRequest,
                                    @PathVariable personId: Int,
                                    @PathVariable storyId: Int): Callable<ResponseEntity<Progression>> = Callable {
-        if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
-        }
         if (personService.notExists(personId)) {
             ResponseEntity.notFound().build<Progression>()
         }
@@ -73,9 +65,6 @@ internal class ProgressionController() {
                               @PathVariable personId: Int,
                               @PathVariable storyId: Int,
                               @PathVariable newPageId: Int): Callable<ResponseEntity<Progression>> = Callable {
-        if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
-        }
         ResponseEntity.ok(progressionService.doProgressionAction(personId, storyId, newPageId))
     }
 

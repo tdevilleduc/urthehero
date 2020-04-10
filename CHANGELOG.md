@@ -10,6 +10,7 @@
 - Add docker support in local and CI/CD [#49][49]
 - Add selfsigned SSL support [#51][51]
 - Add DTO objects and transformation [#66][66]
+- Add filter to log every incoming request [#71][71]
 - Add swagger documentation [#72][72]
 - Add numberOfPages attribute in story entity [#75][75]
 
@@ -17,6 +18,7 @@
 [49]: https://github.com/tdevilleduc/urthehero/issues/49
 [51]: https://github.com/tdevilleduc/urthehero/issues/51
 [66]: https://github.com/tdevilleduc/urthehero/issues/66
+[71]: https://github.com/tdevilleduc/urthehero/issues/71
 [72]: https://github.com/tdevilleduc/urthehero/issues/72
 [75]: https://github.com/tdevilleduc/urthehero/issues/75
 

@@ -6,8 +6,6 @@ import com.tdevilleduc.urthehero.back.model.DiceValue
 import com.tdevilleduc.urthehero.back.service.IDiceService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/api/dice")
 internal class DiceController(private val diceService: IDiceService) {
-    val logger: Logger = LoggerFactory.getLogger(DiceController::class.java)
 
     @GetMapping(value = ["/roll/{dice}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
@@ -29,9 +26,6 @@ internal class DiceController(private val diceService: IDiceService) {
     @ResponseBody
     fun roll(request: HttpServletRequest,
              @PathVariable dice: Dice): Callable<ResponseEntity<DiceValue>> = Callable {
-        if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
-        }
         Assert.notNull(dice, ApplicationConstants.CHECK_DICE_PARAMETER_MANDATORY!!)
         ResponseEntity.ok(diceService.roll(dice))
     }
@@ -43,9 +37,6 @@ internal class DiceController(private val diceService: IDiceService) {
     fun roll(request: HttpServletRequest,
              @PathVariable dice: Dice,
              @PathVariable count: Int): Callable<ResponseEntity<MutableList<DiceValue>>> = Callable {
-        if (logger.isInfoEnabled) {
-            logger.info(ApplicationConstants.CONTROLLER_CALL_LOG, request.requestURI)
-        }
         Assert.notNull(dice, ApplicationConstants.CHECK_DICE_PARAMETER_MANDATORY!!)
         Assert.notNull(count, ApplicationConstants.CHECK_COUNT_PARAMETER_MANDATORY!!)
         val diceValues: MutableList<DiceValue> = ArrayList()

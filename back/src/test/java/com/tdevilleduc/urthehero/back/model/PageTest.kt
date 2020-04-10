@@ -1,6 +1,5 @@
 package com.tdevilleduc.urthehero.back.model
 
-import com.tdevilleduc.urthehero.back.utils.TestUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
