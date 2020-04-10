@@ -6,6 +6,7 @@ import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException
 import com.tdevilleduc.urthehero.back.service.impl.PersonService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.function.Executable
 import org.springframework.beans.factory.annotation.Autowired
@@ -54,5 +55,26 @@ internal class PersonServiceTest : AbstractTest() {
     fun delete_thenNotFound() {
         val personId = 13
         Assertions.assertThrows(PersonNotFoundException::class.java, Executable { personService.delete(personId) })
+    }
+
+
+    @Test
+    fun test_findByLogin_thenCorrect() {
+        val personLogin = "mgianesini"
+        val person = personService.findByLogin(personLogin)
+        Assertions.assertNotNull(person)
+        Assertions.assertEquals(2, person.id)
+        Assertions.assertEquals("Marion Gianesini", person.displayName)
+        Assertions.assertEquals("marion@gmail.com", person.email)
+        Assertions.assertEquals("mgianesini", person.login)
+        Assertions.assertEquals("password", person.password)
+    }
+
+    @Test
+    fun test_findByLogin_thenNotFound() {
+        val personLogin = "toto"
+        Assertions.assertThrows(PersonNotFoundException::class.java) {
+            personService.findByLogin(personLogin)
+        }
     }
 }
