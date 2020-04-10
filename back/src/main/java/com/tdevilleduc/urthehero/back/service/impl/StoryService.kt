@@ -1,14 +1,14 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
-import com.tdevilleduc.urthehero.back.config.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
+import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.model.Person
-import com.tdevilleduc.urthehero.back.model.Progression
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
+import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
@@ -26,6 +26,8 @@ class StoryService : IStoryService {
 
     @Autowired
     private lateinit var progressionService: IProgressionService
+    @Autowired
+    private lateinit var pageService: IPageService
     @Autowired
     private lateinit var storyDao: StoryDao
 
@@ -66,22 +68,9 @@ class StoryService : IStoryService {
         return emptyList<Person>().toMutableList()
     }
 
-    private fun getStoryFromProgression(progression: Progression): Story {
-        logger.info("getStoryFromProgression story {} person {}", progression.storyId, progression.personId)
-        val optional = storyDao.findById(progression.storyId)
-        if (optional.isPresent) {
-            val story = optional.get()
-            story.currentPageId = progression.actualPageId
-            logger.info("getStoryFromProgression actualPageId {}", progression.actualPageId)
-            return story
-        } else {
-            throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, progression.storyId).message)
-        }
-    }
-
     private fun fillStoryWithNumberOfReaders(story: Story): Story {
-        val numberOfReaders = progressionService.countByStoryId(story.storyId!!)
-        story.numberOfReaders = numberOfReaders
+        story.numberOfReaders = progressionService.countPersonsByStoryId(story.storyId!!)
+        story.numberOfPages = pageService.countByStoryId(story.storyId!!)
         return story
     }
 

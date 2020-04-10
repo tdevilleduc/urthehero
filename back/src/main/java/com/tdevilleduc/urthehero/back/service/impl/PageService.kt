@@ -1,15 +1,15 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
-import com.tdevilleduc.urthehero.back.config.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
+import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.model.Page
 import com.tdevilleduc.urthehero.back.model.PageDTO
 import com.tdevilleduc.urthehero.back.service.INextPageService
 import com.tdevilleduc.urthehero.back.service.IPageService
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import com.tdevilleduc.urthehero.back.service.IStoryService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -23,6 +23,8 @@ class PageService : IPageService {
 
     @Autowired
     private lateinit var nextPageService: INextPageService
+    @Autowired
+    private lateinit var storyService: IStoryService
     @Autowired
     private lateinit var pageDao: PageDao
 
@@ -50,25 +52,14 @@ class PageService : IPageService {
         }
     }
 
-    @CircuitBreaker(name = ResilienceConstants.INSTANCE_PAGE_SERVICE, fallbackMethod = "emptyList")
-    fun findAll(): MutableList<Page> {
-        return pageDao.findAll()
-    }
-
-    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
-    private fun emptyList(e: Throwable): MutableList<Page> {
-        logger.error("Unable to retrieve list", e)
-        return emptyList<Page>().toMutableList()
-    }
-
     private fun fillPageWithNextPages(page: Page): Page {
         val nextPageList = nextPageService.findByPageId(page.id!!)
         page.nextPageList = nextPageList
         return page
     }
 
-    override fun createOrUpdate(pageDTO: PageDTO): PageDTO {
-        val page: Page = Mapper.convert(pageDTO)
+    override fun createOrUpdate(pageDto: PageDTO): PageDTO {
+        val page: Page = Mapper.convert(pageDto)
         return Mapper.convert(pageDao.save(page))
     }
 
@@ -76,5 +67,13 @@ class PageService : IPageService {
         Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY!!)
         val page = findById(pageId)
         pageDao.delete(page)
+    }
+
+    override fun countByStoryId(storyId: Int): Long {
+        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
+        if (storyService.notExists(storyId)) {
+            throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).message)
+        }
+        return pageDao.countByStoryId(storyId)
     }
 }

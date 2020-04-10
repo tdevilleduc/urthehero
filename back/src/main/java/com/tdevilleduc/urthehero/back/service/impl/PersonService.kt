@@ -1,7 +1,7 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
-import com.tdevilleduc.urthehero.back.config.ResilienceConstants.INSTANCE_PERSON_SERVICE
+import com.tdevilleduc.urthehero.back.constant.ResilienceConstants.INSTANCE_PERSON_SERVICE
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.PersonDao
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException

@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.back.config
+package com.tdevilleduc.urthehero.back.constant
 
 object ResilienceConstants {
     const val INSTANCE_STORY_SERVICE = "story-service"
