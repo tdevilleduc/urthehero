@@ -46,6 +46,15 @@ class PersonService : IPersonService {
         }
     }
 
+    override fun findByLogin(userName: String): Person {
+        val optional = personDao.findByLogin(userName)
+        if (optional.isPresent) {
+            return optional.get()
+        } else {
+            throw PersonNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PERSON_LOGIN_DOESNOT_EXIST, userName).message)
+        }
+    }
+
     @CircuitBreaker(name = INSTANCE_PERSON_SERVICE, fallbackMethod = "emptyList")
     override fun findAll(): MutableList<Person> {
         return personDao.findAll()
