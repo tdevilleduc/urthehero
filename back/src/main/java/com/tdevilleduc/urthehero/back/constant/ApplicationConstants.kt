@@ -8,6 +8,7 @@ object ApplicationConstants {
     val CHECK_STORYID_PARAMETER_MANDATORY: String? = "The storyId parameter is mandatory !"
     val ERROR_MESSAGE_PAGE_DOESNOT_EXIST: String? = "La page avec l'id {} n'existe pas"
     val ERROR_MESSAGE_PERSON_DOESNOT_EXIST: String? = "La personne avec l'id {} n'existe pas"
+    val ERROR_MESSAGE_PERSON_LOGIN_DOESNOT_EXIST: String? = "La personne avec le login {} n'existe pas"
     val ERROR_MESSAGE_STORY_DOESNOT_EXIST: String? = "L'histoire avec l'id {} n'existe pas"
     val CONTROLLER_CALL_LOG: String? = "call: {}"
 }

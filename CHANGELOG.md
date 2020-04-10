@@ -13,6 +13,8 @@
 - Add filter to log every incoming request [#71][71]
 - Add swagger documentation [#72][72]
 - Add numberOfPages attribute in story entity [#75][75]
+- Add service for retrieve person by login [#76][76]
+
 
 [21]: https://github.com/tdevilleduc/urthehero/issues/21
 [49]: https://github.com/tdevilleduc/urthehero/issues/49
@@ -21,6 +23,7 @@
 [71]: https://github.com/tdevilleduc/urthehero/issues/71
 [72]: https://github.com/tdevilleduc/urthehero/issues/72
 [75]: https://github.com/tdevilleduc/urthehero/issues/75
+[76]: https://github.com/tdevilleduc/urthehero/issues/76
 
 ### Changed
 
