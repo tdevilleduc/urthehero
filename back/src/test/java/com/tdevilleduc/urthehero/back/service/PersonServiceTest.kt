@@ -37,7 +37,7 @@ internal class PersonServiceTest : AbstractTest() {
         val personId = 1
         val person = personService.findById(personId)
         Assertions.assertNotNull(person)
-        Assertions.assertEquals(Integer.valueOf(1), person.id)
+        Assertions.assertEquals(1, person.id)
         Assertions.assertEquals("Thomas Deville-Duc", person.displayName)
         Assertions.assertEquals("thomas@gmail.com", person.email)
         Assertions.assertEquals("tdevilleduc", person.login)

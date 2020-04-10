@@ -1,7 +1,7 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
-import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
+import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.ProgressionDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
 import com.tdevilleduc.urthehero.back.exceptions.PersonNotFoundException
@@ -89,7 +89,7 @@ class ProgressionService : IProgressionService {
         return progressionDao.findByPersonIdAndStoryId(personId, storyId)
     }
 
-    override fun countByStoryId(storyId: Int): Long {
+    override fun countPersonsByStoryId(storyId: Int): Long {
         Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
         if (storyService.notExists(storyId)) {
             throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).message)

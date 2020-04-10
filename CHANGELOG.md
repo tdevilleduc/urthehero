@@ -11,12 +11,14 @@
 - Add selfsigned SSL support [#51][51]
 - Add DTO objects and transformation [#66][66]
 - Add swagger documentation [#72][72]
+- Add numberOfPages attribute in story entity [#75][75]
 
 [21]: https://github.com/tdevilleduc/urthehero/issues/21
 [49]: https://github.com/tdevilleduc/urthehero/issues/49
 [51]: https://github.com/tdevilleduc/urthehero/issues/51
 [66]: https://github.com/tdevilleduc/urthehero/issues/66
 [72]: https://github.com/tdevilleduc/urthehero/issues/72
+[75]: https://github.com/tdevilleduc/urthehero/issues/75
 
 ### Changed
 

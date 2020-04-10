@@ -1,13 +1,14 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
-import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
+import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.model.Person
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
+import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
@@ -25,6 +26,8 @@ class StoryService : IStoryService {
 
     @Autowired
     private lateinit var progressionService: IProgressionService
+    @Autowired
+    private lateinit var pageService: IPageService
     @Autowired
     private lateinit var storyDao: StoryDao
 
@@ -66,8 +69,8 @@ class StoryService : IStoryService {
     }
 
     private fun fillStoryWithNumberOfReaders(story: Story): Story {
-        val numberOfReaders = progressionService.countByStoryId(story.storyId!!)
-        story.numberOfReaders = numberOfReaders
+        story.numberOfReaders = progressionService.countPersonsByStoryId(story.storyId!!)
+        story.numberOfPages = pageService.countByStoryId(story.storyId!!)
         return story
     }
 

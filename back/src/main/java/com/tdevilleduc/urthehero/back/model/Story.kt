@@ -21,6 +21,9 @@ data class Story(
     var image: String = "",
     @Transient
     @Schema(description = "\${swagger.model.story.param.numberOfReaders}")
-    var numberOfReaders: Long? = null
+    var numberOfReaders: Long? = null,
+    @Transient
+    @Schema(description = "\${swagger.model.story.param.numberOfPages}")
+    var numberOfPages: Long? = null
 
 )

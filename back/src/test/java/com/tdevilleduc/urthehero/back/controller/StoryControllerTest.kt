@@ -65,6 +65,7 @@ internal class StoryControllerTest : AbstractTest() {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authorId", Matchers.`is`(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstPageId", Matchers.`is`(4)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfReaders", Matchers.`is`(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfPages", Matchers.`is`(3)))
     }
 
     @Test

@@ -33,10 +33,11 @@ internal class StoryServiceTest : AbstractTest() {
     fun findByPageId_thenCorrect() {
         val storyId = 1
         val story = storyService.findById(storyId)
-        Assertions.assertEquals(Integer.valueOf(1), story.storyId)
+        Assertions.assertEquals(1, story.storyId)
         Assertions.assertEquals("Ulysse", story.title)
-        Assertions.assertEquals(Integer.valueOf(1), story.authorId)
-        Assertions.assertEquals(Integer.valueOf(1), story.firstPageId)
-        Assertions.assertEquals(java.lang.Long.valueOf(3), story.numberOfReaders)
+        Assertions.assertEquals(1, story.authorId)
+        Assertions.assertEquals(1, story.firstPageId)
+        Assertions.assertEquals(3, story.numberOfReaders)
+        Assertions.assertEquals(4, story.numberOfPages)
     }
 }
