@@ -15,6 +15,7 @@
 - Add numberOfPages attribute in story entity [#75][75]
 - Add service for retrieve person by login [#76][76]
 - Add authentication based on login/password from person entity [#77][77]
+- Add jwt authentification support [#79][79]
 
 [21]: https://github.com/tdevilleduc/urthehero/issues/21
 [49]: https://github.com/tdevilleduc/urthehero/issues/49
@@ -25,6 +26,7 @@
 [75]: https://github.com/tdevilleduc/urthehero/issues/75
 [76]: https://github.com/tdevilleduc/urthehero/issues/76
 [77]: https://github.com/tdevilleduc/urthehero/issues/77
+[79]: https://github.com/tdevilleduc/urthehero/issues/79
 
 ### Changed
 
