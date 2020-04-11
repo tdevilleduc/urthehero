@@ -1,32 +1,43 @@
 package com.tdevilleduc.urthehero.back.config
 
+import com.tdevilleduc.urthehero.back.filter.JwtRequestFilter
 import com.tdevilleduc.urthehero.back.service.impl.MyUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Lazy
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
 
 @EnableWebSecurity
-internal class SecurityConfig : WebSecurityConfigurerAdapter() {
+class SecurityConfig : WebSecurityConfigurerAdapter() {
 
-    @Autowired
+    @Autowired @Lazy
     private lateinit var myUserDetailsService: MyUserDetailsService
+    @Autowired
+    private lateinit var jwtRequestFilter: JwtRequestFilter
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-                .antMatchers(*AUTHENTICATED_WHITELIST).permitAll()
+        http
+                .cors().and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers(*UNAUTHENTICATED_WHITELIST).permitAll()
                 .antMatchers(*AUTHORIZED_WHITELIST).authenticated()
-                .anyRequest().denyAll()
-                .and().formLogin()
-//                .and().httpBasic()
-                .and().csrf().disable()
+                .and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+
     }
 
+    @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(myUserDetailsService)
     }
@@ -36,18 +47,25 @@ internal class SecurityConfig : WebSecurityConfigurerAdapter() {
         return NoOpPasswordEncoder.getInstance()
     }
 
-    companion object {
-        private val AUTHENTICATED_WHITELIST = arrayOf(
-                "/login"
-        )
+    @Bean
+    @Throws(Exception::class)
+    override fun authenticationManagerBean(): AuthenticationManager {
+        return super.authenticationManagerBean()
+    }
 
-        private val AUTHORIZED_WHITELIST = arrayOf(
-                // -- api requests
-                "/api/**",
+    companion object {
+        private val UNAUTHENTICATED_WHITELIST = arrayOf(
+                "/authenticate",
                 // -- springDoc requests
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**"
         )
+
+        private val AUTHORIZED_WHITELIST = arrayOf(
+                // -- api requests
+                "/api/**"
+        )
     }
+
 }

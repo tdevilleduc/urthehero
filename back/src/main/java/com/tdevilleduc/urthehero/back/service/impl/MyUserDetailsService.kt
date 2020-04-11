@@ -14,8 +14,8 @@ class MyUserDetailsService : UserDetailsService {
     @Autowired
     private lateinit var personService: IPersonService
 
-    override fun loadUserByUsername(userName: String?): UserDetails {
-        val person = personService.findByLogin(userName!!)
+    override fun loadUserByUsername(userName: String): UserDetails {
+        val person = personService.findByLogin(userName)
         return User(person.login, person.password, listOf(SimpleGrantedAuthority("ADMIN")))
     }
 }
