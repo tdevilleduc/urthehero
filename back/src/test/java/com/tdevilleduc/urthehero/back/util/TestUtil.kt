@@ -1,4 +1,4 @@
-package com.tdevilleduc.urthehero.back.utils
+package com.tdevilleduc.urthehero.back.util
 
 import com.tdevilleduc.urthehero.back.model.PageDTO
 import com.tdevilleduc.urthehero.back.model.PersonDTO
@@ -7,7 +7,7 @@ import com.tdevilleduc.urthehero.back.model.StoryDTO
 import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils
 import java.util.*
 
-object TestUtils {
+object TestUtil {
     private val random: Random = Random()
     fun createRandomStory(): Story {
         val id = random.nextInt()

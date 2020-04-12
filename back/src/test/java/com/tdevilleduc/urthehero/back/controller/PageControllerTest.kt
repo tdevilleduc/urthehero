@@ -2,7 +2,7 @@ package com.tdevilleduc.urthehero.back.controller
 
 import com.tdevilleduc.urthehero.back.AbstractTest
 import com.tdevilleduc.urthehero.back.BackApplication
-import com.tdevilleduc.urthehero.back.utils.TestUtils
+import com.tdevilleduc.urthehero.back.util.TestUtil
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -70,7 +70,7 @@ internal class PageControllerTest : AbstractTest() {
 
     @Test
     fun test_createPage() {
-        val pageDto = TestUtils.createPage()
+        val pageDto = TestUtil.createPage()
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
                 .content(objectMapper.writeValueAsString(pageDto))
                 .contentType(MediaType.APPLICATION_JSON))
