@@ -65,7 +65,7 @@ internal class PersonControllerTest : AbstractTest() {
     }
 
     @Test
-    fun test_createStory() {
+    fun test_createPerson() {
         val personDto = TestUtil.createPerson()
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
                 .content(objectMapper.writeValueAsString(personDto))

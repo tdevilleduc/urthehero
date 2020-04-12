@@ -59,12 +59,15 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 // -- springDoc requests
                 "/swagger-ui/**",
                 "/swagger-ui.html",
-                "/v3/api-docs/**"
+                "/v3/api-docs/**",
+                // -- api requests
+                "/api/**"
         )
 
         private val AUTHORIZED_WHITELIST = arrayOf(
                 // -- api requests
-                "/api/**"
+//                "/api/**"
+                "/delete-this-after-uncomment"
         )
     }
 

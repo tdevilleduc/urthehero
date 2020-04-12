@@ -23,7 +23,9 @@ class PersonService : IPersonService {
     @Autowired
     private lateinit var personDao: PersonDao
 
-    override fun exists(personId: Int): Boolean {
+    override fun exists(personId: Int?): Boolean {
+        if (personId == null)
+            return false
         val person = personDao.findById(personId)
         if (person.isEmpty) {
             logger.error(ApplicationConstants.ERROR_MESSAGE_PERSON_DOESNOT_EXIST, personId)
@@ -32,8 +34,7 @@ class PersonService : IPersonService {
         return true
     }
 
-    override fun notExists(personId: Int): Boolean {
-        logger.info("person notExists {}", personId)
+    override fun notExists(personId: Int?): Boolean {
         return !exists(personId)
     }
 
