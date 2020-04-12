@@ -46,7 +46,7 @@ internal class PageController(private val storyService: IStoryService, private v
     @ResponseBody
     fun createPage(request: HttpServletRequest,
                    @RequestBody page: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
-        if (pageService.exists(page.id!!)) {
+        if (pageService.exists(page.id)) {
             throw PageInternalErrorException(MessageFormatter.format("Une page avec l'identifiant {} existe déjà. Elle ne peut être créée", page.id).message)
         }
         ResponseEntity.ok(pageService.createOrUpdate(page))

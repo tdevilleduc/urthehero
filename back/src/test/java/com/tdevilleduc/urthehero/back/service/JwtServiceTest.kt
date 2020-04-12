@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.service
 
+import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.JwtService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -12,7 +13,6 @@ import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
@@ -25,9 +25,9 @@ class JwtServiceTest {
     @Test
     fun test_generateToken_thenCorrect() {
         val username = "username"
-        val userDetails = Mockito.mock(UserDetails::class.java)
-        `when`(userDetails.username).thenReturn(username)
-        val jwt: String = jwtService.generateToken(userDetails)
+        val user = Mockito.mock(User::class.java)
+        `when`(user.username).thenReturn(username)
+        val jwt: String = jwtService.generateToken(user)
         Assertions.assertNotNull(jwt)
         logger.info("jwt: {}", jwt)
     }
@@ -35,8 +35,8 @@ class JwtServiceTest {
     @Test
     fun test_validateToken_thenCorrect() {
         val username = "username"
-        val userDetails = Mockito.mock(UserDetails::class.java)
-        `when`(userDetails.username).thenReturn(username)
+        val user = Mockito.mock(User::class.java)
+        `when`(user.username).thenReturn(username)
 
         val token = Jwts.builder()
                 .setSubject(username)
@@ -45,7 +45,7 @@ class JwtServiceTest {
                 .signWith(SignatureAlgorithm.HS256, "secret")
                 .compact()
 
-        val isValidToken = jwtService.validateToken(token, userDetails)
+        val isValidToken = jwtService.validateToken(token, user)
         Assertions.assertNotNull(isValidToken)
         Assertions.assertTrue(isValidToken)
     }
@@ -53,8 +53,8 @@ class JwtServiceTest {
     @Test
     fun test_validateToken_thenExpiredToken() {
         val username = "username"
-        val userDetails = Mockito.mock(UserDetails::class.java)
-        `when`(userDetails.username).thenReturn(username)
+        val user = Mockito.mock(User::class.java)
+        `when`(user.username).thenReturn(username)
 
         val token = Jwts.builder()
                 .setSubject(username)
@@ -65,7 +65,7 @@ class JwtServiceTest {
                 .compact()
 
         assertThrows<ExpiredJwtException> {
-            val isValidToken = jwtService.validateToken(token, userDetails)
+            val isValidToken = jwtService.validateToken(token, user)
             Assertions.assertNotNull(isValidToken)
             Assertions.assertFalse(isValidToken)
         }

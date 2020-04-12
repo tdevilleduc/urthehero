@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.filter
 
+import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.JwtService
 import com.tdevilleduc.urthehero.back.service.impl.MyUserDetailsService
 import org.junit.jupiter.api.Assertions
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.test.util.ReflectionTestUtils
 import java.io.IOException
@@ -33,17 +33,17 @@ internal class JwtRequestFilterTest {
         ReflectionTestUtils.setField(filter, "jwtService", jwtService )
         val myUserDetailsService = mock(MyUserDetailsService::class.java)
         ReflectionTestUtils.setField(filter, "myUserDetailsService", myUserDetailsService)
-        val userDetails = mock(UserDetails::class.java)
+        val user = mock(User::class.java)
 
         `when`(request.getHeader("Authorization")).thenReturn("Bearer $jwt")
         `when`(jwtService.extractUserName(jwt)).thenReturn(userName)
-        `when`(myUserDetailsService.loadUserByUsername(userName)).thenReturn(userDetails)
-        `when`(jwtService.validateToken(jwt, userDetails)).thenReturn(true)
+        `when`(myUserDetailsService.loadUserByUsername(userName)).thenReturn(user)
+        `when`(jwtService.validateToken(jwt, user)).thenReturn(true)
 
         filter.doFilter(request, response, mockFilterChain)
 
         val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.authorities)
+                user, null, user.authorities)
         usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
 
         Assertions.assertEquals(usernamePasswordAuthenticationToken, SecurityContextHolder.getContext().authentication)

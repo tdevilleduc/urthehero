@@ -10,17 +10,16 @@ import java.util.*
 object TestUtil {
     private val random: Random = Random()
     fun createRandomStory(): Story {
-        val id = random.nextInt()
         val storyAuthorId = random.nextInt()
         val storyFirstPageId = random.nextInt()
         val title = RandomStringUtils.random(20)
         val detailedText = RandomStringUtils.random(20)
         val image = RandomStringUtils.random(20)
-        return Story(id, storyAuthorId, storyFirstPageId, title, detailedText, image)
+        return Story(0, storyAuthorId, storyFirstPageId, title, detailedText, image)
     }
 
     fun createStory(authorId: Int, firstPageId: Int): StoryDTO {
-        val id = random.nextInt()
+        val id = null
         val title = RandomStringUtils.random(20)
         val detailedText = RandomStringUtils.random(20)
         val image = RandomStringUtils.random(20)
@@ -28,7 +27,7 @@ object TestUtil {
     }
 
     fun createPerson(): PersonDTO {
-        val id = random.nextInt()
+        val id = null
         val login = RandomStringUtils.random(20)
         val displayName = RandomStringUtils.random(20)
         val email = RandomStringUtils.random(20)
@@ -37,7 +36,7 @@ object TestUtil {
     }
 
     fun createPage(): PageDTO {
-        val id = random.nextInt()
+        val id = null
         val text = RandomStringUtils.random(20)
         val image = RandomStringUtils.random(20)
         return PageDTO(id, text, image)

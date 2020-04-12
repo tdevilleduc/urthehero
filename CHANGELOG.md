@@ -33,9 +33,11 @@
 - Fix exception on startup; table 'test.page' doesn't exist [#31][31]
 - Migration of application.properties to yaml [#52][52] 
 - Use constants for log messages
+- Migrate to postgresql database [#81][81]
 
 [31]: https://github.com/tdevilleduc/urthehero/issues/31
 [52]: https://github.com/tdevilleduc/urthehero/issues/52
+[81]: https://github.com/tdevilleduc/urthehero/issues/81
 
 ### Upgrade
 

@@ -31,17 +31,18 @@ class StoryService : IStoryService {
     @Autowired
     private lateinit var storyDao: StoryDao
 
-    override fun exists(storyId: Int): Boolean {
-        Assert.notNull(storyId, "The story parameter is mandatory !")
+    override fun exists(storyId: Int?): Boolean {
+        if (storyId == null)
+            return false
         val optional = storyDao.findById(storyId)
         if (optional.isEmpty) {
-                logger.error(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId)
-                return false
-            }
+            logger.error(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId)
+            return false
+        }
         return true
     }
 
-    override fun notExists(storyId: Int): Boolean {
+    override fun notExists(storyId: Int?): Boolean {
         return !exists(storyId)
     }
 

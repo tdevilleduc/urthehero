@@ -53,7 +53,7 @@ internal class StoryController(private val storyService: IStoryService, private 
         if (pageService.notExists(storyDTO.firstPageId!!)) {
             throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST, storyDTO.firstPageId).message)
         }
-        if (storyService.exists(storyDTO.storyId!!)) {
+        if (storyService.exists(storyDTO.storyId)) {
             throw StoryInternalErrorException(MessageFormatter.format("L'id {} existe déjà. Elle ne peut être créée", storyDTO.storyId).message)
         }
         ResponseEntity.ok(storyService.createOrUpdate(storyDTO))
