@@ -21,8 +21,7 @@ internal class StoryTest {
         Assertions.assertEquals(story.image, storyImage)
         Assertions.assertNull(story.numberOfReaders)
         Assertions.assertNull(story.numberOfPages)
-        val secondStory = Story()
-        secondStory.storyId = storyId
+        val secondStory = Story(storyId)
         secondStory.authorId = storyAuthorId
         secondStory.firstPageId = storyFirstPageId
         secondStory.title = storyTitle

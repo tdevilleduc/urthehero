@@ -1,9 +1,9 @@
 package com.tdevilleduc.urthehero.back.service.impl
 
+import com.tdevilleduc.urthehero.back.model.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.function.Function
@@ -35,9 +35,9 @@ class JwtService {
         return extractExpiration(token).before(Date())
     }
 
-    fun generateToken(userDetails: UserDetails): String {
+    fun generateToken(user: User): String {
         var claims: Map<String, Any> = HashMap()
-        return createToken(claims, userDetails.username)
+        return createToken(claims, user.username)
     }
 
     private fun createToken(claims: Map<String, Any>, subject: String): String {
@@ -50,8 +50,8 @@ class JwtService {
                 .compact()
     }
 
-    fun validateToken(token: String, userDetails: UserDetails): Boolean {
+    fun validateToken(token: String, user: User): Boolean {
         val userName: String = extractUserName(token)
-        return userName == userDetails.username && !isTokenExpired(token)
+        return userName == user.username && !isTokenExpired(token)
     }
 }

@@ -4,8 +4,8 @@ import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
 
 interface IStoryService {
-    fun exists(storyId: Int): Boolean
-    fun notExists(storyId: Int): Boolean
+    fun exists(storyId: Int?): Boolean
+    fun notExists(storyId: Int?): Boolean
     fun findById(storyId: Int): Story
     fun findAll(): MutableList<Story>
     fun createOrUpdate(storyDto: StoryDTO): StoryDTO

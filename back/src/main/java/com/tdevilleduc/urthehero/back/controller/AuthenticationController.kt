@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.controller
 
 import com.tdevilleduc.urthehero.back.model.AuthenticationRequest
 import com.tdevilleduc.urthehero.back.model.AuthenticationResponse
+import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.JwtService
 import com.tdevilleduc.urthehero.back.service.impl.MyUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
 
@@ -33,8 +33,8 @@ internal class AuthenticationController {
         } catch (e: BadCredentialsException) {
             throw Exception("Incorrect username or password", e)
         }
-        val userDetails: UserDetails = myUserDetailsService.loadUserByUsername(authenticationRequest.username)
-        val jwt = jwtService.generateToken(userDetails)
+        val user: User = myUserDetailsService.loadUserByUsername(authenticationRequest.username)
+        val jwt = jwtService.generateToken(user)
         return@Callable ResponseEntity.ok(AuthenticationResponse(jwt))
     }
 }

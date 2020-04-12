@@ -9,6 +9,10 @@ import javax.persistence.Id
 
 @Entity
 data class Person(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Schema(description = "\${swagger.model.person.param.storyId}")
+        val id: Int,
         @Schema(description = "\${swagger.model.person.param.login}")
         var login: String = "",
         @Schema(description = "\${swagger.model.person.param.displayName}")
@@ -16,10 +20,6 @@ data class Person(
         @Schema(description = "\${swagger.model.person.param.email}")
         var email: String = "") {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "\${swagger.model.person.param.id}")
-    var id: Int? = null
     @JsonIgnore
     var password: String? = null
 

@@ -28,7 +28,9 @@ class PageService : IPageService {
     @Autowired
     private lateinit var pageDao: PageDao
 
-    override fun exists(pageId: Int): Boolean {
+    override fun exists(pageId: Int?): Boolean {
+        if (pageId == null)
+            return false
         Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY!!)
         val optional = pageDao.findById(pageId)
         if (optional.isEmpty) {
@@ -38,7 +40,7 @@ class PageService : IPageService {
         return true
     }
 
-    override fun notExists(pageId: Int): Boolean {
+    override fun notExists(pageId: Int?): Boolean {
         return !exists(pageId)
     }
 
@@ -53,7 +55,7 @@ class PageService : IPageService {
     }
 
     private fun fillPageWithNextPages(page: Page): Page {
-        val nextPageList = nextPageService.findByPageId(page.id!!)
+        val nextPageList = nextPageService.findByPageId(page.id)
         page.nextPageList = nextPageList
         return page
     }

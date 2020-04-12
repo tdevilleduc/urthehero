@@ -41,7 +41,7 @@ internal class PersonController(private val personService: IPersonService) {
     @ResponseBody
     fun createPerson(request: HttpServletRequest,
                      @RequestBody personDto: PersonDTO): Callable<ResponseEntity<PersonDTO>> = Callable {
-        if (personService.exists(personDto.id!!)) {
+        if (personService.exists(personDto.id)) {
             throw PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", personDto.id).message)
         }
         ResponseEntity.ok(personService.createOrUpdate(personDto))

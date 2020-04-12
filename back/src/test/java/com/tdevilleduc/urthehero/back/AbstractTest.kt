@@ -1,18 +1,11 @@
 package com.tdevilleduc.urthehero.back
 
-import io.github.resilience4j.circuitbreaker.CircuitBreaker
-import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
 import org.junit.ClassRule
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.ContextConfiguration
-import org.testcontainers.containers.MySQLContainer
-import java.util.function.Consumer
+import org.testcontainers.containers.PostgreSQLContainer
 
 @ContextConfiguration(initializers = [AbstractTest.Initializer::class])
 abstract class AbstractTest {
@@ -31,11 +24,11 @@ abstract class AbstractTest {
 
     internal class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
         override fun initialize(configurableApplicationContext: ConfigurableApplicationContext) {
-            mySqlContainer.start()
+            postgreSQLContainer.start()
             TestPropertyValues.of(
-                    "spring.datasource.url=" + mySqlContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + mySqlContainer.getUsername(),
-                    "spring.datasource.password=" + mySqlContainer.getPassword()
+                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
+                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
             ).applyTo(configurableApplicationContext.environment)
         }
     }
@@ -50,9 +43,9 @@ abstract class AbstractTest {
 //    }
 
     companion object {
-        internal class SpecifiedMySQLContainer(private val image: String) : MySQLContainer<SpecifiedMySQLContainer>(image)
+        internal class SpecifiedPostgreSQLContainer : PostgreSQLContainer<SpecifiedPostgreSQLContainer>()
         @ClassRule
-        val mySqlContainer: MySQLContainer<*> = SpecifiedMySQLContainer("mysql:8.0.19")
+        val postgreSQLContainer: PostgreSQLContainer<*> = SpecifiedPostgreSQLContainer()
                 .withDatabaseName("test")
                 .withUsername("test")
                 .withPassword("test")
