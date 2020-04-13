@@ -2,13 +2,11 @@ package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
-import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.UserDao
 import com.tdevilleduc.urthehero.back.exceptions.UserNotFoundException
 import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.model.UserDTO
 import com.tdevilleduc.urthehero.back.service.IUserService
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -56,16 +54,8 @@ class UserService : IUserService {
         }
     }
 
-    @CircuitBreaker(name = ResilienceConstants.INSTANCE_USER_SERVICE, fallbackMethod = "emptyList")
     override fun findAll(): MutableList<User> {
         return userDao.findAll()
-    }
-
-    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
-    private fun emptyList(e: Throwable): MutableList<User> {
-        if (logger.isErrorEnabled)
-            logger.error("Unable to retrieve list", e)
-        return emptyList<User>().toMutableList()
     }
 
     override fun createOrUpdate(userDto: UserDTO): UserDTO {
