@@ -89,6 +89,19 @@ internal class PersonControllerTest : AbstractTest() {
     }
 
     @Test
+    fun test_createUser_thenAlreadyExists() {
+        val userDto = TestUtil.createUserDto()
+        userDto.userId = 1
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(userDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.request().asyncStarted())
+                .andReturn()
+        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError)
+    }
+
+    @Test
     fun test_deleteUser_thenSuccess() {
         var user = TestUtil.createUser()
         user = userDao.save(user)

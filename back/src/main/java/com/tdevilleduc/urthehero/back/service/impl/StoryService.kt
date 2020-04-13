@@ -2,16 +2,15 @@ package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
-import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
+import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
-import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import com.tdevilleduc.urthehero.back.service.IUserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -28,6 +27,8 @@ class StoryService : IStoryService {
     private lateinit var progressionService: IProgressionService
     @Autowired
     private lateinit var pageService: IPageService
+    @Autowired
+    private lateinit var userService: IUserService
     @Autowired
     private lateinit var storyDao: StoryDao
 
@@ -47,7 +48,7 @@ class StoryService : IStoryService {
     }
 
     override fun findById(storyId: Int): Story {
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
+        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY)
         val optional = storyDao.findById(storyId)
         if (optional.isPresent) {
             return fillStoryWithNumberOfReaders(optional.get())
@@ -74,7 +75,6 @@ class StoryService : IStoryService {
     }
 
     override fun delete(storyId: Int) {
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
         val story = findById(storyId)
         storyDao.delete(story)
     }

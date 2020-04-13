@@ -74,7 +74,7 @@ class UserService : IUserService {
     }
 
     override fun delete(userId: Int) {
-        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY!!)
+        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY)
         val user = findById(userId)
         userDao.delete(user)
     }
