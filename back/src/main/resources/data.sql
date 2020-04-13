@@ -1,8 +1,8 @@
 -- displayName, login, email
-INSERT INTO person(display_name, email, login, password) VALUES('Thomas Deville-Duc', 'thomas@gmail.com', 'tdevilleduc', 'password');
-INSERT INTO person(display_name, email, login, password) VALUES('Marion Gianesini', 'marion@gmail.com', 'mgianesini', 'password');
-INSERT INTO person(display_name, email, login, password) VALUES('Nicolas Danet', 'nicolas@gmail.com', 'ndanet', 'password');
--- personId, displayName, login, email
+--INSERT INTO person(display_name, email, login, password) VALUES('Thomas Deville-Duc', 'thomas@gmail.com', 'tdevilleduc', 'password');
+--INSERT INTO person(display_name, email, login, password) VALUES('Marion Gianesini', 'marion@gmail.com', 'mgianesini', 'password');
+--INSERT INTO person(display_name, email, login, password) VALUES('Nicolas Danet', 'nicolas@gmail.com', 'ndanet', 'password');
+-- userId, displayName, login, email
 INSERT INTO users(username, password) VALUES('tdevilleduc', 'password');
 INSERT INTO users(username, password) VALUES('mgianesini', 'password');
 INSERT INTO users(username, password) VALUES('ndanet', 'password');
@@ -19,14 +19,14 @@ INSERT INTO page(story_id, image, text) VALUES(1, 'image2', 'En plein centre');
 INSERT INTO story(author_Id, first_Page_Id, title, detailed_Text, image) VALUES(1, 1, 'Ulysse', 'blablabla Ulysse prenons un texte long pour décrire lhistoire', 'imageUlysse');
 INSERT INTO story(author_Id, first_Page_Id, title, detailed_Text, image) VALUES(2, 4, 'Voyage au bout de la nuit', 'bliblibli voyage voyage !!', 'imageVoyage');
 INSERT INTO story(author_Id, first_Page_Id, title, detailed_Text, image) VALUES(3, 7, 'Madame Bovary', 'blablabla Bovary', 'imageBovary');
--- progressionId, pageId, personId, storyId
-INSERT INTO progression VALUES(1, 3, 1, 2);
-INSERT INTO progression VALUES(2, 2, 2, 1);
-INSERT INTO progression VALUES(3, 2, 1, 1);
-INSERT INTO progression VALUES(5, 6, 3, 2);
-INSERT INTO progression VALUES(6, 7, 3, 3);
-INSERT INTO progression VALUES(7, 2, 2, 3);
-INSERT INTO progression VALUES(8, 12, 3, 1);
+-- progressionId, pageId, userId, storyId
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(1, 3, 1, 2);
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(2, 2, 2, 1);
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(3, 2, 1, 1);
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(5, 6, 3, 2);
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(6, 7, 3, 3);
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(7, 2, 2, 3);
+INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(8, 12, 3, 1);
 -- nextPageId, destinationPageId, pageId, position, text
 INSERT INTO next_page VALUES(1, 2, 1, 0, 'gauche');
 INSERT INTO next_page VALUES(2, 3, 1, 1, 'droite');

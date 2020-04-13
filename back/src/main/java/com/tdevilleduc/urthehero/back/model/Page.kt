@@ -7,7 +7,7 @@ import javax.persistence.*
 class Page(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Schema(description = "\${swagger.model.person.param.storyId}")
+        @Schema(description = "\${swagger.model.page.param.storyId}")
         val id: Int,
         var text: String = "",
         var image: String = "",
