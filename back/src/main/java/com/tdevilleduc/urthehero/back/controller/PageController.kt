@@ -63,7 +63,7 @@ internal class PageController(private val storyService: IStoryService, private v
     @DeleteMapping(value = ["/{pageId}"])
     @ResponseBody
     fun deletePage(request: HttpServletRequest,
-                   @PathVariable pageId: Int) {
+                   @PathVariable pageId: Int) = Callable {
         pageService.delete(pageId)
     }
 

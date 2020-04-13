@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull
 
 @Entity
 data class Progression(var storyId: Int,
-                       var personId: Int,
+                       var userId: Int,
                        var actualPageId: Int) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

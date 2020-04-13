@@ -5,8 +5,8 @@ import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
 import com.tdevilleduc.urthehero.back.service.IPageService
-import com.tdevilleduc.urthehero.back.service.IPersonService
 import com.tdevilleduc.urthehero.back.service.IStoryService
+import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.helpers.MessageFormatter
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest
 @Tag(name = "Story", description = "Story Controller")
 @RestController
 @RequestMapping("/api/story")
-internal class StoryController(private val storyService: IStoryService, private val personService: IPersonService, private val pageService: IPageService) {
+internal class StoryController(private val storyService: IStoryService, private val userService: IUserService, private val pageService: IPageService) {
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
@@ -47,8 +47,8 @@ internal class StoryController(private val storyService: IStoryService, private 
         //TODO: déplacer les controles dans le service ?
         Assert.notNull(storyDTO.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
         Assert.notNull(storyDTO.firstPageId) { throw StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null") }
-        if (personService.notExists(storyDTO.authorId!!)) {
-            throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PERSON_DOESNOT_EXIST, storyDTO.authorId).message)
+        if (userService.notExists(storyDTO.authorId!!)) {
+            throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_DOESNOT_EXIST, storyDTO.authorId).message)
         }
         if (pageService.notExists(storyDTO.firstPageId!!)) {
             throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST, storyDTO.firstPageId).message)
@@ -67,8 +67,8 @@ internal class StoryController(private val storyService: IStoryService, private 
         Assert.notNull(storyDto.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
         Assert.notNull(storyDto.firstPageId) { throw StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null") }
         Assert.notNull(storyDto.storyId) { throw StoryInternalErrorException("L'identifiant de l'histoire passée en paramètre ne peut pas être null") }
-        if (personService.notExists(storyDto.authorId!!)) {
-            throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PERSON_DOESNOT_EXIST, storyDto.authorId).message)
+        if (userService.notExists(storyDto.authorId!!)) {
+            throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_DOESNOT_EXIST, storyDto.authorId).message)
         }
         if (pageService.notExists(storyDto.firstPageId!!)) {
             throw StoryInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST, storyDto.firstPageId).message)
@@ -82,7 +82,7 @@ internal class StoryController(private val storyService: IStoryService, private 
     @DeleteMapping(value = ["/{storyId}"])
     @ResponseBody
     fun deleteStory(request: HttpServletRequest?,
-                    @PathVariable storyId: Int) {
+                    @PathVariable storyId: Int) = Callable {
         storyService.delete(storyId)
     }
 

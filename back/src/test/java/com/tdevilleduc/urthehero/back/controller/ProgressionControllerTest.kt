@@ -2,11 +2,7 @@ package com.tdevilleduc.urthehero.back.controller
 
 import com.tdevilleduc.urthehero.back.AbstractTest
 import com.tdevilleduc.urthehero.back.BackApplication
-import com.tdevilleduc.urthehero.back.dao.StoryDao
-import com.tdevilleduc.urthehero.back.model.Story
-import com.tdevilleduc.urthehero.back.util.TestUtil
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -20,23 +16,18 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
-import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 @WebAppConfiguration
-internal class StoryControllerTest : AbstractTest() {
+class ProgressionControllerTest : AbstractTest() {
 
     private lateinit var mockMvc: MockMvc
+
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
 
-    private val objectMapper: ObjectMapper = ObjectMapper()
-
-    private val uriController: String = "/api/story"
-    @Autowired
-    private lateinit var storyDao: StoryDao
+    private val uriController: String = "/api/progression"
 
     @BeforeEach
     fun setup() {
@@ -46,65 +37,54 @@ internal class StoryControllerTest : AbstractTest() {
     }
 
     @Test
-    fun test_getAllStories() {
-        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/all"))
+    fun test_getAllByUserId_thenSuccess() {
+        val userId = 1
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/user/$userId/all"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
                 .andReturn()
         mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Any?>(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize<Any?>(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].userId", Matchers.`is`(userId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].storyId", Matchers.`is`(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].actualPageId", Matchers.`is`(3)))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].userId", Matchers.`is`(userId)))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].storyId", Matchers.`is`(1)))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].actualPageId", Matchers.`is`(2)))
     }
 
     @Test
-    fun test_getStoryById() {
-        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/2"))
+    fun test_getOneByUserIdAndStoryId_thenSuccess() {
+        val userId = 3
+        val storyId = 2
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/user/$userId/story/$storyId"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
                 .andReturn()
         mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.storyId", Matchers.`is`(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.`is`("Voyage au bout de la nuit")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.authorId", Matchers.`is`(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstPageId", Matchers.`is`(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfReaders", Matchers.`is`(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.numberOfPages", Matchers.`is`(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userId", Matchers.`is`(userId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.storyId", Matchers.`is`(storyId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.actualPageId", Matchers.`is`(6)))
     }
 
     @Test
-    fun test_createStory() {
-        val authorId = 1
-        val firstPageId = 1
-        val storyDto = TestUtil.createStoryDto(authorId, firstPageId)
-        val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
-                .content(objectMapper.writeValueAsString(storyDto))
-                .contentType(MediaType.APPLICATION_JSON))
+    fun test_postProgressionAction_thenSuccess() {
+        val userId = 1
+        val storyId = 1
+        val newPageId = 8
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.post("$uriController/user/$userId/story/$storyId/page/$newPageId"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
                 .andReturn()
         mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userId", Matchers.`is`(userId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.storyId", Matchers.`is`(storyId)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.actualPageId", Matchers.`is`(newPageId)))
     }
-
-    @Test
-    fun test_deleteStory_thenSuccess() {
-        var story = TestUtil.createStory()
-        story = storyDao.save(story)
-        Assertions.assertNotNull(story.storyId)
-        val optionalBefore: Optional<Story> = storyDao.findById(story.storyId)
-        Assertions.assertTrue(optionalBefore.isPresent)
-
-        val resultActions = mockMvc.perform(MockMvcRequestBuilders.delete("$uriController/" + story.storyId))
-                .andExpect(MockMvcResultMatchers.request().asyncStarted())
-                .andReturn()
-        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-
-        val optionalAfter: Optional<Story> = storyDao.findById(story.storyId)
-        Assertions.assertTrue(optionalAfter.isEmpty)
-    }
-
 }

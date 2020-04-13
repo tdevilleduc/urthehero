@@ -34,10 +34,12 @@
 - Migration of application.properties to yaml [#52][52] 
 - Use constants for log messages
 - Migrate to postgresql database [#81][81]
+- Rename person entity to user entity [#82][82]
 
 [31]: https://github.com/tdevilleduc/urthehero/issues/31
 [52]: https://github.com/tdevilleduc/urthehero/issues/52
 [81]: https://github.com/tdevilleduc/urthehero/issues/81
+[82]: https://github.com/tdevilleduc/urthehero/issues/82
 
 ### Upgrade
 

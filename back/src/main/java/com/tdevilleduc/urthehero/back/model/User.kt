@@ -12,12 +12,11 @@ import javax.persistence.*
 open class User (
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Schema(description = "\${swagger.model.person.param.storyId}")
+        @Schema(description = "\${swagger.model.user.param.storyId}")
         var userId: Int?,
         private var username: String = "",
         private var password: String = ""
 ) : Serializable, UserDetails {
-
 
     override fun isAccountNonExpired(): Boolean {
         return true
@@ -45,5 +44,13 @@ open class User (
 
     override fun getPassword(): String {
         return password
+    }
+
+    fun setUsername(username: String) {
+        this.username = username
+    }
+
+    fun setPassword(password: String) {
+        this.password = password
     }
 }
