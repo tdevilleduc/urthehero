@@ -13,7 +13,7 @@ internal class StoryTest {
         val storyDetailedText = "Tintin long tintin"
         val storyImage = "/chemin/to/image"
         val story = Story(storyId, storyAuthorId, storyFirstPageId, storyTitle, storyDetailedText, storyImage)
-        Assertions.assertEquals(story.storyId!!, storyId)
+        Assertions.assertEquals(story.storyId, storyId)
         Assertions.assertEquals(story.authorId!!, storyAuthorId)
         Assertions.assertEquals(story.firstPageId!!, storyFirstPageId)
         Assertions.assertEquals(story.title, storyTitle)

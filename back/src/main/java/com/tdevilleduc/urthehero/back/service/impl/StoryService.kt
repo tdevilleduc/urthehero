@@ -5,9 +5,9 @@ import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
-import com.tdevilleduc.urthehero.back.model.Person
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
+import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
@@ -56,22 +56,15 @@ class StoryService : IStoryService {
         }
     }
 
-    @CircuitBreaker(name = ResilienceConstants.INSTANCE_STORY_SERVICE, fallbackMethod = "emptyList")
     override fun findAll(): MutableList<Story> {
         return storyDao.findAll().stream()
                 .map { story: Story -> fillStoryWithNumberOfReaders(story) }
                 .collect(Collectors.toList())
     }
 
-    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
-    private fun emptyList(e: Throwable): MutableList<Person> {
-        logger.error("Unable to retrieve list", e)
-        return emptyList<Person>().toMutableList()
-    }
-
     private fun fillStoryWithNumberOfReaders(story: Story): Story {
-        story.numberOfReaders = progressionService.countPersonsByStoryId(story.storyId!!)
-        story.numberOfPages = pageService.countByStoryId(story.storyId!!)
+        story.numberOfReaders = progressionService.countUsersByStoryId(story.storyId)
+        story.numberOfPages = pageService.countByStoryId(story.storyId)
         return story
     }
 

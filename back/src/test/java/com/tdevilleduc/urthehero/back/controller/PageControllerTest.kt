@@ -2,8 +2,11 @@ package com.tdevilleduc.urthehero.back.controller
 
 import com.tdevilleduc.urthehero.back.AbstractTest
 import com.tdevilleduc.urthehero.back.BackApplication
+import com.tdevilleduc.urthehero.back.dao.PageDao
+import com.tdevilleduc.urthehero.back.model.Page
 import com.tdevilleduc.urthehero.back.util.TestUtil
 import org.hamcrest.Matchers
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
+import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
@@ -31,6 +35,8 @@ internal class PageControllerTest : AbstractTest() {
     private val objectMapper: ObjectMapper = ObjectMapper()
 
     private val uriController: String = "/api/page"
+    @Autowired
+    private lateinit var pageDao: PageDao
 
     @BeforeEach
     fun setup() {
@@ -70,7 +76,7 @@ internal class PageControllerTest : AbstractTest() {
 
     @Test
     fun test_createPage() {
-        val pageDto = TestUtil.createPage()
+        val pageDto = TestUtil.createPageDto()
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
                 .content(objectMapper.writeValueAsString(pageDto))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -79,5 +85,23 @@ internal class PageControllerTest : AbstractTest() {
         mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
+    }
+
+    @Test
+    fun test_deletePage_thenSuccess() {
+        var page = TestUtil.createPage()
+        page = pageDao.save(page)
+        Assertions.assertNotNull(page.id)
+        val optionalBefore: Optional<Page> = pageDao.findById(page.id)
+        Assertions.assertTrue(optionalBefore.isPresent)
+
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.delete("$uriController/" + page.id))
+                .andExpect(MockMvcResultMatchers.request().asyncStarted())
+                .andReturn()
+        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.status().isOk)
+
+        val optionalAfter: Optional<Page> = pageDao.findById(page.id)
+        Assertions.assertTrue(optionalAfter.isEmpty)
     }
 }
