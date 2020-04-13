@@ -21,7 +21,6 @@ import java.util.*
 
 @Service
 class ProgressionService : IProgressionService {
-    val logger: Logger = LoggerFactory.getLogger(ProgressionService::class.java)
 
     @Autowired
     private lateinit var storyService: IStoryService
@@ -33,9 +32,9 @@ class ProgressionService : IProgressionService {
     private lateinit var progressionDao: ProgressionDao
 
     override fun doProgressionAction(userId: Int, storyId: Int, newPageId: Int): Progression {
-        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY!!)
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
-        Assert.notNull(newPageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY!!)
+        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY)
+        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY)
+        Assert.notNull(newPageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY)
         if (userService.notExists(userId)) {
             throw UserNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_DOESNOT_EXIST, userId).message)
         }
@@ -45,39 +44,31 @@ class ProgressionService : IProgressionService {
         if (pageService.notExists(newPageId)) {
             throw PageNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST, newPageId).message)
         }
-        val optional = progressionDao.findByUserIdAndStoryId(userId, storyId)
-        return if (optional.isPresent) {
-            val progression = optional.get()
-            // TODO: vérifier qu'on a le droit d'avancer sur cette page depuis la page précédente
-            progression.actualPageId = newPageId
-            progressionDao.save(progression)
-        } else {
-            throw ProgressionNotFoundException("Aucune progression avec le userId $userId et le storyId $storyId")
-        }
+        val progression = this.findByUserIdAndStoryId(userId, storyId)
+        // TODO: vérifier qu'on a le droit d'avancer sur cette page depuis la page précédente
+        progression.actualPageId = newPageId
+        return progressionDao.save(progression)
     }
 
     override fun findByUserId(userId: Int): MutableList<Progression> {
-        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY!!)
+        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY)
         if (userService.notExists(userId)) {
             throw UserNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_DOESNOT_EXIST, userId).message)
         }
         return progressionDao.findByUserId(userId)
     }
 
-    override fun findByUserIdAndStoryId(userId: Int, storyId: Int): Optional<Progression> {
-        Assert.notNull(userId, ApplicationConstants.CHECK_USERID_PARAMETER_MANDATORY!!)
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
-        if (userService.notExists(userId)) {
-            throw UserNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_DOESNOT_EXIST, userId).message)
+    override fun findByUserIdAndStoryId(userId: Int, storyId: Int): Progression {
+        val optional = progressionDao.findByUserIdAndStoryId(userId, storyId)
+        return if (optional.isPresent) {
+            optional.get()
+        } else {
+            throw ProgressionNotFoundException("Aucune progression avec le userId $userId et le storyId $storyId")
         }
-        if (storyService.notExists(storyId)) {
-            throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).message)
-        }
-        return progressionDao.findByUserIdAndStoryId(userId, storyId)
     }
 
     override fun countUsersByStoryId(storyId: Int): Long {
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
+        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY)
         if (storyService.notExists(storyId)) {
             throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).message)
         }

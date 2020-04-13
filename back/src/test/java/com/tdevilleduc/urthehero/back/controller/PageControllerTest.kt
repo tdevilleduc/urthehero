@@ -75,7 +75,7 @@ internal class PageControllerTest : AbstractTest() {
     }
 
     @Test
-    fun test_createPage() {
+    fun test_createPage_thenSuccess() {
         val pageDto = TestUtil.createPageDto()
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
                 .content(objectMapper.writeValueAsString(pageDto))
@@ -85,6 +85,19 @@ internal class PageControllerTest : AbstractTest() {
         mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.`is`(Matchers.notNullValue())))
+    }
+
+    @Test
+    fun test_createPage_thenAlreadyExists() {
+        val pageDto = TestUtil.createPageDto()
+        pageDto.id = 1
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(pageDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.request().asyncStarted())
+                .andReturn()
+        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError)
     }
 
     @Test

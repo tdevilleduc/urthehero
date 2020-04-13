@@ -12,7 +12,6 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
-import javax.servlet.http.HttpServletRequest
 
 @Tag(name = "Progression", description = "Progression Controller")
 @RestController
@@ -30,8 +29,7 @@ internal class ProgressionController() {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.progression.get-all-by-user-id.value}", description = "\${swagger.controller.progression.get-all-by-user-id.notes}")
     @ResponseBody
-    fun getAllByUserId(request: HttpServletRequest,
-                         @PathVariable userId: Int): Callable<ResponseEntity<MutableList<Progression>>> = Callable {
+    fun getAllByUserId(@PathVariable userId: Int): Callable<ResponseEntity<MutableList<Progression>>> = Callable {
         if (userService.notExists(userId))
             ResponseEntity.notFound().build()
         else
@@ -42,27 +40,21 @@ internal class ProgressionController() {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.progression.get-by-user-id-and-story-id.value}", description = "\${swagger.controller.progression.get-by-user-id-and-story-id.notes}")
     @ResponseBody
-    fun getOneByUserIdAndStoryId(request: HttpServletRequest,
-                                   @PathVariable userId: Int,
-                                   @PathVariable storyId: Int): Callable<ResponseEntity<Progression>> = Callable {
+    fun getOneByUserIdAndStoryId(@PathVariable userId: Int,
+                                 @PathVariable storyId: Int): Callable<ResponseEntity<Progression>> = Callable {
         if (userService.notExists(userId)) {
             ResponseEntity.notFound().build<Progression>()
         }
         if (storyService.notExists(storyId)) {
             ResponseEntity.notFound().build<Progression>()
         }
-        val progression = progressionService.findByUserIdAndStoryId(userId, storyId)
-        if (progression.isEmpty) {
-            ResponseEntity.notFound().build<Progression>()
-        }
-        ResponseEntity.ok(progression.get())
+        ResponseEntity.ok(progressionService.findByUserIdAndStoryId(userId, storyId))
     }
 
     @Operation(summary = "Met à jour la progression d'un utilisateur sur une histoire avec une page définie")
     @PostMapping(value = ["/user/{userId}/story/{storyId}/page/{newPageId}"])
     @ResponseBody
-    fun postProgressionAction(request: HttpServletRequest,
-                              @PathVariable userId: Int,
+    fun postProgressionAction(@PathVariable userId: Int,
                               @PathVariable storyId: Int,
                               @PathVariable newPageId: Int): Callable<ResponseEntity<Progression>> = Callable {
         ResponseEntity.ok(progressionService.doProgressionAction(userId, storyId, newPageId))

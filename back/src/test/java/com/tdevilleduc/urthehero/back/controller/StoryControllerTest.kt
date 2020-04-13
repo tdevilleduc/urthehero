@@ -75,7 +75,22 @@ internal class StoryControllerTest : AbstractTest() {
     }
 
     @Test
-    fun test_createStory() {
+    fun test_createStory_thenSuccess() {
+        val authorId = 1
+        val firstPageId = 1
+        val storyDto = TestUtil.createStoryDto(authorId, firstPageId)
+        storyDto.storyId = 1
+        val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(storyDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.request().asyncStarted())
+                .andReturn()
+        mockMvc.perform(MockMvcRequestBuilders.asyncDispatch(resultActions))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError)
+    }
+
+    @Test
+    fun test_createStory_thenAlreadyExists() {
         val authorId = 1
         val firstPageId = 1
         val storyDto = TestUtil.createStoryDto(authorId, firstPageId)
