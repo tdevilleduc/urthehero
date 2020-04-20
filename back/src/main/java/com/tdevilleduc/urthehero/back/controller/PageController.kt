@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller
 
+import com.tdevilleduc.urthehero.back.config.Features
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.exceptions.PageInternalErrorException
 import com.tdevilleduc.urthehero.back.model.Page
@@ -14,11 +15,13 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.util.Assert
 import org.springframework.web.bind.annotation.*
+import org.togglz.spring.web.FeaturesAreActive
 import java.util.concurrent.Callable
 
 @Tag(name = "Page", description = "Page Controller")
 @RestController
 @RequestMapping("/api/page")
+@FeaturesAreActive(featureClass = Features::class, features = ["PAGE_FEATURE"])
 internal class PageController(private val storyService: IStoryService, private val pageService: IPageService) {
 
     @GetMapping(value = ["/{pageId}"], produces = [MediaType.APPLICATION_JSON_VALUE])

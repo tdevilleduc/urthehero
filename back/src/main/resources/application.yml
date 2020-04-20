@@ -88,3 +88,13 @@ resilience4j.retry.configs.default:
   enableExponentialBackoff: true
   exponentialBackoffMultiplier: 2
   recordExceptions: java.lang.Exception
+
+togglz:
+#  console:
+#    enabled: true # Enable admin console.
+#    path: /togglz-console # The path of the admin console when enabled.
+  features:
+    PERSON_FEATURE:
+      enabled: true
+    PAGE_FEATURE:
+      enabled: false

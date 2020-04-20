@@ -1,5 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller
 
+import com.tdevilleduc.urthehero.back.config.Features
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.exceptions.UserInternalErrorException
 import com.tdevilleduc.urthehero.back.exceptions.UserNotFoundException
@@ -14,11 +15,13 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.util.Assert
 import org.springframework.web.bind.annotation.*
+import org.togglz.spring.web.FeaturesAreActive
 import java.util.concurrent.Callable
 
 @Tag(name = "User", description = "User Controller")
 @RestController
 @RequestMapping("/api/user")
+@FeaturesAreActive(featureClass = Features::class, features = ["PERSON_FEATURE"])
 internal class PersonController(private val userService: IUserService) {
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
