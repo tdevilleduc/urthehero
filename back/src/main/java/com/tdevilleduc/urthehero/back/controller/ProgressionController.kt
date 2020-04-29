@@ -5,6 +5,7 @@ import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,6 +17,7 @@ import java.util.concurrent.Callable
 @Tag(name = "Progression", description = "Progression Controller")
 @RestController
 @RequestMapping("/api/progression")
+@SecurityRequirement(name = "bearerAuth")
 internal class ProgressionController() {
 
     @Autowired

@@ -7,6 +7,7 @@ import com.tdevilleduc.urthehero.back.model.PageDTO
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
@@ -19,6 +20,7 @@ import java.util.concurrent.Callable
 @Tag(name = "Page", description = "Page Controller")
 @RestController
 @RequestMapping("/api/page")
+@SecurityRequirement(name = "bearerAuth")
 internal class PageController(private val storyService: IStoryService, private val pageService: IPageService) {
 
     @GetMapping(value = ["/{pageId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
