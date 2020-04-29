@@ -2,7 +2,20 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.2.0...HEAD
+
+### Added
+
+
+### Changed
+
+
+### Upgrade
+
+
+## [0.2.0][0.2.0] - 2020-04-15
+
+[0.2.0]: https://github.com/tdevilleduc/urthehero//tree/0.2.0
 
 ### Added
 
@@ -51,7 +64,7 @@
 - Upgrade to spring-cloud Hoxton.SR3
 - Upgrade to docker.plugin 1.2.2
 
-## [0.1.0][] - 2019-10-31
+## [0.1.0][0.1.0] - 2019-10-31
 
 [0.1.0]: https://github.com/tdevilleduc/urthehero//tree/0.1.0
 
