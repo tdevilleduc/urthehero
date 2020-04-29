@@ -30,7 +30,6 @@ internal class AuthenticationController {
     @RequestMapping(value = ["/authenticate"], method = [RequestMethod.POST])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.authentication.create-token.value}", description = "\${swagger.controller.authentication.create-token.notes}")
-    @ResponseBody
     fun createAuthenticationToken(@RequestBody authenticationRequest: AuthenticationRequest): Callable<ResponseEntity<AuthenticationResponse>> = Callable {
         try {
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(authenticationRequest.username, authenticationRequest.password))

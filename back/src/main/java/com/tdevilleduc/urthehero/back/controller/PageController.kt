@@ -26,7 +26,6 @@ internal class PageController(private val storyService: IStoryService, private v
     @GetMapping(value = ["/{pageId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.page.get-by-id.value}", description = "\${swagger.controller.page.get-by-id.notes}")
-    @ResponseBody
     fun getPageById(@PathVariable pageId: Int): Callable<ResponseEntity<Page>> = Callable {
         ResponseEntity.ok(pageService.findById(pageId))
     }
@@ -34,7 +33,6 @@ internal class PageController(private val storyService: IStoryService, private v
     @GetMapping(value = ["/story/{storyId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.page.get-first-by-story-id.value}", description = "\${swagger.controller.page.get-first-by-story-id.notes}")
-    @ResponseBody
     fun getFirstPageByStoryId(@PathVariable storyId: Int): Callable<ResponseEntity<Page>> = Callable {
         val story = storyService.findById(storyId)
         val firstPage = pageService.findById(story.firstPageId!!)
@@ -42,7 +40,6 @@ internal class PageController(private val storyService: IStoryService, private v
     }
 
     @PutMapping
-    @ResponseBody
     @Operation(summary = "\${swagger.controller.page.create.value}", description = "\${swagger.controller.page.create.notes}")
     fun createPage(@RequestBody page: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
         if (pageService.exists(page.id)) {
@@ -52,7 +49,6 @@ internal class PageController(private val storyService: IStoryService, private v
     }
 
     @PostMapping
-    @ResponseBody
     @Operation(summary = "\${swagger.controller.page.update.value}", description = "\${swagger.controller.page.update.notes}")
     fun updatePage(@RequestBody pageDto: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
         Assert.notNull(pageDto.id) { throw PageInternalErrorException(ApplicationConstants.ERROR_MESSAGE_PAGE_PAGEID_CANNOT_BE_NULL) }
@@ -63,7 +59,6 @@ internal class PageController(private val storyService: IStoryService, private v
     }
 
     @DeleteMapping(value = ["/{pageId}"])
-    @ResponseBody
     @Operation(summary = "\${swagger.controller.page.delete.value}", description = "\${swagger.controller.page.delete.notes}")
     fun deletePage(@PathVariable pageId: Int) = Callable {
         pageService.delete(pageId)
