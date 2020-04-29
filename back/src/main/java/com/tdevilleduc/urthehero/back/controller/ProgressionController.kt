@@ -53,9 +53,9 @@ internal class ProgressionController() {
         ResponseEntity.ok(progressionService.findByUserIdAndStoryId(userId, storyId))
     }
 
-    @Operation(summary = "Met à jour la progression d'un utilisateur sur une histoire avec une page définie")
     @PostMapping(value = ["/user/{userId}/story/{storyId}/page/{newPageId}"])
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.progression.move.value}", description = "\${swagger.controller.progression.move.notes}")
     fun postProgressionAction(@PathVariable userId: Int,
                               @PathVariable storyId: Int,
                               @PathVariable newPageId: Int): Callable<ResponseEntity<Progression>> = Callable {

@@ -43,6 +43,7 @@ internal class PageController(private val storyService: IStoryService, private v
 
     @PutMapping
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.page.create.value}", description = "\${swagger.controller.page.create.notes}")
     fun createPage(@RequestBody page: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
         if (pageService.exists(page.id)) {
             throw PageInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_PAGE_PAGEID_ALREADY_EXISTS, page.id).message)
@@ -52,6 +53,7 @@ internal class PageController(private val storyService: IStoryService, private v
 
     @PostMapping
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.page.update.value}", description = "\${swagger.controller.page.update.notes}")
     fun updatePage(@RequestBody pageDto: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
         Assert.notNull(pageDto.id) { throw PageInternalErrorException(ApplicationConstants.ERROR_MESSAGE_PAGE_PAGEID_CANNOT_BE_NULL) }
         if (pageService.notExists(pageDto.id)) {
@@ -62,6 +64,7 @@ internal class PageController(private val storyService: IStoryService, private v
 
     @DeleteMapping(value = ["/{pageId}"])
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.page.delete.value}", description = "\${swagger.controller.page.delete.notes}")
     fun deletePage(@PathVariable pageId: Int) = Callable {
         pageService.delete(pageId)
     }

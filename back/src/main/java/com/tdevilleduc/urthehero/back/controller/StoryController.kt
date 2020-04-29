@@ -42,6 +42,7 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @PutMapping
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.story.create.value}", description = "\${swagger.controller.story.create.notes}")
     fun createStory(@RequestBody storyDTO: StoryDTO): Callable<ResponseEntity<StoryDTO>> = Callable {
         Assert.notNull(storyDTO.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
         Assert.notNull(storyDTO.firstPageId) { throw StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null") }
@@ -59,6 +60,7 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @PostMapping
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.story.update.value}", description = "\${swagger.controller.story.update.notes}")
     fun updateStory(@RequestBody storyDto: StoryDTO): Callable<ResponseEntity<StoryDTO>> = Callable {
         Assert.notNull(storyDto.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
         Assert.notNull(storyDto.firstPageId) { throw StoryInternalErrorException("La première page de l'histoire passée en paramètre ne peut pas être null") }
@@ -77,6 +79,7 @@ internal class StoryController(private val storyService: IStoryService, private 
 
     @DeleteMapping(value = ["/{storyId}"])
     @ResponseBody
+    @Operation(summary = "\${swagger.controller.story.delete.value}", description = "\${swagger.controller.story.delete.notes}")
     fun deleteStory(@PathVariable storyId: Int) = Callable {
         storyService.delete(storyId)
     }
