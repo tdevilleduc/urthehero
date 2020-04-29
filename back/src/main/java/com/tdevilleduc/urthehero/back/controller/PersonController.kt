@@ -1,9 +1,11 @@
 package com.tdevilleduc.urthehero.back.controller
 
-import com.tdevilleduc.urthehero.back.exceptions.PersonInternalErrorException
-import com.tdevilleduc.urthehero.back.model.Person
-import com.tdevilleduc.urthehero.back.model.PersonDTO
-import com.tdevilleduc.urthehero.back.service.IPersonService
+import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
+import com.tdevilleduc.urthehero.back.exceptions.UserInternalErrorException
+import com.tdevilleduc.urthehero.back.exceptions.UserNotFoundException
+import com.tdevilleduc.urthehero.back.model.User
+import com.tdevilleduc.urthehero.back.model.UserDTO
+import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.helpers.MessageFormatter
@@ -13,53 +15,51 @@ import org.springframework.http.ResponseEntity
 import org.springframework.util.Assert
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
-import javax.servlet.http.HttpServletRequest
 
-@Tag(name = "Person", description = "Person Controller")
+@Tag(name = "User", description = "User Controller")
 @RestController
-@RequestMapping("/api/person")
-internal class PersonController(private val personService: IPersonService) {
+@RequestMapping("/api/user")
+internal class PersonController(private val userService: IUserService) {
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "\${swagger.controller.person.get-all.value}", description = "\${swagger.controller.person.get-all.notes}")
+    @Operation(summary = "\${swagger.controller.user.get-all.value}", description = "\${swagger.controller.user.get-all.notes}")
     @ResponseBody
-    fun getPersons(request: HttpServletRequest): Callable<ResponseEntity<MutableList<Person>>> = Callable {
-        ResponseEntity.ok(personService.findAll())
+    fun getUsers(): Callable<ResponseEntity<MutableList<User>>> = Callable {
+        ResponseEntity.ok(userService.findAll())
     }
 
-    @GetMapping(value = ["/{personId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(value = ["/{userId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "\${swagger.controller.person.get-by-id.value}", description = "\${swagger.controller.person.get-by-id.notes}")
+    @Operation(summary = "\${swagger.controller.user.get-by-id.value}", description = "\${swagger.controller.user.get-by-id.notes}")
     @ResponseBody
-    fun getPersonById(request: HttpServletRequest,
-                      @PathVariable personId: Int): Callable<ResponseEntity<Person>> = Callable {
-        ResponseEntity.ok(personService.findById(personId))
+    fun getUserById(@PathVariable userId: Int): Callable<ResponseEntity<User>> = Callable {
+        ResponseEntity.ok(userService.findById(userId))
     }
 
     @PutMapping
     @ResponseBody
-    fun createPerson(request: HttpServletRequest,
-                     @RequestBody personDto: PersonDTO): Callable<ResponseEntity<PersonDTO>> = Callable {
-        if (personService.exists(personDto.id!!)) {
-            throw PersonInternalErrorException(MessageFormatter.format("Une personne avec l'identifiant {} existe déjà. Elle ne peut être créée", personDto.id).message)
+    fun createUser(@RequestBody userDto: UserDTO): Callable<ResponseEntity<UserDTO>> = Callable {
+        if (userService.exists(userDto.userId)) {
+            throw UserInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_USERID_ALREADY_EXISTS, userDto.userId).message)
         }
-        ResponseEntity.ok(personService.createOrUpdate(personDto))
+        ResponseEntity.ok(userService.createOrUpdate(userDto))
     }
 
     @PostMapping
     @ResponseBody
-    fun updatePerson(request: HttpServletRequest,
-                     @RequestBody personDto: PersonDTO): Callable<ResponseEntity<PersonDTO>> = Callable {
-        Assert.notNull(personDto.id) { throw PersonInternalErrorException("L'identifiant de la personne passée en paramètre ne peut pas être null") }
-        ResponseEntity.ok(personService.createOrUpdate(personDto))
+    fun updateUser(@RequestBody userDto: UserDTO): Callable<ResponseEntity<UserDTO>> = Callable {
+        Assert.notNull(userDto.userId) { throw UserInternalErrorException(ApplicationConstants.ERROR_MESSAGE_USER_USERID_CANNOT_BE_NULL) }
+        if (userService.notExists(userDto.userId)) {
+            throw UserInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_DOESNOT_EXIST, userDto.userId).message)
+        }
+        ResponseEntity.ok(userService.createOrUpdate(userDto))
     }
 
-    @DeleteMapping(value = ["/{personId}"])
+    @DeleteMapping(value = ["/{userId}"])
     @ResponseBody
-    fun deletePerson(request: HttpServletRequest,
-                     @PathVariable personId: Int) {
-        personService.delete(personId)
+    fun deleteUser(@PathVariable userId: Int) = Callable {
+        userService.delete(userId)
     }
 
 }

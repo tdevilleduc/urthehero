@@ -2,16 +2,15 @@ package com.tdevilleduc.urthehero.back.service.impl
 
 import com.tdevilleduc.urthehero.back.config.Mapper
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
-import com.tdevilleduc.urthehero.back.constant.ResilienceConstants
 import com.tdevilleduc.urthehero.back.dao.StoryDao
+import com.tdevilleduc.urthehero.back.exceptions.StoryInternalErrorException
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
-import com.tdevilleduc.urthehero.back.model.Person
 import com.tdevilleduc.urthehero.back.model.Story
 import com.tdevilleduc.urthehero.back.model.StoryDTO
 import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IProgressionService
 import com.tdevilleduc.urthehero.back.service.IStoryService
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import com.tdevilleduc.urthehero.back.service.IUserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -29,24 +28,27 @@ class StoryService : IStoryService {
     @Autowired
     private lateinit var pageService: IPageService
     @Autowired
+    private lateinit var userService: IUserService
+    @Autowired
     private lateinit var storyDao: StoryDao
 
-    override fun exists(storyId: Int): Boolean {
-        Assert.notNull(storyId, "The story parameter is mandatory !")
+    override fun exists(storyId: Int?): Boolean {
+        if (storyId == null)
+            return false
         val optional = storyDao.findById(storyId)
         if (optional.isEmpty) {
-                logger.error(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId)
-                return false
-            }
+            logger.error(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId)
+            return false
+        }
         return true
     }
 
-    override fun notExists(storyId: Int): Boolean {
+    override fun notExists(storyId: Int?): Boolean {
         return !exists(storyId)
     }
 
     override fun findById(storyId: Int): Story {
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
+        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY)
         val optional = storyDao.findById(storyId)
         if (optional.isPresent) {
             return fillStoryWithNumberOfReaders(optional.get())
@@ -55,22 +57,15 @@ class StoryService : IStoryService {
         }
     }
 
-    @CircuitBreaker(name = ResilienceConstants.INSTANCE_STORY_SERVICE, fallbackMethod = "emptyList")
     override fun findAll(): MutableList<Story> {
         return storyDao.findAll().stream()
                 .map { story: Story -> fillStoryWithNumberOfReaders(story) }
                 .collect(Collectors.toList())
     }
 
-    //NOSONAR - This method is a ChaosMonkey CircuitBreaker fallback method
-    private fun emptyList(e: Throwable): MutableList<Person> {
-        logger.error("Unable to retrieve list", e)
-        return emptyList<Person>().toMutableList()
-    }
-
     private fun fillStoryWithNumberOfReaders(story: Story): Story {
-        story.numberOfReaders = progressionService.countPersonsByStoryId(story.storyId!!)
-        story.numberOfPages = pageService.countByStoryId(story.storyId!!)
+        story.numberOfReaders = progressionService.countUsersByStoryId(story.storyId)
+        story.numberOfPages = pageService.countByStoryId(story.storyId)
         return story
     }
 
@@ -80,7 +75,6 @@ class StoryService : IStoryService {
     }
 
     override fun delete(storyId: Int) {
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
         val story = findById(storyId)
         storyDao.delete(story)
     }

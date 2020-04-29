@@ -28,8 +28,10 @@ class PageService : IPageService {
     @Autowired
     private lateinit var pageDao: PageDao
 
-    override fun exists(pageId: Int): Boolean {
-        Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY!!)
+    override fun exists(pageId: Int?): Boolean {
+        if (pageId == null)
+            return false
+        Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY)
         val optional = pageDao.findById(pageId)
         if (optional.isEmpty) {
             logger.error(ApplicationConstants.ERROR_MESSAGE_PAGE_DOESNOT_EXIST, pageId)
@@ -38,12 +40,12 @@ class PageService : IPageService {
         return true
     }
 
-    override fun notExists(pageId: Int): Boolean {
+    override fun notExists(pageId: Int?): Boolean {
         return !exists(pageId)
     }
 
     override fun findById(pageId: Int): Page {
-        Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY!!)
+        Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY)
         val optional = pageDao.findById(pageId)
         if (optional.isPresent) {
             return fillPageWithNextPages(optional.get())
@@ -53,7 +55,7 @@ class PageService : IPageService {
     }
 
     private fun fillPageWithNextPages(page: Page): Page {
-        val nextPageList = nextPageService.findByPageId(page.id!!)
+        val nextPageList = nextPageService.findByPageId(page.id)
         page.nextPageList = nextPageList
         return page
     }
@@ -64,13 +66,13 @@ class PageService : IPageService {
     }
 
     override fun delete(pageId: Int) {
-        Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY!!)
+        Assert.notNull(pageId, ApplicationConstants.CHECK_PAGEID_PARAMETER_MANDATORY)
         val page = findById(pageId)
         pageDao.delete(page)
     }
 
     override fun countByStoryId(storyId: Int): Long {
-        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY!!)
+        Assert.notNull(storyId, ApplicationConstants.CHECK_STORYID_PARAMETER_MANDATORY)
         if (storyService.notExists(storyId)) {
             throw StoryNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_STORY_DOESNOT_EXIST, storyId).message)
         }

@@ -26,6 +26,9 @@
 - Add filter to log every incoming request [#71][71]
 - Add swagger documentation [#72][72]
 - Add numberOfPages attribute in story entity [#75][75]
+- Add service for retrieve person by login [#76][76]
+- Add authentication based on login/password from person entity [#77][77]
+- Add jwt authentification support [#79][79]
 
 [21]: https://github.com/tdevilleduc/urthehero/issues/21
 [49]: https://github.com/tdevilleduc/urthehero/issues/49
@@ -34,15 +37,22 @@
 [71]: https://github.com/tdevilleduc/urthehero/issues/71
 [72]: https://github.com/tdevilleduc/urthehero/issues/72
 [75]: https://github.com/tdevilleduc/urthehero/issues/75
+[76]: https://github.com/tdevilleduc/urthehero/issues/76
+[77]: https://github.com/tdevilleduc/urthehero/issues/77
+[79]: https://github.com/tdevilleduc/urthehero/issues/79
 
 ### Changed
 
 - Fix exception on startup; table 'test.page' doesn't exist [#31][31]
 - Migration of application.properties to yaml [#52][52] 
 - Use constants for log messages
+- Migrate to postgresql database [#81][81]
+- Rename person entity to user entity [#82][82]
 
 [31]: https://github.com/tdevilleduc/urthehero/issues/31
 [52]: https://github.com/tdevilleduc/urthehero/issues/52
+[81]: https://github.com/tdevilleduc/urthehero/issues/81
+[82]: https://github.com/tdevilleduc/urthehero/issues/82
 
 ### Upgrade
 

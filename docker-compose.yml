@@ -1,17 +1,19 @@
 version: '3.7'
 
 services:
-  mysql:
-    container_name: urthehero-mysql
-    image: mysql:8.0.19
+  postgres:
+    container_name: urthehero-postgres
+    image: postgres
     environment:
-      MYSQL_DATABASE: test
-      MYSQL_USER: testuser
-      MYSQL_PASSWORD: test123
-      MYSQL_ROOT_PASSWORD: tdevilleduc
-      MYSQL_ROOT_HOST: '%'
+      POSTGRES_DB: test
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: test123
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
+    restart: unless-stopped
     networks:
       - urthehero
 
@@ -29,9 +31,12 @@ services:
     networks:
       - urthehero
     depends_on:
-      - mysql
+      - postgres
 
 networks:
   urthehero:
     driver: bridge
     name: urthehero
+
+volumes:
+  postgres:

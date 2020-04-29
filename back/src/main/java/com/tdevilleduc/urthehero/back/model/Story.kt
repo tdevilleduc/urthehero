@@ -8,7 +8,7 @@ data class Story(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "\${swagger.model.story.param.storyId}")
-    var storyId: Int? = null,
+    val storyId: Int,
     @Schema(description = "\${swagger.model.story.param.authorId}")
     var authorId: Int? = null,
     @Schema(description = "\${swagger.model.story.param.firstPageId}")
@@ -25,5 +25,4 @@ data class Story(
     @Transient
     @Schema(description = "\${swagger.model.story.param.numberOfPages}")
     var numberOfPages: Long? = null
-
 )

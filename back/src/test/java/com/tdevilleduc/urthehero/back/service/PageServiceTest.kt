@@ -2,9 +2,13 @@ package com.tdevilleduc.urthehero.back.service
 
 import com.tdevilleduc.urthehero.back.AbstractTest
 import com.tdevilleduc.urthehero.back.BackApplication
+import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
+import com.tdevilleduc.urthehero.back.model.Page
 import com.tdevilleduc.urthehero.back.model.Position
+import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.PageService
+import com.tdevilleduc.urthehero.back.util.TestUtil
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -12,12 +16,23 @@ import org.junit.jupiter.api.function.Executable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 internal class PageServiceTest : AbstractTest() {
     @Autowired
     private lateinit var pageService: PageService
+    @Autowired
+    private lateinit var pageDao: PageDao
+
+
+    @Test
+    fun test_exists_withIdNull() {
+        val pageId = null
+        val exists = pageService.exists(pageId)
+        Assertions.assertFalse(exists)
+    }
 
     @Test
     fun test_findById_thenCorrect() {
@@ -72,6 +87,20 @@ internal class PageServiceTest : AbstractTest() {
         val numberOfPages = pageService.countByStoryId(storyId)
         Assertions.assertNotNull(numberOfPages)
         Assertions.assertEquals(4, numberOfPages)
+    }
 
+    @Test
+    fun test_delete_thenSuccess() {
+        var page = TestUtil.createPage()
+        page = pageDao.save(page)
+        Assertions.assertNotNull(page.id)
+        val optionalBefore: Optional<Page> = pageDao.findById(page.id)
+        Assertions.assertTrue(optionalBefore.isPresent)
+
+        // delete page entity
+        pageService.delete(page.id)
+
+        val optionalAfter: Optional<Page> = pageDao.findById(page.id)
+        Assertions.assertTrue(optionalAfter.isEmpty)
     }
 }

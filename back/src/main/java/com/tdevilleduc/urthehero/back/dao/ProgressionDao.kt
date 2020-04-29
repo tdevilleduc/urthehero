@@ -7,8 +7,8 @@ import java.util.*
 
 @Repository
 interface ProgressionDao : JpaRepository<Progression, Int> {
-    fun findByPersonIdAndStoryId(personId: Int, storyId: Int): Optional<Progression>
-    fun findByPersonId(personId: Int): MutableList<Progression>
+    fun findByUserIdAndStoryId(userId: Int, storyId: Int): Optional<Progression>
+    fun findByUserId(userId: Int): MutableList<Progression>
     fun findByStoryId(storyId: Int): MutableList<Progression>
     fun countByStoryId(storyId: Int): Long
 }

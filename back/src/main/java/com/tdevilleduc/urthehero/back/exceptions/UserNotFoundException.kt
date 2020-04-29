@@ -3,5 +3,5 @@ package com.tdevilleduc.urthehero.back.exceptions
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-class PersonInternalErrorException(s: String?) : RuntimeException(s)
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class UserNotFoundException(s: String?) : RuntimeException(s)

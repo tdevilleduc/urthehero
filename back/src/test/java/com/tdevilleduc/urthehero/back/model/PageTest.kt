@@ -10,10 +10,9 @@ internal class PageTest {
         val pageText = "test de titre"
         val pageImage = "image de ouf"
         val pageStoryId = 27
-        val page = Page(pageText, pageImage)
-        page.id = pageId
+        val page = Page(pageId, pageText, pageImage)
         page.storyId = pageStoryId
-        Assertions.assertEquals(page.id!!, pageId)
+        Assertions.assertEquals(page.id, pageId)
         Assertions.assertEquals(page.text, pageText)
         Assertions.assertEquals(page.image, pageImage)
         Assertions.assertEquals(page.storyId!!, pageStoryId)
