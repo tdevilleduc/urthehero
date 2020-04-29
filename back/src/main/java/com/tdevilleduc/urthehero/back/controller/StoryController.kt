@@ -8,6 +8,7 @@ import com.tdevilleduc.urthehero.back.service.IPageService
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
@@ -20,6 +21,7 @@ import java.util.concurrent.Callable
 @Tag(name = "Story", description = "Story Controller")
 @RestController
 @RequestMapping("/api/story")
+@SecurityRequirement(name = "bearerAuth")
 internal class StoryController(private val storyService: IStoryService, private val userService: IUserService, private val pageService: IPageService) {
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])

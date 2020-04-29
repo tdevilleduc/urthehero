@@ -2,11 +2,11 @@ package com.tdevilleduc.urthehero.back.controller
 
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.exceptions.UserInternalErrorException
-import com.tdevilleduc.urthehero.back.exceptions.UserNotFoundException
 import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.model.UserDTO
 import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
@@ -19,6 +19,7 @@ import java.util.concurrent.Callable
 @Tag(name = "User", description = "User Controller")
 @RestController
 @RequestMapping("/api/user")
+@SecurityRequirement(name = "bearerAuth")
 internal class PersonController(private val userService: IUserService) {
 
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])

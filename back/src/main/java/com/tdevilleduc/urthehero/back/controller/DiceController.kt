@@ -4,6 +4,7 @@ import com.tdevilleduc.urthehero.back.model.Dice
 import com.tdevilleduc.urthehero.back.model.DiceValue
 import com.tdevilleduc.urthehero.back.service.IDiceService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -15,6 +16,7 @@ import java.util.concurrent.Callable
 @Tag(name = "Dice", description = "Dice Controller")
 @RestController
 @RequestMapping("/api/dice")
+@SecurityRequirement(name = "bearerAuth")
 internal class DiceController(private val diceService: IDiceService) {
 
     @GetMapping(value = ["/roll/{dice}"], produces = [MediaType.APPLICATION_JSON_VALUE])

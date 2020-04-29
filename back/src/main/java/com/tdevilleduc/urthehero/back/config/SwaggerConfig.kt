@@ -1,5 +1,7 @@
 package com.tdevilleduc.urthehero.back.config
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.security.SecurityScheme
 import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
@@ -13,6 +15,12 @@ import org.springframework.context.annotation.PropertySource
     "classpath:/swagger/swagger-messages_fr.properties",
     "classpath:/swagger/swagger-model-messages_fr.properties"
 ])
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
 internal class SwaggerConfig {
 
     /**
