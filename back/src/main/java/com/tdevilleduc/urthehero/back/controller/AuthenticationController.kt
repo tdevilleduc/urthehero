@@ -5,6 +5,8 @@ import com.tdevilleduc.urthehero.back.model.AuthenticationResponse
 import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.JwtService
 import com.tdevilleduc.urthehero.back.service.impl.MyUserDetailsService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.Callable
 
+@Tag(name = "Authentication", description = "Authentication Controller")
 @RestController
 internal class AuthenticationController {
 
@@ -26,6 +29,7 @@ internal class AuthenticationController {
 
     @RequestMapping(value = ["/authenticate"], method = [RequestMethod.POST])
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "\${swagger.controller.authentication.create-token.value}", description = "\${swagger.controller.authentication.create-token.notes}")
     @ResponseBody
     fun createAuthenticationToken(@RequestBody authenticationRequest: AuthenticationRequest): Callable<ResponseEntity<AuthenticationResponse>> = Callable {
         try {

@@ -29,7 +29,7 @@ springdoc:
     operationsSorter: alpha
     tagsSorter: alpha
   packagesToScan: com.tdevilleduc.urthehero.back.controller
-  pathsToMatch: /api/dice/**, /api/page/**, /api/user/**, /api/story/**, /api/progression/**
+  pathsToMatch: /authenticate/**, /api/dice/**, /api/page/**, /api/user/**, /api/story/**, /api/progression/**
   api-docs:
     resolve-schema-properties: true
 
