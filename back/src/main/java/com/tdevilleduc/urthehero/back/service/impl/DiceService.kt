@@ -12,7 +12,9 @@ class DiceService : IDiceService {
         return DiceValue(generatingRandomIntegerBounded(dice.value), dice)
     }
 
-    private fun generatingRandomIntegerBounded(rightLimit: Int): Int {
-        return RandomDataGenerator().nextInt(1, rightLimit)
+    companion object {
+        fun generatingRandomIntegerBounded(rightLimit: Int): Int {
+            return RandomDataGenerator().nextInt(1, rightLimit)
+        }
     }
 }
