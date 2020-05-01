@@ -50,4 +50,22 @@ object TestUtil {
         val image = RandomStringUtils.random(20)
         return Page(id, text, image)
     }
+
+    fun createEnemyDto(): EnemyDTO {
+        val id = null
+        val name = RandomStringUtils.random(20)
+        val image = RandomStringUtils.random(20)
+        val level = random.nextInt()
+        val lifePoints = random.nextInt()
+        return EnemyDTO(id, name, image, level, lifePoints)
+    }
+
+    fun createEnemy(): Enemy {
+        val id = 0
+        val name = RandomStringUtils.random(20)
+        val image = RandomStringUtils.random(20)
+        val level = random.nextInt()
+        val lifePoints = random.nextInt()
+        return Enemy(id, name, image, level, lifePoints)
+    }
 }
