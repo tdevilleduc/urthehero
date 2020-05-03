@@ -7,8 +7,8 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.containers.PostgreSQLContainer
 
-@ContextConfiguration(initializers = [AbstractTest.Initializer::class])
-abstract class AbstractTest {
+@ContextConfiguration(initializers = [AbstractITTest.Initializer::class])
+abstract class AbstractITTest {
 //    @Autowired
 //    private lateinit var registry: CircuitBreakerRegistry
 //

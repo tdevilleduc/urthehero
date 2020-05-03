@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller
 
-import com.tdevilleduc.urthehero.back.AbstractTest
+import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 @WebAppConfiguration
-class ProgressionControllerTest : AbstractTest() {
+class ProgressionControllerTest : AbstractITTest() {
 
     private lateinit var mockMvc: MockMvc
 

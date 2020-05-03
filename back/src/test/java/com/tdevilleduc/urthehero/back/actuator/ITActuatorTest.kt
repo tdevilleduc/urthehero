@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.actuator
 
-import com.tdevilleduc.urthehero.back.AbstractTest
+import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext
  */
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [BackApplication::class])
-class ITActuatorTest : AbstractTest() {
+class ITActuatorTest : AbstractITTest() {
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
     /**

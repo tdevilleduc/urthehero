@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller
 
-import com.tdevilleduc.urthehero.back.AbstractTest
+import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
 import com.tdevilleduc.urthehero.back.model.AuthenticationRequest
 import com.tdevilleduc.urthehero.back.util.JsonUtil
@@ -24,7 +24,7 @@ import org.springframework.web.context.WebApplicationContext
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 @WebAppConfiguration
-class AuthenticationControllerTest : AbstractTest() {
+class AuthenticationControllerTest : AbstractITTest() {
     private lateinit var mockMvc: MockMvc
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext

@@ -1,34 +1,32 @@
 package com.tdevilleduc.urthehero.back.service
 
-import com.tdevilleduc.urthehero.back.AbstractTest
-import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.dao.StoryDao
-import com.tdevilleduc.urthehero.back.model.Page
-import com.tdevilleduc.urthehero.back.model.Story
+import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
+import com.tdevilleduc.urthehero.back.service.impl.PageService
+import com.tdevilleduc.urthehero.back.service.impl.ProgressionService
 import com.tdevilleduc.urthehero.back.service.impl.StoryService
 import com.tdevilleduc.urthehero.back.util.TestUtil
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest
-internal class StoryServiceTest : AbstractTest() {
-    @Autowired
-    private lateinit var storyService: StoryService
-    @Autowired
-    private lateinit var storyDao: StoryDao
+@ExtendWith(MockitoExtension::class)
+internal class StoryServiceTest {
+    private val random: Random = Random()
 
-    @Test
-    fun test_exists_thenCorrect() {
-        val storyId = 1
-        val exists = storyService.exists(storyId)
-        Assertions.assertTrue(exists)
-    }
+    @InjectMocks
+    private lateinit var storyService: StoryService
+    @Mock
+    private lateinit var storyDao: StoryDao
+    @Mock
+    private lateinit var progressionService: ProgressionService
+    @Mock
+    private lateinit var pageService: PageService
 
     @Test
     fun test_exists_withIdNull() {
@@ -38,36 +36,34 @@ internal class StoryServiceTest : AbstractTest() {
     }
 
     @Test
-    fun test_notExists_thenCorrect() {
-        val storyId = 41
+    fun test_notExists_thenSuccess() {
+        val storyId = random.nextInt()
+        Mockito.`when`(storyDao.findById(storyId)).thenReturn(Optional.empty())
+
         val notExists = storyService.notExists(storyId)
         Assertions.assertTrue(notExists)
     }
 
     @Test
     fun test_findByPageId_thenCorrect() {
-        val storyId = 1
-        val story = storyService.findById(storyId)
-        Assertions.assertEquals(1, story.storyId)
-        Assertions.assertEquals("Ulysse", story.title)
-        Assertions.assertEquals(1, story.authorId)
-        Assertions.assertEquals(1, story.firstPageId)
-        Assertions.assertEquals(3, story.numberOfReaders)
-        Assertions.assertEquals(4, story.numberOfPages)
+        val expectedPage = TestUtil.createStory()
+        Mockito.`when`(storyDao.findById(expectedPage.storyId)).thenReturn(Optional.of(expectedPage))
+
+        val story = storyService.findById(expectedPage.storyId)
+        Assertions.assertNotNull(story)
+        Assertions.assertEquals(expectedPage.storyId, story.storyId)
+        Assertions.assertEquals(expectedPage.title, story.title)
+        Assertions.assertEquals(expectedPage.authorId, story.authorId)
+        Assertions.assertEquals(expectedPage.firstPageId, story.firstPageId)
+        Assertions.assertEquals(expectedPage.numberOfReaders, story.numberOfReaders)
+        Assertions.assertEquals(expectedPage.numberOfPages, story.numberOfPages)
     }
 
     @Test
-    fun test_delete_thenSuccess() {
-        var story = TestUtil.createStory()
-        story = storyDao.save(story)
-        Assertions.assertNotNull(story.storyId)
-        val optionalBefore: Optional<Story> = storyDao.findById(story.storyId)
-        Assertions.assertTrue(optionalBefore.isPresent)
+    fun test_findById_thenNotFound() {
+        val storyId = random.nextInt()
+        Mockito.`when`(storyDao.findById(storyId)).thenReturn(Optional.empty())
 
-        // delete story entity
-        storyService.delete(story.storyId)
-
-        val optionalAfter: Optional<Story> = storyDao.findById(story.storyId)
-        Assertions.assertTrue(optionalAfter.isEmpty)
+        Assertions.assertThrows(StoryNotFoundException::class.java) { storyService.findById(storyId) }
     }
 }

@@ -1,30 +1,39 @@
 package com.tdevilleduc.urthehero.back.service
 
-import com.tdevilleduc.urthehero.back.AbstractTest
-import com.tdevilleduc.urthehero.back.BackApplication
 import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
-import com.tdevilleduc.urthehero.back.model.Page
-import com.tdevilleduc.urthehero.back.model.Position
-import com.tdevilleduc.urthehero.back.model.User
+import com.tdevilleduc.urthehero.back.service.impl.NextPageService
 import com.tdevilleduc.urthehero.back.service.impl.PageService
+import com.tdevilleduc.urthehero.back.service.impl.StoryService
 import com.tdevilleduc.urthehero.back.util.TestUtil
+import org.junit.Before
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.function.Executable
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
+import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [BackApplication::class])
-internal class PageServiceTest : AbstractTest() {
-    @Autowired
+@ExtendWith(MockitoExtension::class)
+internal class PageServiceTest {
+    private val random: Random = Random()
+
+    @InjectMocks
     private lateinit var pageService: PageService
-    @Autowired
+    @Mock
     private lateinit var pageDao: PageDao
+    @Mock
+    private lateinit var nextPageService: NextPageService
+    @Mock
+    private lateinit var storyService: StoryService
+
+    @Before
+    fun initMocks() {
+        MockitoAnnotations.initMocks(this)
+    }
 
 
     @Test
@@ -35,72 +44,75 @@ internal class PageServiceTest : AbstractTest() {
     }
 
     @Test
+    fun test_notExists_thenSuccess() {
+        val pageId = random.nextInt()
+        Mockito.`when`(pageDao.findById(pageId)).thenReturn(Optional.empty())
+
+        val notExists = pageService.notExists(pageId)
+        Assertions.assertTrue(notExists)
+    }
+
+    @Test
     fun test_findById_thenCorrect() {
-        val pageId = 1
-        val page = pageService.findById(pageId)
+        val expectedPage = TestUtil.createPage()
+        Mockito.`when`(pageDao.findById(expectedPage.id)).thenReturn(Optional.of(expectedPage))
+
+        val page = pageService.findById(expectedPage.id)
         Assertions.assertNotNull(page)
-        Assertions.assertEquals(pageId, page.id)
-        Assertions.assertEquals("image3", page.image)
-        Assertions.assertEquals("Ulysse", page.text)
-        val nextPageList = page.nextPageList
-        Assertions.assertNotNull(nextPageList)
-        Assertions.assertFalse(nextPageList.isEmpty())
-        Assertions.assertEquals(3, nextPageList.size)
-        val nextPage1 = nextPageList[0]
-        Assertions.assertNotNull(nextPage1)
-        Assertions.assertEquals(1, nextPage1.id)
-        Assertions.assertEquals(2, nextPage1.destinationPageId)
-        Assertions.assertEquals(1, nextPage1.pageId)
-        Assertions.assertEquals("gauche", nextPage1.text)
-        Assertions.assertEquals(Position.LEFT, nextPage1.position)
-        val nextPage2 = nextPageList[1]
-        Assertions.assertNotNull(nextPage2)
-        Assertions.assertEquals(2, nextPage2.id)
-        Assertions.assertEquals(3, nextPage2.destinationPageId)
-        Assertions.assertEquals(1, nextPage2.pageId)
-        Assertions.assertEquals("droite", nextPage2.text)
-        Assertions.assertEquals(Position.RIGHT, nextPage2.position)
-        val nextPage3 = nextPageList[2]
-        Assertions.assertNotNull(nextPage3)
-        Assertions.assertEquals(3, nextPage3.id)
-        Assertions.assertEquals(8, nextPage3.destinationPageId)
-        Assertions.assertEquals(1, nextPage3.pageId)
-        Assertions.assertEquals("centre", nextPage3.text)
-        Assertions.assertEquals(Position.CENTER, nextPage3.position)
+        Assertions.assertEquals(expectedPage.id, page.id)
+        Assertions.assertEquals(expectedPage.image, page.image)
+        Assertions.assertEquals(expectedPage.text, page.text)
+//        val nextPageList = page.nextPageList
+//        Assertions.assertNotNull(nextPageList)
+//        Assertions.assertFalse(nextPageList.isEmpty())
+//        Assertions.assertEquals(3, nextPageList.size)
+//        val nextPage1 = nextPageList[0]
+//        Assertions.assertNotNull(nextPage1)
+//        Assertions.assertEquals(1, nextPage1.id)
+//        Assertions.assertEquals(2, nextPage1.destinationPageId)
+//        Assertions.assertEquals(1, nextPage1.pageId)
+//        Assertions.assertEquals("gauche", nextPage1.text)
+//        Assertions.assertEquals(Position.LEFT, nextPage1.position)
+//        val nextPage2 = nextPageList[1]
+//        Assertions.assertNotNull(nextPage2)
+//        Assertions.assertEquals(2, nextPage2.id)
+//        Assertions.assertEquals(3, nextPage2.destinationPageId)
+//        Assertions.assertEquals(1, nextPage2.pageId)
+//        Assertions.assertEquals("droite", nextPage2.text)
+//        Assertions.assertEquals(Position.RIGHT, nextPage2.position)
+//        val nextPage3 = nextPageList[2]
+//        Assertions.assertNotNull(nextPage3)
+//        Assertions.assertEquals(3, nextPage3.id)
+//        Assertions.assertEquals(8, nextPage3.destinationPageId)
+//        Assertions.assertEquals(1, nextPage3.pageId)
+//        Assertions.assertEquals("centre", nextPage3.text)
+//        Assertions.assertEquals(Position.CENTER, nextPage3.position)
     }
 
     @Test
     fun test_findById_thenNotFound() {
-        val pageId = 13
-        Assertions.assertThrows(PageNotFoundException::class.java, Executable { pageService.findById(pageId) } )
+        val pageId = random.nextInt()
+        Mockito.`when`(pageDao.findById(pageId)).thenReturn(Optional.empty())
+
+        Assertions.assertThrows(PageNotFoundException::class.java) { pageService.findById(pageId) }
     }
 
     @Test
     fun delete_thenNotFound() {
-        val pageId = 13
-        Assertions.assertThrows(PageNotFoundException::class.java, Executable { pageService.delete(pageId) })
+        val pageId = random.nextInt()
+        Mockito.`when`(pageDao.findById(pageId)).thenReturn(Optional.empty())
+
+        Assertions.assertThrows(PageNotFoundException::class.java) { pageService.delete(pageId) }
     }
 
     @Test
     fun test_countByStoryId_thenCorrect() {
-        val storyId = 1
+        val storyId = random.nextInt()
+        val expectedNumberOfPages = random.nextLong()
+        Mockito.`when`(pageDao.countByStoryId(storyId)).thenReturn(expectedNumberOfPages)
+
         val numberOfPages = pageService.countByStoryId(storyId)
         Assertions.assertNotNull(numberOfPages)
-        Assertions.assertEquals(4, numberOfPages)
-    }
-
-    @Test
-    fun test_delete_thenSuccess() {
-        var page = TestUtil.createPage()
-        page = pageDao.save(page)
-        Assertions.assertNotNull(page.id)
-        val optionalBefore: Optional<Page> = pageDao.findById(page.id)
-        Assertions.assertTrue(optionalBefore.isPresent)
-
-        // delete page entity
-        pageService.delete(page.id)
-
-        val optionalAfter: Optional<Page> = pageDao.findById(page.id)
-        Assertions.assertTrue(optionalAfter.isEmpty)
+        Assertions.assertEquals(expectedNumberOfPages, numberOfPages)
     }
 }

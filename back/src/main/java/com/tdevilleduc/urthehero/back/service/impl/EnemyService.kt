@@ -3,10 +3,11 @@ package com.tdevilleduc.urthehero.back.service.impl
 import com.tdevilleduc.urthehero.back.config.Mapper
 import com.tdevilleduc.urthehero.back.constant.ApplicationConstants
 import com.tdevilleduc.urthehero.back.dao.EnemyDao
-import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
+import com.tdevilleduc.urthehero.back.exceptions.EnemyNotFoundException
 import com.tdevilleduc.urthehero.back.model.Enemy
 import com.tdevilleduc.urthehero.back.model.EnemyDTO
 import com.tdevilleduc.urthehero.back.service.IEnemyService
+import lombok.extern.slf4j.Slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.util.Assert
 
-
+@Slf4j
 @Service
 class EnemyService : IEnemyService {
     val logger: Logger = LoggerFactory.getLogger(PageService::class.java)
@@ -44,11 +45,12 @@ class EnemyService : IEnemyService {
         if (optional.isPresent) {
             return optional.get()
         } else {
-            throw PageNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_ENEMY_ID_DOESNOT_EXIST, enemyId).message)
+            throw EnemyNotFoundException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_ENEMY_ID_DOESNOT_EXIST, enemyId).message)
         }
     }
 
     override fun findByLevel(level: Int): Enemy {
+       logger.info("level {}", level)
         val enemyByLevel: List<Enemy> = if (level > 0) {
             enemyDao.findByLevel(level)
         } else {
@@ -56,7 +58,7 @@ class EnemyService : IEnemyService {
         }
 
         if (enemyByLevel.isEmpty()) {
-            throw PageNotFoundException(ApplicationConstants.ERROR_MESSAGE_ENEMY_DOESNOT_EXIST)
+            throw EnemyNotFoundException(ApplicationConstants.ERROR_MESSAGE_ENEMY_DOESNOT_EXIST)
         } else {
             val randomId = DiceService.generatingRandomIntegerBounded(enemyByLevel.size)
             return enemyByLevel[randomId-1]

@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.service
 
-import com.tdevilleduc.urthehero.back.AbstractTest
+import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
 import com.tdevilleduc.urthehero.back.model.Position
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
-internal class NextPageServiceTest : AbstractTest() {
+internal class NextPageServiceTest : AbstractITTest() {
     @Autowired
     private lateinit var nextPageService: NextPageService
 
