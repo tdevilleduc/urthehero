@@ -6,4 +6,4 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
-internal class BackApplicationTests : AbstractTest()
+internal class BackApplicationTests : AbstractITTest()

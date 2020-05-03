@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.service.chaos
 
-import com.tdevilleduc.urthehero.back.AbstractTest
+import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.service.IStoryService
@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 @ActiveProfiles("chaos-monkey")
-class ITStoryServiceTest : AbstractTest() {
+class ITStoryServiceTest : AbstractITTest() {
     val logger: Logger = LoggerFactory.getLogger(ITStoryServiceTest::class.java)
 
     @Autowired

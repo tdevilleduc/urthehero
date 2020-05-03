@@ -1,6 +1,6 @@
 package com.tdevilleduc.urthehero.back.controller
 
-import com.tdevilleduc.urthehero.back.AbstractTest
+import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
 import com.tdevilleduc.urthehero.back.dao.StoryDao
 import com.tdevilleduc.urthehero.back.model.Story
@@ -26,7 +26,7 @@ import java.util.*
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
 @WebAppConfiguration
-internal class StoryControllerTest : AbstractTest() {
+internal class StoryControllerTest : AbstractITTest() {
 
     private lateinit var mockMvc: MockMvc
     @Autowired

@@ -1,35 +1,27 @@
 package com.tdevilleduc.urthehero.back.service
 
-import com.tdevilleduc.urthehero.back.AbstractTest
-import com.tdevilleduc.urthehero.back.BackApplication
 import com.tdevilleduc.urthehero.back.dao.UserDao
 import com.tdevilleduc.urthehero.back.exceptions.UserNotFoundException
-import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.UserService
 import com.tdevilleduc.urthehero.back.util.TestUtil
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.function.Executable
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.jupiter.MockitoExtension
+import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils
 import java.util.*
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [BackApplication::class])
-internal class PersonServiceTest : AbstractTest() {
-    @Autowired
-    private lateinit var userService: UserService
-    @Autowired
-    private lateinit var userDao: UserDao
+@ExtendWith(MockitoExtension::class)
+internal class PersonServiceTest {
+    private val random: Random = Random()
 
-    @Test
-    fun test_exists_thenCorrect() {
-        val userId = 1
-        val exists = userService.exists(userId)
-        Assertions.assertTrue(exists)
-    }
+    @InjectMocks
+    private lateinit var userService: UserService
+    @Mock
+    private lateinit var userDao: UserDao
 
     @Test
     fun test_exists_withIdNull() {
@@ -39,64 +31,62 @@ internal class PersonServiceTest : AbstractTest() {
     }
 
     @Test
-    fun test_notExists_thenCorrect() {
-        val userId = 41
+    fun test_notExists_thenSuccess() {
+        val userId = random.nextInt()
+        Mockito.`when`(userDao.findById(userId)).thenReturn(Optional.empty())
+
         val notExists = userService.notExists(userId)
         Assertions.assertTrue(notExists)
     }
 
     @Test
     fun test_findById_thenCorrect() {
-        val userId = 1
-        val user = userService.findById(userId)
-        Assertions.assertNotNull(user)
-        Assertions.assertEquals(1, user.userId)
-        Assertions.assertEquals("tdevilleduc", user.username)
-        Assertions.assertEquals("password", user.password)
-    }
+        val expectedUser = TestUtil.createUser()
+        val userId = random.nextInt()
+        expectedUser.userId = userId
+        Mockito.`when`(userDao.findById(expectedUser.userId!!)).thenReturn(Optional.of(expectedUser))
 
+        val user = userService.findById(expectedUser.userId!!)
+        Assertions.assertNotNull(user)
+        Assertions.assertEquals(userId, user.userId)
+        Assertions.assertEquals(expectedUser.username, user.username)
+        Assertions.assertEquals(expectedUser.password, user.password)
+    }
     @Test
     fun test_findById_thenNotFound() {
-        val userId = 13
-        Assertions.assertThrows(UserNotFoundException::class.java, Executable { userService.findById(userId) } )
+        val userId = random.nextInt()
+        Mockito.`when`(userDao.findById(userId)).thenReturn(Optional.empty())
+
+        Assertions.assertThrows(UserNotFoundException::class.java) { userService.findById(userId) }
     }
 
     @Test
     fun delete_thenNotFound() {
-        val userId = 13
-        Assertions.assertThrows(UserNotFoundException::class.java, Executable { userService.delete(userId) })
+        val userId = random.nextInt()
+        Mockito.`when`(userDao.findById(userId)).thenReturn(Optional.empty())
+
+        Assertions.assertThrows(UserNotFoundException::class.java) { userService.delete(userId) }
     }
 
     @Test
     fun test_findByUsername_thenCorrect() {
-        val userUsername = "mgianesini"
-        val user = userService.findByUsername(userUsername)
+        val expectedUser = TestUtil.createUser()
+        Mockito.`when`(userDao.findByUsername(expectedUser.username)).thenReturn(Optional.of(expectedUser))
+
+        val user = userService.findByUsername(expectedUser.username)
         Assertions.assertNotNull(user)
-        Assertions.assertEquals(2, user.userId)
-        Assertions.assertEquals("mgianesini", user.username)
-        Assertions.assertEquals("password", user.password)
+        Assertions.assertEquals(expectedUser.userId, user.userId)
+        Assertions.assertEquals(expectedUser.username, user.username)
+        Assertions.assertEquals(expectedUser.password, user.password)
     }
 
     @Test
     fun test_findByUsername_thenNotFound() {
-        val userUsername = "toto"
+        val userUsername = RandomStringUtils.random(20)
+        Mockito.`when`(userDao.findByUsername(userUsername)).thenReturn(Optional.empty())
+
         Assertions.assertThrows(UserNotFoundException::class.java) {
             userService.findByUsername(userUsername)
         }
-    }
-
-    @Test
-    fun test_delete_thenSuccess() {
-        var user = TestUtil.createUser()
-        user = userDao.save(user)
-        Assertions.assertNotNull(user.userId)
-        val optionalBefore: Optional<User> = userDao.findById(user.userId!!)
-        Assertions.assertTrue(optionalBefore.isPresent)
-
-        // delete user entity
-        userService.delete(user.userId!!)
-
-        val optionalAfter: Optional<User> = userDao.findById(user.userId!!)
-        Assertions.assertTrue(optionalAfter.isEmpty)
     }
 }
