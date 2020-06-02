@@ -13,7 +13,7 @@
 ### Upgrade
 
 - Upgrade to springdoc 1.3.3
-- Upgrade to test-containers 1.14.1
+- Upgrade to test-containers 1.14.3
 
 
 ## [0.2.0][0.2.0] - 2020-04-15
