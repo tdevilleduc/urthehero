@@ -2,6 +2,7 @@ package com.tdevilleduc.urthehero.back.service.chaos
 
 import com.tdevilleduc.urthehero.back.AbstractITTest
 import com.tdevilleduc.urthehero.back.BackApplication
+import com.tdevilleduc.urthehero.back.exceptions.EnemyNotFoundException
 import com.tdevilleduc.urthehero.back.exceptions.StoryNotFoundException
 import com.tdevilleduc.urthehero.back.service.IStoryService
 import org.hamcrest.Matchers
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.function.Executable
+import org.mockito.Mockito
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(classes = [BackApplication::class])
@@ -107,11 +110,11 @@ class ITStoryServiceTest : AbstractITTest() {
 //        checkHealthStatus(INSTANCE_STORY_SERVICE, CircuitBreaker.State.CLOSED)
 //    }
 
-    @Test
-    fun delete_thenNotFound() {
-        val storyId = 13
-        Assertions.assertThrows(StoryNotFoundException::class.java, Executable { storyService.delete(storyId) })
-    }
+//    @Test
+//    fun delete_thenNotFound() {
+//        val storyId = 13
+//        Assertions.assertThrows(StoryNotFoundException::class.java, Executable { storyService.delete(storyId) })
+//    }
 
     private lateinit var mockMvc: MockMvc
     @Autowired
