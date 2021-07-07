@@ -22,7 +22,6 @@ internal class DiceController(private val diceService: IDiceService) {
     @GetMapping(value = ["/roll/{dice}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.dice.roll.value}", description = "\${swagger.controller.dice.roll.notes}")
-    @ResponseBody
     fun rollOneDice(@PathVariable dice: Dice): Callable<ResponseEntity<DiceValue>> = Callable {
         ResponseEntity.ok(diceService.roll(dice))
     }
@@ -30,7 +29,6 @@ internal class DiceController(private val diceService: IDiceService) {
     @GetMapping(value = ["/roll/{dice}/{count}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.dice.roll-many.value}", description = "\${swagger.controller.dice.roll-many.notes}")
-    @ResponseBody
     fun rollManyDices(@PathVariable dice: Dice,
                       @PathVariable count: Int): Callable<ResponseEntity<MutableList<DiceValue>>> = Callable {
         val diceValues: MutableList<DiceValue> = ArrayList()

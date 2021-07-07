@@ -30,7 +30,6 @@ internal class ProgressionController() {
     @GetMapping(value = ["/user/{userId}/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.progression.get-all-by-user-id.value}", description = "\${swagger.controller.progression.get-all-by-user-id.notes}")
-    @ResponseBody
     fun getAllByUserId(@PathVariable userId: Int): Callable<ResponseEntity<MutableList<Progression>>> = Callable {
         if (userService.notExists(userId))
             ResponseEntity.notFound().build()
@@ -41,7 +40,6 @@ internal class ProgressionController() {
     @GetMapping(value = ["/user/{userId}/story/{storyId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.progression.get-by-user-id-and-story-id.value}", description = "\${swagger.controller.progression.get-by-user-id-and-story-id.notes}")
-    @ResponseBody
     fun getOneByUserIdAndStoryId(@PathVariable userId: Int,
                                  @PathVariable storyId: Int): Callable<ResponseEntity<Progression>> = Callable {
         if (userService.notExists(userId)) {
@@ -53,9 +51,8 @@ internal class ProgressionController() {
         ResponseEntity.ok(progressionService.findByUserIdAndStoryId(userId, storyId))
     }
 
-    @Operation(summary = "Met à jour la progression d'un utilisateur sur une histoire avec une page définie")
     @PostMapping(value = ["/user/{userId}/story/{storyId}/page/{newPageId}"])
-    @ResponseBody
+    @Operation(summary = "\${swagger.controller.progression.move.value}", description = "\${swagger.controller.progression.move.notes}")
     fun postProgressionAction(@PathVariable userId: Int,
                               @PathVariable storyId: Int,
                               @PathVariable newPageId: Int): Callable<ResponseEntity<Progression>> = Callable {

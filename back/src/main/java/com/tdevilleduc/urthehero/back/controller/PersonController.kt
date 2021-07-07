@@ -25,7 +25,6 @@ internal class PersonController(private val userService: IUserService) {
     @GetMapping(value = ["/all"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.user.get-all.value}", description = "\${swagger.controller.user.get-all.notes}")
-    @ResponseBody
     fun getUsers(): Callable<ResponseEntity<MutableList<User>>> = Callable {
         ResponseEntity.ok(userService.findAll())
     }
@@ -33,13 +32,12 @@ internal class PersonController(private val userService: IUserService) {
     @GetMapping(value = ["/{userId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "\${swagger.controller.user.get-by-id.value}", description = "\${swagger.controller.user.get-by-id.notes}")
-    @ResponseBody
     fun getUserById(@PathVariable userId: Int): Callable<ResponseEntity<User>> = Callable {
         ResponseEntity.ok(userService.findById(userId))
     }
 
     @PutMapping
-    @ResponseBody
+    @Operation(summary = "\${swagger.controller.user.create.value}", description = "\${swagger.controller.user.create.notes}")
     fun createUser(@RequestBody userDto: UserDTO): Callable<ResponseEntity<UserDTO>> = Callable {
         if (userService.exists(userDto.userId)) {
             throw UserInternalErrorException(MessageFormatter.format(ApplicationConstants.ERROR_MESSAGE_USER_USERID_ALREADY_EXISTS, userDto.userId).message)
@@ -48,7 +46,7 @@ internal class PersonController(private val userService: IUserService) {
     }
 
     @PostMapping
-    @ResponseBody
+    @Operation(summary = "\${swagger.controller.user.update.value}", description = "\${swagger.controller.user.update.notes}")
     fun updateUser(@RequestBody userDto: UserDTO): Callable<ResponseEntity<UserDTO>> = Callable {
         Assert.notNull(userDto.userId) { throw UserInternalErrorException(ApplicationConstants.ERROR_MESSAGE_USER_USERID_CANNOT_BE_NULL) }
         if (userService.notExists(userDto.userId)) {
@@ -58,7 +56,7 @@ internal class PersonController(private val userService: IUserService) {
     }
 
     @DeleteMapping(value = ["/{userId}"])
-    @ResponseBody
+    @Operation(summary = "\${swagger.controller.user.delete.value}", description = "\${swagger.controller.user.delete.notes}")
     fun deleteUser(@PathVariable userId: Int) = Callable {
         userService.delete(userId)
     }
