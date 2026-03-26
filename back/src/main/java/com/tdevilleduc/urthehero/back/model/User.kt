@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
-import javax.persistence.*
+import jakarta.persistence.*
 
 
 @Entity
