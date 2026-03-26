@@ -2,7 +2,7 @@ package com.tdevilleduc.urthehero.back.model
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.testcontainers.shaded.org.apache.commons.lang.RandomStringUtils
+import org.apache.commons.lang3.RandomStringUtils
 import java.util.*
 
 internal class EnemyTest {

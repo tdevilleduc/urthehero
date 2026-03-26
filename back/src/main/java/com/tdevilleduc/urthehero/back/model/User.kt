@@ -34,7 +34,7 @@ open class User (
         return true
     }
 
-    override fun getAuthorities(): Collection<GrantedAuthority?> {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
         return emptyList()
     }
 
