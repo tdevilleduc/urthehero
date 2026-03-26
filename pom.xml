@@ -30,19 +30,18 @@
         <chaos-monkey-spring-boot.version>4.0.0</chaos-monkey-spring-boot.version>
         <resilience4j.version>2.4.0</resilience4j.version>
         <junit.platform.version>1.2.0</junit.platform.version>
-        <testcontainers.version>1.15.0</testcontainers.version>
+        <testcontainers.version>1.20.6</testcontainers.version>
         <modelmapper.version>2.3.6</modelmapper.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
         <spring-cloud.version>2025.1.1</spring-cloud.version>
         <dependency-check.version>5.3.0</dependency-check.version>
-
-        <jackson.version>2.12.1</jackson.version>
 
         <docker.plugin.version>1.2.2</docker.plugin.version>
         <docker.image.exposed.port>9090</docker.image.exposed.port>
         <docker.image.dockerfile.dir>./back</docker.image.dockerfile.dir>
         <docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
 
-        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
+        <jacoco.maven.plugin.version>0.8.13</jacoco.maven.plugin.version>
         <dependency-check.version>5.3.0</dependency-check.version>
 
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
@@ -115,6 +114,8 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -123,21 +124,6 @@
                 <version>${springdoc.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-math3</artifactId>
@@ -180,15 +166,15 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-surefire-provider</artifactId>
-                <version>${junit.platform.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
                 <scope>test</scope>
             </dependency>
             
@@ -256,7 +242,7 @@
                         <plugin>spring</plugin>
                         <plugin>jpa</plugin>
                     </compilerPlugins>
-                    <jvmTarget>25</jvmTarget>
+                    <jvmTarget>24</jvmTarget>
                 </configuration>
                 <dependencies>
                     <dependency>
