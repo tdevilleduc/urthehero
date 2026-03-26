@@ -3,19 +3,21 @@ package com.tdevilleduc.urthehero.back.service.impl
 import com.tdevilleduc.urthehero.back.model.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.function.Function
-import kotlin.collections.HashMap
+import javax.crypto.SecretKey
 
 @Service
 class JwtService {
 
-    private val SECRET_KEY: String = "secret"
+    private val secretKey: SecretKey = Keys.hmacShaKeyFor(
+        "secret-key-must-be-at-least-32-bytes!!".toByteArray()
+    )
 
     fun extractUserName(token: String): String {
-        return extractClaim(token, Function { obj: Claims -> obj.subject });
+        return extractClaim(token, Function { obj: Claims -> obj.subject })
     }
 
     fun extractExpiration(token: String): Date {
@@ -28,7 +30,11 @@ class JwtService {
     }
 
     private fun extractAllClaims(token: String): Claims {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).body
+        return Jwts.parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .payload
     }
 
     private fun isTokenExpired(token: String): Boolean {
@@ -36,18 +42,17 @@ class JwtService {
     }
 
     fun generateToken(user: User): String {
-        var claims: Map<String, Any> = HashMap()
-        return createToken(claims, user.username)
+        return createToken(emptyMap(), user.username)
     }
 
     private fun createToken(claims: Map<String, Any>, subject: String): String {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(Date(System.currentTimeMillis()))
-                .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact()
+            .claims(claims)
+            .subject(subject)
+            .issuedAt(Date(System.currentTimeMillis()))
+            .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+            .signWith(secretKey)
+            .compact()
     }
 
     fun validateToken(token: String, user: User): Boolean {
