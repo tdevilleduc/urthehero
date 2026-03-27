@@ -15,6 +15,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import org.springframework.util.Assert
 import java.util.stream.Collectors
@@ -24,6 +25,7 @@ class StoryService : IStoryService {
     val logger: Logger = LoggerFactory.getLogger(StoryService::class.java)
 
     @Autowired
+    @Lazy
     private lateinit var progressionService: IProgressionService
     @Autowired
     private lateinit var pageService: IPageService
