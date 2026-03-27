@@ -16,3 +16,6 @@ buildNumber.properties
 *.iws
 *.iml
 *.ipr
+
+### Visual Studio Code
+.vscode/
