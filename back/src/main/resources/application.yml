@@ -1,7 +1,6 @@
 server:
   port: 8080
 
-  # Infos
 info:
   app:
     name: @project.name@
@@ -11,17 +10,43 @@ info:
 spring:
   main:
     banner-mode: "off"
+  profiles:
+    active: chaos-monkey
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: testuser
+    password: test123
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      validationQuery: SELECT 1
+    connection-properties: useUnicode=true;characterEncoding=utf-8;
+  jpa:
+    show-sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
-  # Actuator
-management.endpoints:
-  web.base-path: /
-  enabled-by-default: false
-management.endpoint:
-  health:
-    enabled: true
-    sensitive: false
-    show-details: ALWAYS
-  info.enabled: true
+# Actuator
+management:
+  endpoints:
+    web:
+      base-path: /
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+      show-details: ALWAYS
+    info:
+      enabled: true
 
 # Swagger
 springdoc:
@@ -33,58 +58,25 @@ springdoc:
   api-docs:
     resolve-schema-properties: true
 
-# PostgreSQL DataSource settings
-spring.datasource:
-  url: jdbc:postgresql://localhost:5432/test
-  username: testuser
-  password: test123
-  driver-class-name: org.postgresql.Driver
-  tomcat.validationQuery: SELECT 1
-  connection-properties: useUnicode=true;characterEncoding=utf-8;
-# The SQL dialect makes Hibernate generate better SQL for the chosen database
-spring.jpa:
-  # Show or not log for each sql query
-  show-sql: false
-  # Hibernate ddl auto (create, create-drop, update)
-  generate-ddl: true
-  hibernate.ddl-auto: create
-  database-platform: org.hibernate.dialect.PostgreSQLDialect
-  properties:
-    hibernate:
-      hbm2ddl:
-        import_files: data.sql
-      format_sql: true
-
-  # The format used for the keystore. It could be set to JKS in case it is a JKS file
-#server.ssl:
-#  key-store-type: PKCS12
-#  # The path to the keystore containing the certificate
-#  key-store: classpath:keystore/tdevilleduc.p12
-#  # The password used to generate the certificate
-#  key-store-password: password
-#  # The alias mapped to the certificate
-#  key-alias: tdevilleduc
-#security:
-#  require-ssl: true
-
-  # Chaos Monkey
-spring.profiles.active: chaos-monkey
-
-  # Resilience4J
-resilience4j.circuitbreaker.configs.default:
-  registerHealthIndicator: false
-  slidingWindowSize: 10
-  minimumNumberOfCalls: 5
-  permittedNumberOfCallsInHalfOpenState: 3
-  automaticTransitionFromOpenToHalfOpenEnabled: true
-  waitDurationInOpenState: 20s
-  failureRateThreshold: 50
-  eventConsumerBufferSize: 10
-  recordExceptions: java.lang.Exception
-
-resilience4j.retry.configs.default:
-  maxRetryAttempts: 3
-  waitDuration: 1s
-  enableExponentialBackoff: true
-  exponentialBackoffMultiplier: 2
-  recordExceptions: java.lang.Exception
+# Resilience4J
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: false
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+        recordExceptions: java.lang.Exception
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 3
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        recordExceptions: java.lang.Exception
