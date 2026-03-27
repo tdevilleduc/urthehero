@@ -3,6 +3,7 @@ package com.tdevilleduc.urthehero.back.config
 import com.tdevilleduc.urthehero.back.filter.JwtRequestFilter
 import com.tdevilleduc.urthehero.back.service.impl.MyUserDetailsService
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 
+@Configuration
 @EnableWebSecurity
 class SecurityConfig(
     @Lazy private val myUserDetailsService: MyUserDetailsService,
