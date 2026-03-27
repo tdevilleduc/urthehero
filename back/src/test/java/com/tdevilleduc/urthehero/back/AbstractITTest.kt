@@ -43,7 +43,7 @@ abstract class AbstractITTest {
 //    }
 
     companion object {
-        internal class SpecifiedPostgreSQLContainer : PostgreSQLContainer<SpecifiedPostgreSQLContainer>()
+        internal class SpecifiedPostgreSQLContainer : PostgreSQLContainer<SpecifiedPostgreSQLContainer>("postgres:16")
         @ClassRule
         val postgreSQLContainer: PostgreSQLContainer<*> = SpecifiedPostgreSQLContainer()
                 .withDatabaseName("test")
