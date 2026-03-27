@@ -4,7 +4,7 @@ import com.tdevilleduc.urthehero.back.model.User
 import com.tdevilleduc.urthehero.back.service.impl.JwtService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -39,10 +39,10 @@ class JwtServiceTest {
         `when`(user.username).thenReturn(username)
 
         val token = Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(Date(System.currentTimeMillis()))
-                .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, "secret")
+                .subject(username)
+                .issuedAt(Date(System.currentTimeMillis()))
+                .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .signWith(Keys.hmacShaKeyFor("secret-key-must-be-at-least-32-bytes!!".toByteArray()))
                 .compact()
 
         val isValidToken = jwtService.validateToken(token, user)
@@ -57,11 +57,11 @@ class JwtServiceTest {
         `when`(user.username).thenReturn(username)
 
         val token = Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(Date(System.currentTimeMillis()))
+                .subject(username)
+                .issuedAt(Date(System.currentTimeMillis()))
                 // expirationDate = now minus 10 hours (which is exactly the valid token delay)
-                .setExpiration(Date(System.currentTimeMillis() - 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, "secret")
+                .expiration(Date(System.currentTimeMillis() - 1000 * 60 * 60 * 10))
+                .signWith(Keys.hmacShaKeyFor("secret-key-must-be-at-least-32-bytes!!".toByteArray()))
                 .compact()
 
         assertThrows<ExpiredJwtException> {
