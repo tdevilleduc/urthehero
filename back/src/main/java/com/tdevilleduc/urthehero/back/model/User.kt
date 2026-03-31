@@ -46,11 +46,11 @@ open class User (
         return password
     }
 
-    fun setUsername(username: String) {
+    open fun setUsername(username: String) {
         this.username = username
     }
 
-    fun setPassword(password: String) {
+    open fun setPassword(password: String) {
         this.password = password
     }
 }
