@@ -2,6 +2,8 @@ package com.tdevilleduc.urthehero.back.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -15,6 +17,7 @@ data class NextPage(
         var text: String = "",
         var pageId: Int = 0,
         var destinationPageId: Int = 0,
+        @Enumerated(EnumType.ORDINAL)
         var position: Position? = null
 
 )

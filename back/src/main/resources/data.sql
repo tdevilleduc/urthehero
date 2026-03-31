@@ -28,11 +28,11 @@ INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(6, 7, 3, 3
 INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(7, 2, 2, 3);
 INSERT INTO progression(id, actual_Page_Id, user_id, story_id) VALUES(8, 12, 3, 1);
 -- NEXT_PAGE -- nextPageId, destinationPageId, pageId, position, text
-INSERT INTO next_page VALUES(1, 2, 1, 0, 'gauche');
-INSERT INTO next_page VALUES(2, 3, 1, 1, 'droite');
-INSERT INTO next_page VALUES(3, 8, 1, 2, 'centre');
-INSERT INTO next_page VALUES(4, 5, 4, 0, 'porte de gauche');
-INSERT INTO next_page VALUES(5, 6, 4, 1, 'porte de droite');
+INSERT INTO next_page(id, destination_page_id, page_id, position, text) VALUES(1, 2, 1, 0, 'gauche');
+INSERT INTO next_page(id, destination_page_id, page_id, position, text) VALUES(2, 3, 1, 1, 'droite');
+INSERT INTO next_page(id, destination_page_id, page_id, position, text) VALUES(3, 8, 1, 2, 'centre');
+INSERT INTO next_page(id, destination_page_id, page_id, position, text) VALUES(4, 5, 4, 0, 'porte de gauche');
+INSERT INTO next_page(id, destination_page_id, page_id, position, text) VALUES(5, 6, 4, 1, 'porte de droite');
 -- ENEMY -- id, image, text
 INSERT INTO enemy(name, image, level, life_Points) VALUES('Balrog', 'imageBalrog', 6, 25);
 INSERT INTO enemy(name, image, level, life_Points) VALUES('Peon', 'imagePeon', 1, 2);
