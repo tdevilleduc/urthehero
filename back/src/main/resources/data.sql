@@ -3,9 +3,9 @@
 --INSERT INTO person(display_name, email, login, password) VALUES('Marion Gianesini', 'marion@gmail.com', 'mgianesini', 'password');
 --INSERT INTO person(display_name, email, login, password) VALUES('Nicolas Danet', 'nicolas@gmail.com', 'ndanet', 'password');
 -- USERS -- userId, displayName, login, email
-INSERT INTO users(username, password) VALUES('tdevilleduc', 'password');
-INSERT INTO users(username, password) VALUES('mgianesini', 'password');
-INSERT INTO users(username, password) VALUES('ndanet', 'password');
+INSERT INTO users(username, password) VALUES('tdevilleduc', '$2a$10$Pa1dGSZT420g4.W6f3v7L.7hFlpuOBeXpmScnFh8JZEL3a5ZKNZ2K');
+INSERT INTO users(username, password) VALUES('mgianesini', '$2a$10$Pa1dGSZT420g4.W6f3v7L.7hFlpuOBeXpmScnFh8JZEL3a5ZKNZ2K');
+INSERT INTO users(username, password) VALUES('ndanet', '$2a$10$Pa1dGSZT420g4.W6f3v7L.7hFlpuOBeXpmScnFh8JZEL3a5ZKNZ2K');
 -- PAGE -- storyId, image, text
 INSERT INTO page(story_id, image, text) VALUES(1, 'image3', 'Ulysse');
 INSERT INTO page(story_id, image, text) VALUES(1, 'image3', 'Dès');
