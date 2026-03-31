@@ -2,20 +2,50 @@
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.3.0...HEAD
+
+## [0.3.0][0.3.0] - 2026-03-31
+
+[0.3.0]: https://github.com/tdevilleduc/urthehero/compare/0.2.0...0.3.0
 
 ### Added
 
+- Add enemy/monster CRUD controller [#96][96]
+- Add Swagger documentation for authentication controller
+- Add JWT token parameter on Swagger UI [#92][92]
+- Make all API requests authenticated [#90][90]
 
 ### Changed
 
+- Split integration tests into separate files (with/without Spring context) [#98][98]
+- Refactor services: use constants, remove HttpServletRequest, simplify code
+- Fix NextPage enum mapping: add `@Enumerated(EnumType.ORDINAL)` on `Position` field
+- Fix positional SQL inserts in `data.sql` to use explicit column names
+
+### Fixed
+
+- Remove jaxb-api dependency [#88][88]
+- Fix compilation errors after Spring Boot 4 upgrade
+- Add `@Configuration` to `SecurityConfig` for Spring Security 7
+- Fix weak JWT signing key in tests (RFC 7518)
+- Fix Spring Boot 4 compatibility: Hibernate 7 datasource initialization, circular dependencies, Resilience4j
 
 ### Upgrade
 
-- Upgrade to Spring Boot 2.3.0
-- Upgrade to springdoc 1.4.0
-- Upgrade to test-containers 1.14.3
+- Upgrade Spring Boot from 2.2.6 to 4.0.5
+- Upgrade Spring Security to 7 (jakarta namespace)
+- Upgrade SpringDoc from 1.3.3 to 3.0.1
+- Upgrade TestContainers from 1.13.0 to 1.20.6
+- Upgrade Resilience4j to 2.4.0 (spring-boot4)
+- Upgrade Jackson from 2.10.2 to 2.12.1
+- Upgrade commons-lang3 from 3.17.0 to 3.18.0
+- Upgrade to Spring Cloud 2025.1.1
 
+[88]: https://github.com/tdevilleduc/urthehero/issues/88
+[90]: https://github.com/tdevilleduc/urthehero/issues/90
+[92]: https://github.com/tdevilleduc/urthehero/issues/92
+[96]: https://github.com/tdevilleduc/urthehero/issues/96
+[98]: https://github.com/tdevilleduc/urthehero/issues/98
 
 ## [0.2.0][0.2.0] - 2020-04-15
 
