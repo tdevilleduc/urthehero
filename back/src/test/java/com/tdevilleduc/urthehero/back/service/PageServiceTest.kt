@@ -2,7 +2,6 @@ package com.tdevilleduc.urthehero.back.service
 
 import com.tdevilleduc.urthehero.back.dao.PageDao
 import com.tdevilleduc.urthehero.back.exceptions.PageNotFoundException
-import com.tdevilleduc.urthehero.back.model.Position
 import com.tdevilleduc.urthehero.back.service.impl.NextPageService
 import com.tdevilleduc.urthehero.back.service.impl.PageService
 import com.tdevilleduc.urthehero.back.service.impl.StoryService
