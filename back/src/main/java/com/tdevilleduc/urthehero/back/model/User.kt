@@ -13,7 +13,7 @@ open class User (
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Schema(description = "\${swagger.model.user.param.storyId}")
-        var userId: Int?,
+        open var userId: Int?,
         private var username: String = "",
         private var password: String = ""
 ) : Serializable, UserDetails {
