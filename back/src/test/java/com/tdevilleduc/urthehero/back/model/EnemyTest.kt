@@ -11,8 +11,8 @@ internal class EnemyTest {
     @Test
     fun test_Constructor() {
         val id = random.nextInt()
-        val name = RandomStringUtils.random(20)
-        val image = RandomStringUtils.random(20)
+        val name = RandomStringUtils.insecure().next(20)
+        val image = RandomStringUtils.insecure().next(20)
         val level = random.nextInt()
         val lifePoints = random.nextInt()
         val enemy = Enemy(id, name, image, level, lifePoints)

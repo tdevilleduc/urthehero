@@ -82,7 +82,7 @@ internal class PersonServiceTest {
 
     @Test
     fun test_findByUsername_thenNotFound() {
-        val userUsername = RandomStringUtils.random(20)
+        val userUsername = RandomStringUtils.insecure().next(20)
         Mockito.`when`(userDao.findByUsername(userUsername)).thenReturn(Optional.empty())
 
         Assertions.assertThrows(UserNotFoundException::class.java) {
