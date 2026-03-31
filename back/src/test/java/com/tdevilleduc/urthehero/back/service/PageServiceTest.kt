@@ -6,14 +6,12 @@ import com.tdevilleduc.urthehero.back.service.impl.NextPageService
 import com.tdevilleduc.urthehero.back.service.impl.PageService
 import com.tdevilleduc.urthehero.back.service.impl.StoryService
 import com.tdevilleduc.urthehero.back.util.TestUtil
-import org.junit.Before
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.jupiter.MockitoExtension
 import java.util.*
 
@@ -29,12 +27,6 @@ internal class PageServiceTest {
     private lateinit var nextPageService: NextPageService
     @Mock
     private lateinit var storyService: StoryService
-
-    @Before
-    fun initMocks() {
-        MockitoAnnotations.initMocks(this)
-    }
-
 
     @Test
     fun test_exists_withIdNull() {
