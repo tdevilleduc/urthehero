@@ -8,15 +8,12 @@ import io.jsonwebtoken.security.Keys
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
-@ExtendWith(SpringExtension::class)
 class JwtServiceTest {
     private val logger: Logger = LoggerFactory.getLogger(JwtServiceTest::class.java)
 
