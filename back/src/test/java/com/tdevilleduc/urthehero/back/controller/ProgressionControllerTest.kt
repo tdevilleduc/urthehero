@@ -50,9 +50,6 @@ class ProgressionControllerTest : AbstractITTest() {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].userId", Matchers.`is`(userId)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].storyId", Matchers.`is`(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].actualPageId", Matchers.`is`(3)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].userId", Matchers.`is`(userId)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].storyId", Matchers.`is`(1)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].actualPageId", Matchers.`is`(2)))
     }
 
     @Test
