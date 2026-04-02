@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-slim
+FROM eclipse-temurin:21-jre-jammy
 
 ARG JAR_FILE
 
