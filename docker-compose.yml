@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: urthehero-postgres
-    image: postgres
+    image: postgres:16
     environment:
       POSTGRES_DB: test
       POSTGRES_USER: testuser
