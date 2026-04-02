@@ -18,6 +18,8 @@
 ### Fixed
 
 - Remove incorrect `test` scope from `commons-lang3` dependency (used at runtime by springdoc)
+- Add `role` field to `UserDTO` (default `ROLE_USER`) to prevent ModelMapper from nullifying the `User` entity's role on creation
+- Make `User#getRole()` open to allow Hibernate proxy generation
 
 ### Removed
 
