@@ -51,6 +51,7 @@ internal class PersonServiceTest {
         Assertions.assertEquals(userId, user.userId)
         Assertions.assertEquals(expectedUser.username, user.username)
         Assertions.assertEquals(expectedUser.password, user.password)
+        Assertions.assertEquals(expectedUser.getRole(), user.getRole())
     }
     @Test
     fun test_findById_thenNotFound() {
@@ -78,6 +79,7 @@ internal class PersonServiceTest {
         Assertions.assertEquals(expectedUser.userId, user.userId)
         Assertions.assertEquals(expectedUser.username, user.username)
         Assertions.assertEquals(expectedUser.password, user.password)
+        Assertions.assertEquals(expectedUser.getRole(), user.getRole())
     }
 
     @Test

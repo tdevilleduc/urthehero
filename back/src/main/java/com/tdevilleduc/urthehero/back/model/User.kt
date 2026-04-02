@@ -49,7 +49,7 @@ open class User (
         return password
     }
 
-    fun getRole(): String {
+    open fun getRole(): String {
         return role
     }
 

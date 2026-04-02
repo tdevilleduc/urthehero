@@ -13,11 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
@@ -42,10 +45,12 @@ internal class StoryControllerTest : AbstractITTest() {
     fun setup() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
+                .apply<DefaultMockMvcBuilder>(springSecurity())
                 .build()
     }
 
     @Test
+    @WithMockUser
     fun test_getAllStories() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/all"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -58,6 +63,7 @@ internal class StoryControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser
     fun test_getStoryById() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/2"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -75,6 +81,7 @@ internal class StoryControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser(roles = ["ADMIN"])
     fun test_createStory_thenSuccess() {
         val authorId = 1
         val firstPageId = 1
@@ -90,6 +97,7 @@ internal class StoryControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser(roles = ["ADMIN"])
     fun test_createStory_thenAlreadyExists() {
         val authorId = 1
         val firstPageId = 1
@@ -105,6 +113,17 @@ internal class StoryControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser
+    fun test_createStory_asUser_thenForbidden() {
+        val storyDto = TestUtil.createStoryDto(1, 1)
+        mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(storyDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden)
+    }
+
+    @Test
+    @WithMockUser(roles = ["ADMIN"])
     fun test_deleteStory_thenSuccess() {
         var story = TestUtil.createStory()
         story = storyDao.save(story)
@@ -122,4 +141,10 @@ internal class StoryControllerTest : AbstractITTest() {
         Assertions.assertTrue(optionalAfter.isEmpty)
     }
 
+    @Test
+    @WithMockUser
+    fun test_deleteStory_asUser_thenForbidden() {
+        mockMvc.perform(MockMvcRequestBuilders.delete("$uriController/1"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden)
+    }
 }

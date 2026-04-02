@@ -14,11 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
@@ -43,10 +46,12 @@ internal class EnemyControllerTest : AbstractITTest() {
     fun setup() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
+                .apply<DefaultMockMvcBuilder>(springSecurity())
                 .build()
     }
 
     @Test
+    @WithMockUser
     fun test_getById() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/1"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -63,6 +68,7 @@ internal class EnemyControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser
     fun test_getByLevel() {
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.get("$uriController/level/1"))
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
@@ -79,6 +85,7 @@ internal class EnemyControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser(roles = ["ADMIN"])
     fun test_create_thenSuccess() {
         val enemyDto = TestUtil.createEnemyDto()
         val resultActions = mockMvc.perform(MockMvcRequestBuilders.put(uriController)
@@ -92,6 +99,7 @@ internal class EnemyControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser(roles = ["ADMIN"])
     fun test_create_thenAlreadyExists() {
         val enemyDto = TestUtil.createEnemyDto()
         enemyDto.id = 1
@@ -105,6 +113,17 @@ internal class EnemyControllerTest : AbstractITTest() {
     }
 
     @Test
+    @WithMockUser
+    fun test_create_asUser_thenForbidden() {
+        val enemyDto = TestUtil.createEnemyDto()
+        mockMvc.perform(MockMvcRequestBuilders.put(uriController)
+                .content(objectMapper.writeValueAsString(enemyDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden)
+    }
+
+    @Test
+    @WithMockUser(roles = ["ADMIN"])
     fun test_delete_thenSuccess() {
         var enemy = TestUtil.createEnemy()
         enemy = enemyDao.save(enemy)
@@ -120,5 +139,12 @@ internal class EnemyControllerTest : AbstractITTest() {
 
         val optionalAfter: Optional<Enemy> = enemyDao.findById(enemy.id)
         Assertions.assertTrue(optionalAfter.isEmpty)
+    }
+
+    @Test
+    @WithMockUser
+    fun test_delete_asUser_thenForbidden() {
+        mockMvc.perform(MockMvcRequestBuilders.delete("$uriController/1"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden)
     }
 }
