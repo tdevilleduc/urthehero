@@ -9,6 +9,7 @@ import com.tdevilleduc.urthehero.back.service.IStoryService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -42,6 +43,7 @@ internal class PageController(private val storyService: IStoryService, private v
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun createPage(@RequestBody page: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
         if (pageService.exists(page.id)) {
@@ -51,6 +53,7 @@ internal class PageController(private val storyService: IStoryService, private v
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun updatePage(@RequestBody pageDto: PageDTO): Callable<ResponseEntity<PageDTO>> = Callable {
         Assert.notNull(pageDto.id) { throw PageInternalErrorException(ApplicationConstants.ERROR_MESSAGE_PAGE_PAGEID_CANNOT_BE_NULL) }
@@ -61,6 +64,7 @@ internal class PageController(private val storyService: IStoryService, private v
     }
 
     @DeleteMapping(value = ["/{pageId}"])
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun deletePage(@PathVariable pageId: Int) = Callable {
         pageService.delete(pageId)

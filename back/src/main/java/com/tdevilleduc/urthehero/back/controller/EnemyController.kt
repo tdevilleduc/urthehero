@@ -8,6 +8,7 @@ import com.tdevilleduc.urthehero.back.service.IEnemyService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -37,6 +38,7 @@ internal class EnemyController(private val enemyService: IEnemyService) {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
 //    @Operation(summary = "\${swagger.controller.enemy.create.value}", description = "\${swagger.controller.enemy.create.notes}")
     fun create(@RequestBody enemyDto: EnemyDTO): Callable<ResponseEntity<EnemyDTO>> = Callable {
         if (enemyService.exists(enemyDto.id)) {
@@ -46,6 +48,7 @@ internal class EnemyController(private val enemyService: IEnemyService) {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
 //    @Operation(summary = "\${swagger.controller.enemy.update.value}", description = "\${swagger.controller.enemy.update.notes}")
     fun update(@RequestBody enemyDto: EnemyDTO): Callable<ResponseEntity<EnemyDTO>> = Callable {
         Assert.notNull(enemyDto.id) { throw EnemyInternalErrorException(ApplicationConstants.ERROR_MESSAGE_ENEMY_ID_CANNOT_BE_NULL) }
@@ -56,6 +59,7 @@ internal class EnemyController(private val enemyService: IEnemyService) {
     }
 
     @DeleteMapping(value = ["/{enemyId}"])
+    @PreAuthorize("hasRole('ADMIN')")
 //    @Operation(summary = "\${swagger.controller.enemy.delete.value}", description = "\${swagger.controller.enemy.delete.notes}")
     fun delete(@PathVariable enemyId: Int) = Callable {
         enemyService.delete(enemyId)
