@@ -4,6 +4,17 @@
 
 [Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.3.0...HEAD
 
+### Changed
+
+- Replace deprecated OpenJDK 11 images with Eclipse Temurin 21 in `.gitlab-ci.yml`, `back/Dockerfile` and `docker-compose.yml`
+- Align Kotlin `jvmTarget` from 24 to 21 (minimum required by Spring Boot 4)
+- Pin PostgreSQL image to version 16 in `docker-compose.yml`
+- Replace implicit `JAVA_APP_JAR` entrypoint with explicit `java -jar` command in `docker-compose.yml`
+
+### Fixed
+
+- Remove incorrect `test` scope from `commons-lang3` dependency (used at runtime by springdoc)
+
 ### Removed
 
 - Remove Kubernetes deployment files (`kubernetes/`, `kubernetes-deploy.yml`, `mysql-deployment.yaml`, `secret.yaml`)

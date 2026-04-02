@@ -41,7 +41,7 @@ urthehero/
 
 ## Prerequisites
 
-- Java 24+
+- Java 21+
 - Maven 3.8+ (or use `./mvnw`)
 - Docker & Docker Compose
 
