@@ -4,6 +4,11 @@
 
 [Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.3.0...HEAD
 
+### Removed
+
+- Remove Kubernetes deployment files (`kubernetes/`, `kubernetes-deploy.yml`, `mysql-deployment.yaml`, `secret.yaml`)
+- Rewrite README to reflect actual stack and local setup (Docker Compose)
+
 ## [0.3.0][0.3.0] - 2026-03-31
 
 [0.3.0]: https://github.com/tdevilleduc/urthehero/compare/0.2.0...0.3.0
