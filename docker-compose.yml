@@ -20,9 +20,7 @@ services:
     image: eclipse-temurin:21-jre-jammy
     volumes:
       - ./back/target:/deployments
-    environment:
-      JAVA_APP_JAR: back-0.3.0.jar
-      JAVA_OPTIONS: "-Dspring.profiles.active=docker -Dfile.encoding=UTF8"
+    command: ["java", "-Dspring.profiles.active=docker", "-Dfile.encoding=UTF8", "-jar", "/deployments/back-0.3.0.jar"]
     ports:
       - "8080:8080"
     restart: always
