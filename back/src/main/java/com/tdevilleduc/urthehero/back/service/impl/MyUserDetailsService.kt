@@ -13,7 +13,6 @@ class MyUserDetailsService : UserDetailsService {
     private lateinit var userService: IUserService
 
     override fun loadUserByUsername(userName: String): User {
-        val user = userService.findByUsername(userName)
-        return User(null, username = user.username, password = user.password)
+        return userService.findByUsername(userName)
     }
 }

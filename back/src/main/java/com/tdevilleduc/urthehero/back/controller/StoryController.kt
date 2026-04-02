@@ -10,6 +10,7 @@ import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -41,6 +42,7 @@ internal class StoryController(private val storyService: IStoryService, private 
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun createStory(@RequestBody storyDTO: StoryDTO): Callable<ResponseEntity<StoryDTO>> = Callable {
         Assert.notNull(storyDTO.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
@@ -58,6 +60,7 @@ internal class StoryController(private val storyService: IStoryService, private 
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun updateStory(@RequestBody storyDto: StoryDTO): Callable<ResponseEntity<StoryDTO>> = Callable {
         Assert.notNull(storyDto.authorId) { throw StoryInternalErrorException("L'auteur de l'histoire passée en paramètre ne peut pas être null") }
@@ -76,6 +79,7 @@ internal class StoryController(private val storyService: IStoryService, private 
     }
 
     @DeleteMapping(value = ["/{storyId}"])
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun deleteStory(@PathVariable storyId: Int) = Callable {
         storyService.delete(storyId)

@@ -8,6 +8,7 @@ import com.tdevilleduc.urthehero.back.service.IUserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.slf4j.helpers.MessageFormatter
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -39,6 +40,7 @@ internal class PersonController(private val userService: IUserService) {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun createUser(@RequestBody userDto: UserDTO): Callable<ResponseEntity<UserDTO>> = Callable {
         if (userService.exists(userDto.userId)) {
@@ -48,6 +50,7 @@ internal class PersonController(private val userService: IUserService) {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun updateUser(@RequestBody userDto: UserDTO): Callable<ResponseEntity<UserDTO>> = Callable {
         Assert.notNull(userDto.userId) { throw UserInternalErrorException(ApplicationConstants.ERROR_MESSAGE_USER_USERID_CANNOT_BE_NULL) }
@@ -58,6 +61,7 @@ internal class PersonController(private val userService: IUserService) {
     }
 
     @DeleteMapping(value = ["/{userId}"])
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     fun deleteUser(@PathVariable userId: Int) = Callable {
         userService.delete(userId)
