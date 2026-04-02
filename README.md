@@ -10,7 +10,7 @@ A **choose-your-own-adventure** REST API backend. Players navigate through stori
 
 - **Language**: Kotlin
 - **Framework**: Spring Boot 4.0.5 / Spring Cloud 2025.1.1
-- **Security**: Spring Security 7 + JWT
+- **Security**: Spring Security 7 + JWT + RBAC (`ROLE_ADMIN` / `ROLE_USER`)
 - **Database**: PostgreSQL
 - **API docs**: SpringDoc / OpenAPI (Swagger UI)
 - **Resilience**: Resilience4j (circuit breaker, retry)
@@ -92,6 +92,15 @@ POST /authenticate
 ```
 
 Use the returned token as a `Bearer` header or via the Swagger UI lock icon.
+
+### Authorization
+
+Two roles are supported:
+
+| Role         | Permissions                                      |
+|--------------|--------------------------------------------------|
+| `ROLE_ADMIN` | Full access — read and write (PUT/POST/DELETE)   |
+| `ROLE_USER`  | Read-only access                                 |
 
 ### Available endpoints
 
