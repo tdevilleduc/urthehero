@@ -21,7 +21,7 @@ variables:
 
 build_job:
   stage: build
-  image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
+  image: eclipse-temurin:21-jdk-jammy
   allow_failure: false
   script:
     - ./mvnw compile
@@ -35,7 +35,7 @@ build_job:
 
 test_job:
   stage: test
-  image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
+  image: eclipse-temurin:21-jdk-jammy
   services:
     - docker:stable-dind
   script:
@@ -75,7 +75,7 @@ code_quality_job:
 
 package_job:
   stage: package
-  image: adoptopenjdk/openjdk11:alpine-slim
+  image: eclipse-temurin:21-jdk-jammy
   allow_failure: false
   services:
     - docker:stable-dind

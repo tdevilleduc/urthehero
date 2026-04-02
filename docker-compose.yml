@@ -19,11 +19,11 @@ services:
 
   back:
     container_name: urthehero-back
-    image: registry.access.redhat.com/openjdk/openjdk-11-rhel7:1.0-13
+    image: eclipse-temurin:21-jre-jammy
     volumes:
       - ./back/target:/deployments
     environment:
-      JAVA_APP_JAR: back-0.1.1-SNAPSHOT.jar
+      JAVA_APP_JAR: back-0.3.0.jar
       JAVA_OPTIONS: "-Dspring.profiles.active=docker -Dfile.encoding=UTF8"
     ports:
       - "8080:8080"
