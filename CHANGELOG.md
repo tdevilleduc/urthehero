@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/tdevilleduc/urthehero/compare/0.3.0...HEAD
 
+### Added
+
+- Implement role-based access control (RBAC): add `role` field to `User` entity, enable `@EnableMethodSecurity`, restrict all write operations (PUT/POST/DELETE) to `ROLE_ADMIN` across Enemy, Page, Story and Person controllers
+
 ### Changed
 
 - Replace deprecated OpenJDK 11 images with Eclipse Temurin 21 in `.gitlab-ci.yml`, `back/Dockerfile` and `docker-compose.yml`
